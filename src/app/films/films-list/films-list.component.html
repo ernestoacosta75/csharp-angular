@@ -1,0 +1,20 @@
+<!-- <div *ngIf="!films">
+<img src="https://i.pinimg.com/originals/49/8f/77/498f7727ecf2a588d6c3eebac92a7c4b.gif">
+</div>
+
+<div *ngIf="films?.length === 0">
+    <p>There are not films to display</p>
+</div> -->
+
+<app-generic-list [list]="films">
+    <ng-container message>
+        <div>Custom message for this content <b>message</b></div>
+    </ng-container>
+    <ng-container content>
+        <div *ngFor="let film of films; let index = index" class="films-container">
+            <div>{{ film.title }} <button (click)="onRemoveFilm(index)">Delete</button></div>
+            <div>{{ film.releaseDate | date: 'dd/MM/yyyy' }}</div>
+            <div>{{ film.price | currency }}</div>
+        </div>
+    </ng-container>
+</app-generic-list>

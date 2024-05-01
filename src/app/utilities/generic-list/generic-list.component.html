@@ -1,0 +1,30 @@
+<div *ngIf="!list">
+  <span #spinner>
+    <ng-content select="[spinner]"></ng-content>
+  </span>
+  <span *ngIf="!spinner.innerHTML.trim()">
+    <img
+      src="https://i.pinimg.com/originals/49/8f/77/498f7727ecf2a588d6c3eebac92a7c4b.gif"
+    />
+  </span>
+</div>
+
+<div *ngIf="list?.length === 0">
+  <span #message>
+    <ng-content select="[message]"></ng-content>
+  </span>
+  <span *ngIf="!message.innerHTML.trim()">
+    <p>There are not films to display</p>
+  </span>
+</div>
+
+<ng-container *ngIf="list && list.length > 0">
+  <ng-content select="[content]"></ng-content>
+  <!-- <div *ngFor="let item of list; let index = index" class="films-container">
+    <div>
+      {{ item.title }} <button (click)="onRemoveFilm(index)">Delete</button>
+    </div>
+    <div>{{ item.releaseDate | date : "dd/MM/yyyy" }}</div>
+    <div>{{ item.price | currency }}</div>
+  </div> -->
+</ng-container>
