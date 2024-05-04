@@ -9,6 +9,9 @@ import { CinemasIndexComponent } from './features/cinema/cinemas-index/cinemas-i
 import { NewCinemaComponent } from './features/cinema/new-cinema/new-cinema.component';
 import { NewFilmComponent } from './features/films/new-film/new-film.component';
 import { EditActorComponent } from './features/actors/edit-actor/edit-actor.component';
+import { EditCinemaComponent } from './cinemas/edit-cinema/edit-cinema.component';
+import { EditFilmComponent } from './films/edit-film/edit-film.component';
+import { EditGenderComponent } from './genders/edit-gender/edit-gender.component';
 
 const routes: Routes = [
   {
@@ -17,45 +20,71 @@ const routes: Routes = [
   },
   {
     path: 'genders',
-    component: GendersIndexComponent
-  },
-  {
-    path: 'genders/create',
-    component: NewGenderComponent
-  },
-  {
-    path: 'genders',
-    component: GendersIndexComponent
-  },
-  {
-    path: 'genders/create',
-    component: NewGenderComponent
-  },
-  {
-    path: 'actors',
-    component: ActorsIndexComponent,
     children: [
       {
+        path: 'create',
+        component: NewGenderComponent
+      },
+      {
         path: 'edit/:id',
-        component: EditActorComponent
+        component: EditGenderComponent
+      },
+      {
+        path: '',
+        component: GendersIndexComponent
       }
     ]
   },
   {
-    path: 'actors/create',
-    component: NewActorComponent
-  },
+    path: 'actors',
+    children: [
+      {
+        path: 'actors/create',
+        component: NewActorComponent
+      },
+      {
+        path: 'actors/edit/:id',
+        component: EditActorComponent
+      },
+      {
+        path: '',
+        component: ActorsIndexComponent
+      }
+    ]
+  }, 
   {
     path: 'cinemas',
-    component: CinemasIndexComponent
+    children: [
+      {
+        path: 'cinemas/create',
+        component: NewCinemaComponent
+      },
+      {
+        path: 'cinemas/edit/:id',
+        component: EditCinemaComponent
+      },
+      {
+        path: '',
+        component: CinemasIndexComponent
+      }
+    ]
   },
   {
-    path: 'cinemas/create',
-    component: NewCinemaComponent
+    path: 'films',
+    children: [
+      {
+        path: 'films/create',
+        component: NewFilmComponent
+      },
+      {
+        path: 'films/edit/:id',
+        component: EditFilmComponent
+      }
+    ]
   },
-  {
-    path: 'films/create',
-    component: NewFilmComponent
+  { 
+    path: '**', 
+    redirectTo: '' 
   }
 ];
 

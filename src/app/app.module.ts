@@ -18,6 +18,9 @@ import { NewFilmComponent } from './features/films/new-film/new-film.component';
 import { NewCinemaComponent } from './features/cinema/new-cinema/new-cinema.component';
 import { CinemasIndexComponent } from './features/cinema/cinemas-index/cinemas-index.component';
 import { EditActorComponent } from './features/actors/edit-actor/edit-actor.component';
+import { EditGenderComponent } from './genders/edit-gender/edit-gender.component';
+import { EditCinemaComponent } from './cinemas/edit-cinema/edit-cinema.component';
+import { EditFilmComponent } from './films/edit-film/edit-film.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +36,10 @@ import { EditActorComponent } from './features/actors/edit-actor/edit-actor.comp
     NewFilmComponent,
     NewCinemaComponent,
     CinemasIndexComponent,
-    EditActorComponent
+    EditActorComponent,
+    EditGenderComponent,
+    EditCinemaComponent,
+    EditFilmComponent
   ],
   imports: [
     BrowserModule,
