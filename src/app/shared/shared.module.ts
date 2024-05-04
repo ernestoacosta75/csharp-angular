@@ -4,12 +4,14 @@ import { MenuComponent } from './components/menu/menu.component';
 import { MaterialModule } from '../material/material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { RouterModule } from '@angular/router';
+import { AddRequiredDirective } from './directives/add-required.directive';
 
 
 
 @NgModule({
   declarations: [
-    MenuComponent
+    MenuComponent,
+    AddRequiredDirective
   ],
   imports: [
     CommonModule,
@@ -18,7 +20,8 @@ import { RouterModule } from '@angular/router';
     FlexLayoutModule
   ],
   exports: [
-    MenuComponent
+    MenuComponent,
+    AddRequiredDirective
   ]
 })
 export class SharedModule { }

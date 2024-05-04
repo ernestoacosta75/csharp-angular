@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
@@ -6,10 +7,17 @@ import { Router } from '@angular/router';
   templateUrl: './new-gender.component.html',
   styleUrl: './new-gender.component.css'
 })
-export class NewGenderComponent {
+export class NewGenderComponent implements OnInit {
 
-  constructor(private router: Router) {
+  form: FormGroup;
+
+  constructor(private router: Router, private formBuilder: FormBuilder) {
     
+  }
+  ngOnInit(): void {
+    this.form = this.formBuilder.group({
+      name: ''
+    });
   }
 
   onSave = () => {

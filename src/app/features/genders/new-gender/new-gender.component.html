@@ -1,5 +1,17 @@
-<button 
-    mat-flat-button 
-    color="primary" 
-    type="button"
-    (click)="onSave()">Save</button>
+<h2>Create Gender</h2>
+
+<form 
+    [formGroup]="form"
+    (submit)="onSave()">
+    <mat-form-field appearance="outline">
+        <mat-label appAddRequired>Name</mat-label>
+        <input matInput formControlName="name" required placeholder="Ex.: Drama">
+    </mat-form-field>
+    <div>
+        <button 
+            mat-flat-button 
+            color="primary" 
+            type="submit">Save</button>
+        <a mat-stroked-button routerLink="/genders">Cancel</a>
+    </div>
+</form>
