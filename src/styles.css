@@ -20,40 +20,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     content: ' (*)';
 }
 
-.mat-form-field-wrapper {
-    padding-top: 0; /* Reduce top padding */
-}
-.mat-form-field-infix {
-    height: 12px; /* Set the desired height */
-}
-.mat-form-field-label {
-    transform: translateY(-40%); /* Adjust label position */
-}
-.mat-form-field-label mat-label {
-    font-size: 12px;
-}
-.mat-form-field-appearance-outline .mat-form-field-infix {
-    padding: 0.4em 0 1em 0;
-}
-
-.mat-form-field-appearance-outline .mat-form-field-wrapper {
-    margin-bottom: .10em;
-}
-
-.mat-form-field-wrapper {
-    padding-bottom: 0.94375em;
-}
-
-mat-label {
-    font-weight: 500;
-    font-size: 14px;
-    letter-spacing: -0.005em;
-    color: #000000;
-}
-
-.mat-form-field-appearance-outline .mat-form-field-outline {
-    color: #ccc !important;
-}
-.mat-form-field-appearance-outline .mat-form-field-infix {
-    font-size: 12px;
+mat-form-field {
+    width: 100%;
+    max-width: 500px;
 }

@@ -5,13 +5,15 @@ import { MaterialModule } from '../material/material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { RouterModule } from '@angular/router';
 import { AddRequiredDirective } from './directives/add-required.directive';
+import { ErrorMessageComponent } from './components/error-message/error-message.component';
 
 
 
 @NgModule({
   declarations: [
     MenuComponent,
-    AddRequiredDirective
+    AddRequiredDirective,
+    ErrorMessageComponent
   ],
   imports: [
     CommonModule,
@@ -21,7 +23,8 @@ import { AddRequiredDirective } from './directives/add-required.directive';
   ],
   exports: [
     MenuComponent,
-    AddRequiredDirective
+    AddRequiredDirective,
+    ErrorMessageComponent
   ]
 })
 export class SharedModule { }
