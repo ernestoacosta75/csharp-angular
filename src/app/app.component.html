@@ -1,8 +1,15 @@
-<h2>On cinemas</h2>
-<app-films-list [films]="onCinemaFilms"></app-films-list>
+<div fxLayout="column" id="parentContainer" style="position: relative">
 
-<h2>Future release</h2>
-<app-films-list [films]="newReleaseFilms"></app-films-list>
+  <div fxLayout="row" id="header" style="position: sticky; top: 0; z-index: 1">
+    <app-menu></app-menu>
+  </div>
+  
+  <div class="container"
+    fxLayout="row"
+    fxLayoutGap="3px"
+    id="sideAndContent"
+    fxLayoutAlign="start start">
+      <router-outlet></router-outlet>
+  </div>
+</div>
 
-<!-- <input type="file" name="" id="" style="display: none;" #fileLoader>
-<button (click)="fileLoader.click()">Load file</button> -->

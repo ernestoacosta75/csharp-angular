@@ -7,14 +7,23 @@
 </div> -->
 
 <app-generic-list [list]="films">
-    <ng-container message>
-        <div>Custom message for this content <b>message</b></div>
-    </ng-container>
     <ng-container content>
-        <div *ngFor="let film of films; let index = index" class="films-container">
-            <div>{{ film.title }} <button (click)="onRemoveFilm(index)">Delete</button></div>
-            <div>{{ film.releaseDate | date: 'dd/MM/yyyy' }}</div>
-            <div>{{ film.price | currency }}</div>
+        <div class="row">
+            <div *ngFor="let film of films; let index = index" class="film-container">
+                <a>
+                    <img [src]="film.poster" alt="Poster">
+                </a>
+                <p>
+                    <a>{{ film.title }}</a>
+                </p>
+                <div>
+                    <a mat-flat-button color="primary">Edit</a>
+                    <button mat-flat-button color="warn" type="button">Delete</button>
+                </div>
+                <!-- <div><h2>Film: {{ film.title }} <button (click)="onRemoveFilm(index)">Delete</button></h2></div>
+                <div>{{ film.releaseDate | date: 'dd/MM/yyyy' }}</div>
+                <div>{{ film.price | currency }}</div> -->
+            </div>
         </div>
     </ng-container>
 </app-generic-list>
