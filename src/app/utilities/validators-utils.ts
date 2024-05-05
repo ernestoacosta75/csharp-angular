@@ -1,7 +1,5 @@
 import {
   AbstractControl,
-  FormControl,
-  ValidationErrors,
   ValidatorFn,
 } from '@angular/forms';
 import * as R from 'ramda';
@@ -51,16 +49,6 @@ const messages = new Map<
  * @param args
  * @returns
  */
-// const stringFormat = (template: string | undefined, ...args: any[]) => {
-//     if (template) {
-//         return template.replace(/{(\d+)}/g, (match, index) => {
-//             return typeof args[index] !=='undefined'? args[index] : match;
-//         });
-//     }
-
-//     return undefined;
-// }
-
 const stringFormat = (
   template: string | undefined,
   ...args: any[]
@@ -93,25 +81,17 @@ export const firstLetterUpperCase = (): ValidatorFn => {
         },
       };
     }
-
-    /*
-        if (!value || value.length === 0) {
-            return;
-        }
-
-        const firstLetterUpperCase = value.charAt(0).toUpperCase();
-
-        if(firstLetterUpperCase !== value.charAt(0)) { 
-            return {
-                firstLetterUpperCase: {
-                    message: 'The first letter must be capitalized'
-                }
-            };
-        }
-        
-        return;*/
   };
 };
+
+const getCustomValidatorFn = (validatorName: string): ValidatorFn => {
+  switch (validatorName) {
+    case 'firstLetterUpperCase':
+      return firstLetterUpperCase();
+    default:
+      return null;
+  }
+}
 
 /**
  * This function takes two arguments:
@@ -130,17 +110,20 @@ export const getValidatorErrorMessage = (
   const validatorErrorsKey = messages.get(validatorName)?.validatorErrorsKey;
 
   if (validatorErrorsKey && control.errors) {
-    //const args = messages.get(validatorName)?.validatorErrorsKey?.map(name => control.errors?.[name]);
     const args = validatorErrorsKey.map((name) => {
         const errorKey = Object.keys(control.errors).find(key => control.errors[key].hasOwnProperty(name));
 
         return errorKey ? control.errors[errorKey][name] : undefined;
     });
     return stringFormat(validatorMessage, ...args);
-  } else if (validatorName === 'firstLetterUpperCase') {
-    const firstLetterUpperCaseValidator = firstLetterUpperCase();
-    return firstLetterUpperCaseValidator(control)?.firstLetterUpperCase
-      ?.message;
+  } else {
+    const customValidatorFn = getCustomValidatorFn(validatorName);
+    if (customValidatorFn) {
+      const errorMessage = customValidatorFn(control);
+      if (errorMessage && errorMessage[validatorName]) {
+        return errorMessage[validatorName].message;
+      }
+    }
   }
 
   return validatorMessage;
