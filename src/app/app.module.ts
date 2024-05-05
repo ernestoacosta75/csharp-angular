@@ -22,6 +22,7 @@ import { EditGenderComponent } from './genders/edit-gender/edit-gender.component
 import { EditCinemaComponent } from './cinemas/edit-cinema/edit-cinema.component';
 import { EditFilmComponent } from './films/edit-film/edit-film.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { GenderFormComponent } from './features/genders/gender-form/gender-form.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     EditActorComponent,
     EditGenderComponent,
     EditCinemaComponent,
-    EditFilmComponent
+    EditFilmComponent,
+    GenderFormComponent
   ],
   imports: [
     BrowserModule,

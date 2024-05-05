@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { GenderDto } from '../../features/genders/models/gender';
 
 @Component({
   selector: 'app-edit-gender',
@@ -7,4 +9,17 @@ import { Component } from '@angular/core';
 })
 export class EditGenderComponent {
 
+  model: GenderDto = {
+    name: 'Drama'
+  };
+
+  constructor(private router: Router) {
+    
+  }
+
+  onFormSubmitted = (genderDto: GenderDto) => {
+    // .. to save the changes
+    console.log(genderDto);
+    this.router.navigateByUrl('/genders');
+  }
 }
