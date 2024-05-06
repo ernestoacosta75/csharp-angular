@@ -9,9 +9,10 @@ import { CinemasIndexComponent } from './features/cinema/cinemas-index/cinemas-i
 import { NewCinemaComponent } from './features/cinema/new-cinema/new-cinema.component';
 import { NewFilmComponent } from './features/films/new-film/new-film.component';
 import { EditActorComponent } from './features/actors/edit-actor/edit-actor.component';
-import { EditCinemaComponent } from './cinemas/edit-cinema/edit-cinema.component';
 import { EditFilmComponent } from './films/edit-film/edit-film.component';
 import { EditGenderComponent } from './genders/edit-gender/edit-gender.component';
+import { EditCinemaComponent } from './features/cinema/edit-cinema/edit-cinema.component';
+import { FilmFilterComponent } from './features/films/film-filter/film-filter.component';
 
 const routes: Routes = [
   {
@@ -39,11 +40,11 @@ const routes: Routes = [
     path: 'actors',
     children: [
       {
-        path: 'actors/create',
+        path: 'create',
         component: NewActorComponent
       },
       {
-        path: 'actors/edit/:id',
+        path: 'edit/:id',
         component: EditActorComponent
       },
       {
@@ -56,11 +57,11 @@ const routes: Routes = [
     path: 'cinemas',
     children: [
       {
-        path: 'cinemas/create',
+        path: 'create',
         component: NewCinemaComponent
       },
       {
-        path: 'cinemas/edit/:id',
+        path: 'edit/:id',
         component: EditCinemaComponent
       },
       {
@@ -73,12 +74,16 @@ const routes: Routes = [
     path: 'films',
     children: [
       {
-        path: 'films/create',
+        path: 'create',
         component: NewFilmComponent
       },
       {
-        path: 'films/edit/:id',
+        path: 'edit/:id',
         component: EditFilmComponent
+      },
+      {
+        path: 'search',
+        component: FilmFilterComponent
       }
     ]
   },

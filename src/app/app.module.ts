@@ -19,10 +19,11 @@ import { NewCinemaComponent } from './features/cinema/new-cinema/new-cinema.comp
 import { CinemasIndexComponent } from './features/cinema/cinemas-index/cinemas-index.component';
 import { EditActorComponent } from './features/actors/edit-actor/edit-actor.component';
 import { EditGenderComponent } from './genders/edit-gender/edit-gender.component';
-import { EditCinemaComponent } from './cinemas/edit-cinema/edit-cinema.component';
 import { EditFilmComponent } from './films/edit-film/edit-film.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { GenderFormComponent } from './features/genders/gender-form/gender-form.component';
+import { FilmFilterComponent } from './features/films/film-filter/film-filter.component';
+import { EditCinemaComponent } from './features/cinema/edit-cinema/edit-cinema.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { GenderFormComponent } from './features/genders/gender-form/gender-form.
     EditGenderComponent,
     EditCinemaComponent,
     EditFilmComponent,
-    GenderFormComponent
+    GenderFormComponent,
+    FilmFilterComponent
   ],
   imports: [
     BrowserModule,
