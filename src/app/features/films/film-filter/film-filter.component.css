@@ -6,3 +6,8 @@ form mat-form-field {
     width: 30% !important;
     margin-right: 1rem !important;
 }
+
+form button {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
