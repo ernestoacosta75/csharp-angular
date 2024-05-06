@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import * as R from 'ramda';
@@ -39,7 +40,7 @@ export class FilmFilterComponent implements OnInit {
 
   originalFilms = R.clone(this.films);
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private location: Location) {}
   ngOnInit(): void {
     this.form = this.formBuilder.group(this.originalForm);
 
@@ -68,4 +69,27 @@ export class FilmFilterComponent implements OnInit {
   }
 
   onClick = () => this.form.patchValue(this.originalForm);
+
+  private writeSearchParametersOnUrl = (values: any) => {
+    var queryStrings = [];
+    var formValues = this.form.value;
+
+    if (R.isNotNil(R.path(['title'], formValues))) {
+      R.append(`title=${R.path(['title'], formValues)}`, queryStrings);
+    }
+
+    if (R.not(R.pathEq(0, ['genderId'], formValues))) {
+      R.append(`gender=${R.path(['genderId'], formValues)}`, queryStrings);
+    }
+
+    if (R.pathEq(true, ['nextReleases'], formValues)) {
+      R.append(`nextReleases=${R.path(['nextReleases'], formValues)}`, queryStrings);
+    }
+
+    if (R.pathEq(true, ['onCinemas'], formValues)) {
+      R.append(`onCinemas=${R.path(['onCinemas'], formValues)}`, queryStrings);
+    }
+
+    this.location.replaceState('films/search', queryStrings.join('&'));
+  };
 }
