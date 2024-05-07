@@ -9,7 +9,7 @@ import { CinemasIndexComponent } from './features/cinema/cinemas-index/cinemas-i
 import { NewCinemaComponent } from './features/cinema/new-cinema/new-cinema.component';
 import { NewFilmComponent } from './features/films/new-film/new-film.component';
 import { EditActorComponent } from './features/actors/edit-actor/edit-actor.component';
-import { EditFilmComponent } from './films/edit-film/edit-film.component';
+import { EditFilmComponent } from './features/films/edit-film/edit-film.component';
 import { EditGenderComponent } from './genders/edit-gender/edit-gender.component';
 import { EditCinemaComponent } from './features/cinema/edit-cinema/edit-cinema.component';
 import { FilmFilterComponent } from './features/films/film-filter/film-filter.component';
