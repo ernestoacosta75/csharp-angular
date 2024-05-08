@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { GenderDto } from '../../features/genders/models/gender';
+import { GenderDto } from '@features/genders/models/gender';
 
 @Component({
   selector: 'app-edit-gender',
@@ -10,7 +10,7 @@ import { GenderDto } from '../../features/genders/models/gender';
 export class EditGenderComponent {
 
   model: GenderDto = {
-    name: 'Drama'
+    name: 'Coco'
   };
 
   constructor(private router: Router) {

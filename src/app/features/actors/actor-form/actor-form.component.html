@@ -1,0 +1,24 @@
+<form 
+    [formGroup]="form"
+    (submit)="onSave()">
+    <mat-form-field appearance="outline">
+        <mat-label appAddRequired>Name</mat-label>
+        <input matInput formControlName="name" required placeholder="Ex.: Drama">
+        <mat-error app-error-message [control]="form.get('name')!"></mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label appAddRequired>Birth date</mat-label>
+        <input matInput [matDatepicker]="birthDatePicker" required formControlName="birthDate">
+        <mat-datepicker-toggle matSuffix [for]="birthDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #birthDatePicker></mat-datepicker>
+        <mat-error app-error-message [control]="form.get('birthDate')!"></mat-error>
+    </mat-form-field>
+    <div>
+        <button 
+            mat-flat-button 
+            color="primary" 
+            type="submit"
+            [disabled]="form.invalid">Save</button>
+        <a mat-stroked-button routerLink="/actors">Cancel</a>
+    </div>
+</form>
