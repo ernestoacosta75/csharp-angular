@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ActorDto } from '../models/actor-dto';
+import { ActorDto, ActorEditDto } from '../models/actor-dto';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
+import * as R from 'ramda';
 
 @Component({
   selector: 'app-actor-form',
@@ -11,7 +12,7 @@ import { DateAdapter } from '@angular/material/core';
 export class ActorFormComponent implements OnInit {
 
   @Input()
-  model: ActorDto;
+  model: ActorEditDto;
 
   @Output()
   submitForm: EventEmitter<ActorDto> = new EventEmitter<ActorDto>();
@@ -28,13 +29,19 @@ export class ActorFormComponent implements OnInit {
       }],
       birthDate: ['', {
         validators: [Validators.required]
-      }]
+      }],
+      archive: ''
     });
 
     if (this.model !== undefined) {
       this.form.patchValue(this.model);
     }
   }
+
+  onArchiveSelected = (file: File) => {
+    const archiveLens = R.lensPath(['archive']);
+    this.form.patchValue(R.set(archiveLens, file, this.form.value));
+  };
 
   onSave = () => this.submitForm.emit(this.form.value);
 

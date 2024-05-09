@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as R from 'ramda';
-import { ActorDto } from '../models/actor-dto';
+import { ActorDto, ActorEditDto } from '../models/actor-dto';
 
 @Component({
   selector: 'app-edit-actor',
@@ -10,9 +10,10 @@ import { ActorDto } from '../models/actor-dto';
 })
 export class EditActorComponent implements OnInit {
 
-  model: ActorDto = {
+  model: ActorEditDto = {
     name: 'Drama',
-    birthDate: new Date()
+    birthDate: new Date(),
+    archive: 'https://m.media-amazon.com/images/M/MV5BNzZiNTEyNTItYjNhMS00YjI2LWIwMWQtZmYwYTRlNjMyZTJjXkEyXkFqcGdeQXVyMTExNzQzMDE0._V1_QL75_UX100_CR0,1,100,148_.jpg'
   };
   
   constructor(private router: Router, private activatedRoute: ActivatedRoute) { 

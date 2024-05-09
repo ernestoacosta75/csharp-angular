@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FilmsListComponent } from '@features/films/films-list/films-list.component';
-import { GenericListComponent } from '@utilities/generic-list/generic-list.component';
 import { SharedModule } from '@shared/shared.module';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MaterialModule } from '@material/material.module';
@@ -30,7 +29,6 @@ import { ActorFormComponent } from '@features/actors/actor-form/actor-form.compo
   declarations: [
     AppComponent,
     FilmsListComponent,
-    GenericListComponent,
     RatingComponent,
     LandingPageComponent,
     GendersIndexComponent,

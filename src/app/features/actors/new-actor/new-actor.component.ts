@@ -16,6 +16,6 @@ export class NewActorComponent {
   onFormSubmitted = (actorDto: ActorDto) => {
     // .. to save the changes
     console.log(actorDto);
-    this.router.navigateByUrl('/actors');
+    // this.router.navigateByUrl('/actors');
   }
 }
