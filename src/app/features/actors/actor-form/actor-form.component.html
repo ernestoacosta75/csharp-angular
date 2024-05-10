@@ -15,9 +15,9 @@
         <mat-error app-error-message [control]="form.get('birthDate')!"></mat-error>
     </mat-form-field>
     
-    <app-input-img
-        [currentImageUrl]="model?.archive"
-        (selectArchive)="onArchiveSelected($event)"></app-input-img>
+    <app-input-img [currentImageUrl]="model?.archive"></app-input-img>
+
+    <app-input-markdown></app-input-markdown>
 
     <div>
         <button 

@@ -8,8 +8,10 @@ import { AddRequiredDirective } from './directives/add-required.directive';
 import { ErrorMessageComponent } from './components/error-message/error-message.component';
 import { InputImgComponent } from './components/input-img/input-img.component';
 import { GenericListComponent } from './components/generic-list/generic-list.component';
-
-
+import { InputMarkdownComponent } from './components/input-markdown/input-markdown.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+import { MarkdownModule } from 'ngx-markdown';
 
 @NgModule({
   declarations: [
@@ -17,20 +19,25 @@ import { GenericListComponent } from './components/generic-list/generic-list.com
     GenericListComponent,
     AddRequiredDirective,
     ErrorMessageComponent,
-    InputImgComponent
+    InputImgComponent,
+    InputMarkdownComponent
   ],
   imports: [
     CommonModule,
     RouterModule,
     MaterialModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MarkdownModule.forRoot()
   ],
   exports: [
     MenuComponent,
     GenericListComponent,
     AddRequiredDirective,
     ErrorMessageComponent,
-    InputImgComponent
+    InputImgComponent,
+    InputMarkdownComponent
   ]
 })
 export class SharedModule { }

@@ -46,3 +46,8 @@ export const toBase64 = (file: File) => {
     reader.onerror = error => reject(error);
   });
 };
+
+export const toConsole = (value: any) => {
+  const tc = value => console.log(value);
+  R.tap(tc, value);
+};

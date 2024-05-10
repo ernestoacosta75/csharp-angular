@@ -8,6 +8,7 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule } from "@angular/material/core";
+import { MatTabsModule } from "@angular/material/tabs";
 
 const material = [
   MatToolbarModule,
@@ -18,7 +19,8 @@ const material = [
   MatSelectModule,
   MatCheckboxModule,
   MatDatepickerModule,
-  MatNativeDateModule
+  MatNativeDateModule,
+  MatTabsModule
 ];
 
 @NgModule({

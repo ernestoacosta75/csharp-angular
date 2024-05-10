@@ -19,11 +19,11 @@ import { CinemasIndexComponent } from '@features/cinema/cinemas-index/cinemas-in
 import { EditActorComponent } from '@features/actors/edit-actor/edit-actor.component';
 import { EditGenderComponent } from '@features/genders/edit-gender/edit-gender.component';
 import { EditFilmComponent } from './features/films/edit-film/edit-film.component';
-import { ReactiveFormsModule } from '@angular/forms';
 import { GenderFormComponent } from '@features/genders/gender-form/gender-form.component';
 import { FilmFilterComponent } from '@features/films/film-filter/film-filter.component';
 import { EditCinemaComponent } from '@features/cinema/edit-cinema/edit-cinema.component';
 import { ActorFormComponent } from '@features/actors/actor-form/actor-form.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -50,8 +50,8 @@ import { ActorFormComponent } from '@features/actors/actor-form/actor-form.compo
     BrowserModule,
     AppRoutingModule,
     MaterialModule,
-    ReactiveFormsModule,
-    SharedModule
+    SharedModule,
+    ReactiveFormsModule
   ],
   providers: [
     provideAnimationsAsync()
