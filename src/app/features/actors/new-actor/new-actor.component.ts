@@ -5,6 +5,7 @@ import { EventService } from 'src/app/event-service';
 import { Subscription } from 'rxjs';
 import { Events } from '@utilities/events';
 import * as R from 'ramda';
+import { toConsole } from '@utilities/common-utils';
 
 @Component({
   selector: 'app-new-actor',
@@ -21,7 +22,7 @@ export class NewActorComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const onNewActorCreated = this.eventService.onEvent(Events.ACTOR)
     .subscribe((actorEvent: any) => {
-      console.log(R.path<ActorDto>(['payload'], actorEvent));
+      toConsole('Actor created: ', R.path<ActorDto>(['payload'], actorEvent));
     });
 
     this.actorSubscription.add(onNewActorCreated);

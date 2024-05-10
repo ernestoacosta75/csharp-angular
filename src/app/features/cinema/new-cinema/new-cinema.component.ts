@@ -5,13 +5,14 @@ import { Subscription } from 'rxjs';
 import { EventService } from 'src/app/event-service';
 import * as R from 'ramda';
 import { CinemaDto } from 'src/app/feature/cinema/models/cinema-dto';
+import { toConsole } from '@utilities/common-utils';
 
 @Component({
   selector: 'app-new-cinema',
   templateUrl: './new-cinema.component.html',
   styleUrl: './new-cinema.component.css'
 })
-export class NewCinemaComponent  implements OnInit, OnDestroy {
+export class NewCinemaComponent implements OnInit, OnDestroy {
 
   cinemaSubscription: Subscription = new Subscription();
 
@@ -21,7 +22,8 @@ export class NewCinemaComponent  implements OnInit, OnDestroy {
   ngOnInit(): void {
     const onNewCinemaCreated = this.eventService.onEvent(Events.CINEMA)
     .subscribe((cinemaEvent: any) => {
-      console.log(R.path<CinemaDto>(['payload'], cinemaEvent));
+      toConsole('Cinema created: ', R.path<CinemaDto>(['payload'], cinemaEvent));
+      this.router.navigateByUrl('/cinemas');
     });
 
     this.cinemaSubscription.add(onNewCinemaCreated);

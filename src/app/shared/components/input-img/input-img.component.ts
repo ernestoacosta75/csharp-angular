@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { toBase64 } from '@utilities/common-utils';
+import { toBase64, toConsole } from '@utilities/common-utils';
 import { Events } from '@utilities/events';
 import * as R from 'ramda';
 import { EventService } from 'src/app/event-service';
@@ -30,7 +30,7 @@ export class InputImgComponent {
       const file: File = R.prop(0, evt.target.files);
       toBase64(file)
       .then((value: string) => this.imageBase64 = value)
-      .catch((err) => console.log(err));
+      .catch((err) => toConsole('Error: ',err));;
 
       //this.selectArchive.emit(file);
       this.eventService.emitEvent(Events.IMAGE_SELECTED, file)

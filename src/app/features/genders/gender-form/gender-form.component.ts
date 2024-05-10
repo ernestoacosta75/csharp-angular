@@ -1,7 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { firstLetterUpperCase } from '../../../utilities/validators-utils';
 import { GenderDto } from '../models/gender';
+import { EventService } from 'src/app/event-service';
+import { Events } from '@utilities/events';
 
 @Component({
   selector: 'app-gender-form',
@@ -13,12 +15,9 @@ export class GenderFormComponent implements OnInit {
   @Input()
   model: GenderDto;
 
-  @Output()
-  submitForm: EventEmitter<GenderDto> = new EventEmitter<GenderDto>();
-
   form: FormGroup;
   
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private eventService: EventService) {
     
   }
   ngOnInit(): void {
@@ -33,6 +32,6 @@ export class GenderFormComponent implements OnInit {
     }
   }
 
-  onSave = () => this.submitForm.emit(this.form.value);
+  onSave = () => this.eventService.emitEvent(Events.GENDER, this.form.value);
 
 }
