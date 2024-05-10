@@ -47,7 +47,7 @@ export const toBase64 = (file: File) => {
   });
 };
 
-export const toConsole = (value: any) => {
-  const tc = value => console.log(value);
+export const toConsole = (label: string, value: any) => {
+  const tc = value => console.log(label, value);
   R.tap(tc, value);
 };

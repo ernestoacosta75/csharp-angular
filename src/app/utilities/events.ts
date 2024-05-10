@@ -3,4 +3,5 @@ export class Events {
     static readonly IMAGE_SELECTED: string = 'SelectImageEvent';
     static readonly ACTOR: string = 'ActorEvent';
     static readonly ACTOR_CREATED: string = 'NewActorEvent';
+    static readonly CINEMA: string = 'CinemaEvent';
 }
