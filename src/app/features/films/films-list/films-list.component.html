@@ -1,11 +1,3 @@
-<!-- <div *ngIf="!films">
-<img src="https://i.pinimg.com/originals/49/8f/77/498f7727ecf2a588d6c3eebac92a7c4b.gif">
-</div>
-
-<div *ngIf="films?.length === 0">
-    <p>There are not films to display</p>
-</div> -->
-
 <app-generic-list [list]="films">
     <ng-container content>
         <div class="row">
@@ -17,12 +9,9 @@
                     <a>{{ film.title }}</a>
                 </p>
                 <div>
-                    <a mat-flat-button color="primary">Edit</a>
+                    <a mat-flat-button color="primary" [routerLink]="'/films/edit/' + index">Edit</a>
                     <button mat-flat-button color="warn" type="button">Delete</button>
                 </div>
-                <!-- <div><h2>Film: {{ film.title }} <button (click)="onRemoveFilm(index)">Delete</button></h2></div>
-                <div>{{ film.releaseDate | date: 'dd/MM/yyyy' }}</div>
-                <div>{{ film.price | currency }}</div> -->
             </div>
         </div>
     </ng-container>
