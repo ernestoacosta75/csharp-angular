@@ -12,6 +12,8 @@ import { InputMarkdownComponent } from './components/input-markdown/input-markdo
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { MarkdownModule } from 'ngx-markdown';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { MapComponent } from './components/map/map.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,8 @@ import { MarkdownModule } from 'ngx-markdown';
     AddRequiredDirective,
     ErrorMessageComponent,
     InputImgComponent,
-    InputMarkdownComponent
+    InputMarkdownComponent,
+    MapComponent
   ],
   imports: [
     CommonModule,
@@ -29,7 +32,8 @@ import { MarkdownModule } from 'ngx-markdown';
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
-    MarkdownModule.forRoot()
+    MarkdownModule.forRoot(),
+    LeafletModule
   ],
   exports: [
     MenuComponent,
@@ -37,7 +41,8 @@ import { MarkdownModule } from 'ngx-markdown';
     AddRequiredDirective,
     ErrorMessageComponent,
     InputImgComponent,
-    InputMarkdownComponent
+    InputMarkdownComponent,
+    MapComponent
   ]
 })
 export class SharedModule { }
