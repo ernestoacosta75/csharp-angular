@@ -11,7 +11,7 @@ import { ActorDto, ActorEditDto } from '../models/actor-dto';
 export class EditActorComponent implements OnInit {
 
   model: ActorEditDto = {
-    name: 'Drama',
+    name: 'Coco',
     birthDate: new Date(),
     archive: 'https://m.media-amazon.com/images/M/MV5BNzZiNTEyNTItYjNhMS00YjI2LWIwMWQtZmYwYTRlNjMyZTJjXkEyXkFqcGdeQXVyMTExNzQzMDE0._V1_QL75_UX100_CR0,1,100,148_.jpg'
   };
@@ -21,7 +21,7 @@ export class EditActorComponent implements OnInit {
   }
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
-      alert(R.path(['id'], params));
+      //alert(R.path(['id'], params));
     });
   }
 

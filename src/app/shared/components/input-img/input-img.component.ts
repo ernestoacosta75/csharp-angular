@@ -27,6 +27,7 @@ export class InputImgComponent {
       .catch((err) => console.log(err));
 
       this.selectArchive.emit(file);
+      this.currentImageUrl = null;
     }
   }
 }
