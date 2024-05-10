@@ -15,7 +15,9 @@ import { toConsole } from '@utilities/common-utils';
 export class EditCinemaComponent implements OnInit, OnDestroy {
 
   model: CinemaEditDto = {
-    name: 'Cityplex'
+    name: 'Cityplex',
+    latitude: 41.42048699577697,
+    longitude: 14.23828125
   };
 
   cinemaSubscription: Subscription = new Subscription();

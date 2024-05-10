@@ -92,6 +92,11 @@
             ],
             "tsConfig": "tsconfig.spec.json",
             "assets": [
+              {
+                "glob": "**/*",
+                "input": "./node_modules/leaflet/dist/images",
+                "output": "/"
+              },
               "src/favicon.ico",
               "src/assets"
             ],

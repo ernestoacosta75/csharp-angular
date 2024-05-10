@@ -5,4 +5,5 @@ export class Events {
     static readonly ACTOR_CREATED: string = 'NewActorEvent';
     static readonly CINEMA: string = 'CinemaEvent';
     static readonly GENDER: string = 'GenderEvent';
+    static readonly COORDINATES: string = 'CoordinatesEvent';
 }

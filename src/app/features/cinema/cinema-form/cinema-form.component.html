@@ -5,8 +5,9 @@
         <mat-error app-error-message [control]="form.get('name')!"></mat-error>
     </mat-form-field>
 
+    <h4>Select the cinema location in the map</h4>
     <div>
-        <app-map></app-map>
+        <app-map [model]="initialCoordinates"></app-map>
     </div>
 
     <div>
