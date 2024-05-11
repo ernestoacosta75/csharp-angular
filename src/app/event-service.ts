@@ -6,12 +6,12 @@ import { Subject, filter } from 'rxjs';
 })
 export class EventService {
 
-  private eventSubject = new Subject<{ title: string, payload?: any }>();
+  private eventSubject = new Subject<{ title: string, payload?: any, componentId?: string }>();
 
   constructor() { }
 
-  emitEvent = (title: string, payload?: any): void => {
-    this.eventSubject.next({ title, payload });
+  emitEvent = (title: string, payload?: any, componentId?: string): void => {
+    this.eventSubject.next({ title, payload, componentId });
   }
 
   onEvent = (title: string) => {

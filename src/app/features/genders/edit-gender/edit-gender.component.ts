@@ -12,7 +12,7 @@ import { toConsole } from '@utilities/common-utils';
   templateUrl: './edit-gender.component.html',
   styleUrl: './edit-gender.component.css'
 })
-export class EditGenderComponent  implements OnInit, OnDestroy {
+export class EditGenderComponent implements OnInit, OnDestroy {
 
   model: GenderDto = {
     name: 'Coco'

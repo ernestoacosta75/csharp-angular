@@ -4,7 +4,7 @@
     <mat-form-field appearance="outline">
         <mat-label appAddRequired>Name</mat-label>
         <input matInput formControlName="name" required placeholder="Ex.: Drama">
-        <mat-error app-error-message [control]="form.get('name')!"></mat-error>
+        <mat-error app-error-message [control]="form.get('name')"></mat-error>
     </mat-form-field>
     <div>
         <button 

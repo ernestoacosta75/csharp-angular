@@ -30,10 +30,9 @@ export class InputImgComponent {
       const file: File = R.prop(0, evt.target.files);
       toBase64(file)
       .then((value: string) => this.imageBase64 = value)
-      .catch((err) => toConsole('Error: ',err));;
+      .catch((err) => toConsole('Error: ',err));
 
-      //this.selectArchive.emit(file);
-      this.eventService.emitEvent(Events.IMAGE_SELECTED, file)
+      this.eventService.emitEvent(Events.IMAGE_SELECTED, file);
       this.currentImageUrl = null;
     }
   }

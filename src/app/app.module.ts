@@ -25,6 +25,7 @@ import { EditCinemaComponent } from '@features/cinema/edit-cinema/edit-cinema.co
 import { ActorFormComponent } from '@features/actors/actor-form/actor-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CinemaFormComponent } from './features/cinema/cinema-form/cinema-form.component';
+import { FilmFormComponent } from './features/films/film-form/film-form.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { CinemaFormComponent } from './features/cinema/cinema-form/cinema-form.c
     GenderFormComponent,
     FilmFilterComponent,
     ActorFormComponent,
-    CinemaFormComponent
+    CinemaFormComponent,
+    FilmFormComponent
   ],
   imports: [
     BrowserModule,

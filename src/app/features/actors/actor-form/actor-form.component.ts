@@ -3,7 +3,7 @@ import { ActorDto, ActorEditDto } from '../models/actor-dto';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
 import * as R from 'ramda';
-import { Subscription } from 'rxjs';
+import { Subscription, filter } from 'rxjs';
 import { Events } from '@utilities/events';
 import { EventService } from 'src/app/event-service';
 
