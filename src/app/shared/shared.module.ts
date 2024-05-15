@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { MarkdownModule } from 'ngx-markdown';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { MapComponent } from './components/map/map.component';
+import { MultipleSelectorComponent } from './components/multiple-selector/multiple-selector.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { MapComponent } from './components/map/map.component';
     ErrorMessageComponent,
     InputImgComponent,
     InputMarkdownComponent,
-    MapComponent
+    MapComponent,
+    MultipleSelectorComponent
   ],
   imports: [
     CommonModule,
@@ -42,7 +44,8 @@ import { MapComponent } from './components/map/map.component';
     ErrorMessageComponent,
     InputImgComponent,
     InputMarkdownComponent,
-    MapComponent
+    MapComponent,
+    MultipleSelectorComponent
   ]
 })
 export class SharedModule { }
