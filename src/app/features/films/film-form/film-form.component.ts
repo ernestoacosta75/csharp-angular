@@ -1,11 +1,10 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FilmDto, FilmEditDto } from '../models/film-dto';
+import { FilmEditDto } from '../models/film-dto';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EventService } from 'src/app/event-service';
 import { Events } from '@utilities/events';
 import { Subscription } from 'rxjs';
 import * as R from 'ramda';
-import { toConsole } from '@utilities/common-utils';
 
 @Component({
   selector: 'app-film-form',
@@ -38,15 +37,12 @@ export class FilmFormComponent implements OnInit, OnDestroy {
 
     if (this.model !== undefined) {
       this.form.patchValue(this.model);
-      toConsole('ngOnInit Film form values: ', this.form.value);
     }
 
     const onMarkdownChanged = this.eventService.onEvent(Events.MARKDOWN_CHANGE)
     .subscribe((markdownEvent: any) => {
-      toConsole('film form Events.MARKDOWN_CHANGE: ', markdownEvent);
       const biographyLens = R.lensPath(['resume']);
       this.form.patchValue(R.set(biographyLens, R.path(['payload'], markdownEvent), this.form.value));
-      toConsole('film form onMarkdownChanged form values: ', this.form.value);
     });
 
     const onImageSelected = this.eventService.onEvent(Events.IMAGE_SELECTED)
@@ -64,7 +60,6 @@ export class FilmFormComponent implements OnInit, OnDestroy {
   }
 
   onSave = () => {
-    toConsole('Film form values: ', this.form.value);
     this.eventService.emitEvent(Events.FILM, this.form.value)
   };
 }

@@ -1,7 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CoordinatesDto } from '@shared/components/map/models/coordinates';
-import { toConsole } from '@utilities/common-utils';
 import { Events } from '@utilities/events';
 import { Subscription } from 'rxjs';
 import { EventService } from 'src/app/event-service';
@@ -40,13 +39,11 @@ export class CinemaFormComponent implements OnInit, OnDestroy {
 
     const mapCoordinates = this.eventService.onEvent(Events.COORDINATES)
     .subscribe((mapCoordinatesEvent: any) => {
-      toConsole('Map coordinates: ', R.path<CoordinatesDto>(['payload'], mapCoordinatesEvent));
       const latitudeLens = R.lensPath(['latitude']);
       const longitudeLens = R.lensPath(['longitude']);
       
       this.form.patchValue(R.set(latitudeLens, R.path(['payload', 'latitude'], mapCoordinatesEvent), this.form.value));
       this.form.patchValue(R.set(longitudeLens, R.path(['payload', 'longitude'], mapCoordinatesEvent), this.form.value));
-      toConsole('New cinema: ', this.form.value);
     });
 
     this.cinemaSubscription.add(mapCoordinates);

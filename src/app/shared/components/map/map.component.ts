@@ -51,7 +51,6 @@ export class MapComponent implements OnInit {
   manageMapClick = (evt: LeafletMouseEvent) => {
     const latitude = evt.latlng.lat;
     const longitude = evt.latlng.lng;
-    toConsole('Coordinates: ', { latitude, longitude });
 
     this.layers = [];
     this.layers.push(

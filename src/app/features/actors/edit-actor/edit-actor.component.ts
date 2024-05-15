@@ -1,11 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as R from 'ramda';
-import { ActorDto, ActorEditDto } from '../models/actor-dto';
+import { ActorEditDto } from '../models/actor-dto';
 import { Subscription } from 'rxjs';
 import { EventService } from 'src/app/event-service';
 import { Events } from '@utilities/events';
-import { toConsole } from '@utilities/common-utils';
 
 @Component({
   selector: 'app-edit-actor',
@@ -33,7 +31,6 @@ export class EditActorComponent implements OnInit, OnDestroy {
 
     const onActorEdited = this.eventService.onEvent(Events.ACTOR)
     .subscribe((actorEvent: any) => {
-      toConsole('Actor edited: ', R.path<ActorDto>(['payload'], actorEvent));
       this.router.navigateByUrl('/actors');
     });
 

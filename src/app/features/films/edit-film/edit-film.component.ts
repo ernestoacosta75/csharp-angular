@@ -1,11 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import * as R from 'ramda';
-import { FilmDto, FilmEditDto } from '../models/film-dto';
+import { FilmEditDto } from '../models/film-dto';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventService } from 'src/app/event-service';
 import { Events } from '@utilities/events';
-import { toConsole } from '@utilities/common-utils';
 
 @Component({
   selector: 'app-edit-film',
@@ -31,7 +29,6 @@ export class EditFilmComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const onFilmEdited = this.eventService.onEvent(Events.FILM)
     .subscribe((filmEvent: any) => {
-      toConsole('Film edited: ', R.path(['payload'], filmEvent));
       this.router.navigateByUrl('/');
     });
 
