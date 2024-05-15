@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FilmDto } from '../models/film-dto';
+import { FilmDto, FilmEditDto } from '../models/film-dto';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EventService } from 'src/app/event-service';
 import { Events } from '@utilities/events';
@@ -14,7 +14,7 @@ import * as R from 'ramda';
 export class FilmFormComponent implements OnInit, OnDestroy {
   
   @Input()
-  model: FilmDto;
+  model: FilmEditDto;
 
   form: FormGroup;
   filmSubscription: Subscription = new Subscription();

@@ -4,5 +4,14 @@ export interface FilmDto {
     onCinemas: boolean;
     trailer: string;
     releaseDate: Date;
+    poster: File;
+}
+
+export interface FilmEditDto {
+    title: string;
+    resume: string;
+    onCinemas: boolean;
+    trailer: string;
+    releaseDate: Date;
     poster: string;
 }

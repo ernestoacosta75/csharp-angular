@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Events } from '@utilities/events';
 import { EventService } from 'src/app/event-service';
 
@@ -9,6 +9,7 @@ import { EventService } from 'src/app/event-service';
 })
 export class InputMarkdownComponent {
   
+  @Input()
   markdownContent: string = '';
 
   constructor(private eventService: EventService) {

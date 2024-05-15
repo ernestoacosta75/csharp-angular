@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import * as R from 'ramda';
-import { FilmDto } from '../models/film-dto';
+import { FilmDto, FilmEditDto } from '../models/film-dto';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventService } from 'src/app/event-service';
@@ -14,13 +14,13 @@ import { toConsole } from '@utilities/common-utils';
 })
 export class EditFilmComponent implements OnInit, OnDestroy {
 
-  model: FilmDto = {
+  model: FilmEditDto = {
     title: 'Pulp Fiction',
     resume: 'Pulp Fiction',
     onCinemas: false,
     trailer: 'https://www.youtube.com/watch?v=s7EdQ4FqbhY',
     releaseDate: new Date(),
-    poster: ''
+    poster: 'https://m.media-amazon.com/images/M/MV5BZWMyYzFjYTYtNTRjYi00OGExLWE2YzgtOGRmYjAxZTU3NzBiXkEyXkFqcGdeQXVyMzQ0MzA0NTM@._V1_QL75_UX100_CR0,0,100,148_.jpg'
   };
 
   filmSubscription: Subscription = new Subscription();
@@ -31,7 +31,7 @@ export class EditFilmComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const onFilmEdited = this.eventService.onEvent(Events.FILM)
     .subscribe((filmEvent: any) => {
-      toConsole('Gender edited: ', R.path<FilmDto>(['payload'], filmEvent));
+      toConsole('Film edited: ', R.path<FilmDto>(['payload'], filmEvent));
       this.router.navigateByUrl('/');
     });
 
