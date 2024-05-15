@@ -15,8 +15,8 @@ import { toConsole } from '@utilities/common-utils';
 export class EditFilmComponent implements OnInit, OnDestroy {
 
   model: FilmEditDto = {
-    title: 'Pulp Fiction',
-    resume: 'Pulp Fiction',
+    title: 'Spiderman',
+    resume: 'Spiderman resume',
     onCinemas: false,
     trailer: 'https://www.youtube.com/watch?v=s7EdQ4FqbhY',
     releaseDate: new Date(),
@@ -31,7 +31,7 @@ export class EditFilmComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const onFilmEdited = this.eventService.onEvent(Events.FILM)
     .subscribe((filmEvent: any) => {
-      toConsole('Film edited: ', R.path<FilmDto>(['payload'], filmEvent));
+      toConsole('Film edited: ', R.path(['payload'], filmEvent));
       this.router.navigateByUrl('/');
     });
 

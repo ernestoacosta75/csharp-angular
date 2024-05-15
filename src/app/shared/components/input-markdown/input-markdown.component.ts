@@ -11,13 +11,14 @@ export class InputMarkdownComponent {
   
   @Input()
   markdownContent: string = '';
+  
+  @Input()
+  textAreaPlaceholder: string = 'Text';
 
   constructor(private eventService: EventService) {
 
   }
 
-  inputTextArea = (aText: string) => {
-    this.markdownContent = aText;
-    this.eventService.emitEvent(Events.MARKDOWN_CHANGE, aText);
-  };
+  inputTextArea = () => this.eventService.emitEvent(Events.MARKDOWN_CHANGE, this.markdownContent);
+
 }
