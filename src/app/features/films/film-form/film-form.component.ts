@@ -20,12 +20,20 @@ export class FilmFormComponent implements OnInit, OnDestroy {
   form: FormGroup;
 
   gendersNotSelected: MultipleSelectorDto [] = [
-    { key: 1, value: 'Drama' },
-    { key: 2, value: 'Action' },
-    { key: 3, value: 'Comedy' }
+    { key: 1, value: 'Drama', type: 'Gender' },
+    { key: 2, value: 'Action', type: 'Gender' },
+    { key: 3, value: 'Comedy', type: 'Gender' }
   ];
 
   gendersSelected: MultipleSelectorDto [] = [];
+
+  cinemasNotSelected: MultipleSelectorDto [] = [
+    { key: 1, value: 'Sambil', type: 'Cinema' },
+    { key: 2, value: 'Agora', type: 'Cinema' },
+    { key: 3, value: 'Acropolis', type: 'Cinema' }
+  ];
+
+  cinemasSelected: MultipleSelectorDto [] = [];
   
   filmSubscription: Subscription = new Subscription();
   
@@ -43,7 +51,8 @@ export class FilmFormComponent implements OnInit, OnDestroy {
       trailer: '',
       releaseDate: new Date(),
       poster: '',
-      gendersId: ''
+      gendersId: '',
+      cinemasId: ''
     });
 
     if (this.model !== undefined) {
@@ -62,16 +71,26 @@ export class FilmFormComponent implements OnInit, OnDestroy {
       this.form.patchValue(R.set(archiveLens, R.path(['payload'], imageSelectedEvent), this.form.value));  
     });
 
-    const onGenderSelected = this.eventService.onEvent(Events.GENDER_SELECTED)
-    .subscribe((genderSelectedEvent: any) => {
-      const genderLens = R.lensPath(['gendersId']);
-      const genderKeys = R.pipe(
+    const onGenderSelected = this.eventService.onEvent(Events.MULTIPLE_ITEM_SELECTED)
+    .subscribe((multipleItemSelectedEvent: any) => {
+      const hasGenderType = R.pipe(
+        R.pathOr([], ['payload']),
+        R.any(
+          R.pipe(
+            R.prop('type'), 
+            R.equals('Gender')
+          )
+        )
+      )(multipleItemSelectedEvent);
+    
+      const itemsLens = hasGenderType ? R.lensPath(['gendersId']) : R.lensPath(['cinemasId']);
+      const itemsKeys = R.pipe(
         R.pathOr([], ['payload']),
         R.map(R.prop('key')),
         R.sort((a, b) => a - b)
-      )(genderSelectedEvent); 
+      )(multipleItemSelectedEvent); 
       
-      this.form.patchValue(R.set(genderLens, genderKeys, this.form.value));  
+      this.form.patchValue(R.set(itemsLens, itemsKeys, this.form.value));  
     });
 
     this.filmSubscription.add(onMarkdownChanged);

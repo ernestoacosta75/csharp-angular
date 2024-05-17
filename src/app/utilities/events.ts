@@ -7,5 +7,5 @@ export class Events {
     static readonly GENDER: string = 'GenderEvent';
     static readonly COORDINATES: string = 'CoordinatesEvent';
     static readonly FILM: string = 'FilmEvent';
-    static readonly GENDER_SELECTED: string = 'GenderSelectedEvent';
+    static readonly MULTIPLE_ITEM_SELECTED: string = 'MultipleItemSelectedEvent';
 }

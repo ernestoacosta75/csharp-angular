@@ -24,7 +24,7 @@ export class MultipleSelectorComponent {
   selectAll = () => {
     this.itemsSelected.push(...this.itemsUnselected);
     this.itemsUnselected = [];
-    this.eventService.emitEvent(Events.GENDER_SELECTED, this.itemsSelected);
+    this.eventService.emitEvent(Events.MULTIPLE_ITEM_SELECTED, this.itemsSelected);
   };
 
   unselectAll = () => {
@@ -35,7 +35,7 @@ export class MultipleSelectorComponent {
   selectItem = (item: MultipleSelectorDto, index: number) => {
     this.itemsSelected = R.append(item, this.itemsSelected);
     this.itemsUnselected = R.remove(index, 1, this.itemsUnselected);
-    this.eventService.emitEvent(Events.GENDER_SELECTED, this.itemsSelected);
+    this.eventService.emitEvent(Events.MULTIPLE_ITEM_SELECTED, this.itemsSelected);
   };
 
   unSelectItem = (item: MultipleSelectorDto, index: number) => {
