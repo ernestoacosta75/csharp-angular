@@ -22,3 +22,14 @@ ul li {
 ul li:hover {
     background-color: #08c;
 }
+
+.div-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5px;
+}
+
+button {
+    margin: 5px;
+}

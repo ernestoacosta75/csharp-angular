@@ -5,6 +5,7 @@ import { EventService } from 'src/app/event-service';
 import { Events } from '@utilities/events';
 import { Subscription } from 'rxjs';
 import * as R from 'ramda';
+import { MultipleSelectorDto } from '@shared/components/multiple-selector/models/multipleselectordto';
 
 @Component({
   selector: 'app-film-form',
@@ -17,6 +18,15 @@ export class FilmFormComponent implements OnInit, OnDestroy {
   model: FilmEditDto;
 
   form: FormGroup;
+
+  gendersNotSelected: MultipleSelectorDto [] = [
+    { key: 1, value: 'Drama' },
+    { key: 2, value: 'Action' },
+    { key: 3, value: 'Comedy' }
+  ];
+
+  gendersSelected: MultipleSelectorDto [] = [];
+  
   filmSubscription: Subscription = new Subscription();
   
   constructor(private formBuilder: FormBuilder, private eventService: EventService) {
@@ -32,7 +42,8 @@ export class FilmFormComponent implements OnInit, OnDestroy {
       onCinemas: false,
       trailer: '',
       releaseDate: new Date(),
-      poster: ''
+      poster: '',
+      gendersId: ''
     });
 
     if (this.model !== undefined) {
@@ -51,8 +62,21 @@ export class FilmFormComponent implements OnInit, OnDestroy {
       this.form.patchValue(R.set(archiveLens, R.path(['payload'], imageSelectedEvent), this.form.value));  
     });
 
+    const onGenderSelected = this.eventService.onEvent(Events.GENDER_SELECTED)
+    .subscribe((genderSelectedEvent: any) => {
+      const genderLens = R.lensPath(['gendersId']);
+      const genderKeys = R.pipe(
+        R.pathOr([], ['payload']),
+        R.map(R.prop('key')),
+        R.sort((a, b) => a - b)
+      )(genderSelectedEvent); 
+      
+      this.form.patchValue(R.set(genderLens, genderKeys, this.form.value));  
+    });
+
     this.filmSubscription.add(onMarkdownChanged);
     this.filmSubscription.add(onImageSelected);
+    this.filmSubscription.add(onGenderSelected);
   }
 
   ngOnDestroy(): void {

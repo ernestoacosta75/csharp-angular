@@ -28,7 +28,9 @@
         [markdownContent]="model?.resume"></app-input-markdown>
 
     <h4>Select the genders:</h4>
-    <app-multiple-selector></app-multiple-selector>
+    <app-multiple-selector 
+        [itemsUnselected]="gendersNotSelected"
+        [itemsSelected]="gendersSelected"></app-multiple-selector>
         
     <div>
         <button 
