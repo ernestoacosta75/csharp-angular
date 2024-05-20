@@ -4,8 +4,8 @@ import { CoordinatesDto } from '@shared/components/map/models/coordinates';
 import { Events } from '@utilities/events';
 import { Subscription } from 'rxjs';
 import { EventService } from 'src/app/event-service';
-import { CinemaDto } from 'src/app/feature/cinema/models/cinema-dto';
 import * as R from 'ramda';
+import { CinemaDto } from '../models/cinema-dto';
 
 @Component({
   selector: 'app-cinema-form',

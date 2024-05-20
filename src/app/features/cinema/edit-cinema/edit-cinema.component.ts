@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { EventService } from 'src/app/event-service';
-import { CinemaEditDto } from 'src/app/feature/cinema/models/cinema-dto';
 import { Events } from '@utilities/events';
+import { CinemaEditDto } from '../models/cinema-dto';
 
 @Component({
   selector: 'app-edit-cinema',
