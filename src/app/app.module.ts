@@ -26,7 +26,6 @@ import { ActorFormComponent } from '@features/actors/actor-form/actor-form.compo
 import { ReactiveFormsModule } from '@angular/forms';
 import { CinemaFormComponent } from './features/cinema/cinema-form/cinema-form.component';
 import { FilmFormComponent } from './features/films/film-form/film-form.component';
-import { AutocompleteActorsComponent } from './features/actors/autocomplete-actors/autocomplete-actors.component';
 
 @NgModule({
   declarations: [
@@ -49,8 +48,7 @@ import { AutocompleteActorsComponent } from './features/actors/autocomplete-acto
     FilmFilterComponent,
     ActorFormComponent,
     CinemaFormComponent,
-    FilmFormComponent,
-    AutocompleteActorsComponent
+    FilmFormComponent
   ],
   imports: [
     BrowserModule,

@@ -15,6 +15,7 @@ import { MarkdownModule } from 'ngx-markdown';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { MapComponent } from './components/map/map.component';
 import { MultipleSelectorComponent } from './components/multiple-selector/multiple-selector.component';
+import { AutocompleteActorsComponent } from './components/autocomplete-actors/autocomplete-actors.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { MultipleSelectorComponent } from './components/multiple-selector/multip
     InputImgComponent,
     InputMarkdownComponent,
     MapComponent,
-    MultipleSelectorComponent
+    MultipleSelectorComponent,
+    AutocompleteActorsComponent
   ],
   imports: [
     CommonModule,
@@ -45,7 +47,8 @@ import { MultipleSelectorComponent } from './components/multiple-selector/multip
     InputImgComponent,
     InputMarkdownComponent,
     MapComponent,
-    MultipleSelectorComponent
+    MultipleSelectorComponent,
+    AutocompleteActorsComponent
   ]
 })
 export class SharedModule { }

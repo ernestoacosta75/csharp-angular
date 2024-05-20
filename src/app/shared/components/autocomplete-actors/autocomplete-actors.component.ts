@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatTable } from '@angular/material/table';
-import { toConsole } from '@utilities/common-utils';
 import * as R from 'ramda';
 
 @Component({
@@ -23,6 +22,8 @@ export class AutocompleteActorsComponent implements OnInit {
 
   columnsToDisplay = ['image', 'name', 'character', 'actions'];
 
+  character: string;
+
   control: FormControl = new FormControl();
 
   @ViewChild(MatTable) table: MatTable<any>;
@@ -36,7 +37,7 @@ export class AutocompleteActorsComponent implements OnInit {
   }
 
   optionSelected = (evt: MatAutocompleteSelectedEvent) => {
-    this.selectedActorsArr = R.append(R.path(['option', 'value'], evt), this.selectedActorsArr);
+    this.selectedActorsArr.push(R.path(['option', 'value'], evt));
     this.control.patchValue('');
 
     if(R.isNotNil(this.table)) {
@@ -45,11 +46,7 @@ export class AutocompleteActorsComponent implements OnInit {
   };
 
   toDelete = (item: any) => {
-    this.selectedActorsArr = R.pipe(
-      R.findIndex(R.propEq('name', item.name)),
-      idx => idx !== -1 ? R.remove(idx, 1, this.selectedActorsArr) :this.selectedActorsArr,  
-    )(this.selectedActorsArr);
-
+    this.selectedActorsArr.splice(this.selectedActorsArr.indexOf(item.name), 1);
     this.table.renderRows();
   };
 }
