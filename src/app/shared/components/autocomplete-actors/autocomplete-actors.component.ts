@@ -1,3 +1,4 @@
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
@@ -49,4 +50,10 @@ export class AutocompleteActorsComponent implements OnInit {
     this.selectedActorsArr.splice(this.selectedActorsArr.indexOf(item.name), 1);
     this.table.renderRows();
   };
+
+  dropTable = (evt: CdkDragDrop<any[]>) => {
+    const prevIndex = R.findIndex(R.equals(evt.item.data))(this.selectedActorsArr);
+    moveItemInArray(this.selectedActorsArr, prevIndex, evt.currentIndex);
+    this.table.renderRows();
+  }
 }
