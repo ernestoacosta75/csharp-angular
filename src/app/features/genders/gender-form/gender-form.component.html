@@ -1,0 +1,17 @@
+<form 
+    [formGroup]="form"
+    (submit)="onSave()">
+    <mat-form-field appearance="outline">
+        <mat-label appAddRequired>Name</mat-label>
+        <input matInput formControlName="name" required placeholder="Ex.: Drama">
+        <mat-error app-error-message [control]="form.get('name')"></mat-error>
+    </mat-form-field>
+    <div>
+        <button 
+            mat-flat-button 
+            color="primary" 
+            type="submit"
+            [disabled]="form.invalid">Save</button>
+        <a mat-stroked-button routerLink="/genders">Cancel</a>
+    </div>
+</form>

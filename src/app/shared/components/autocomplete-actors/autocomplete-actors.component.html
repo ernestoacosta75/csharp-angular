@@ -1,0 +1,59 @@
+<form>
+    <mat-form-field appearance="outline">
+        <input
+            type="text"
+            placeholder="Select the actor(s)"
+            matInput
+            [formControl]="control"
+            [matAutocomplete]="auto"/>
+    </mat-form-field>
+    <mat-autocomplete #auto
+        (optionSelected)="optionSelected($event)">
+        <mat-option *ngFor="let actor of actors" [value]="actor">
+            <img [src]="actor.picture" />{{ actor.name}}
+        </mat-option>
+    </mat-autocomplete>
+</form>
+
+<table class="mat-elevation-z8 ac-table" *ngIf="selectedActorsArr.length > 0"
+    mat-table
+    [dataSource]="selectedActorsArr"
+    cdkDropList
+    [cdkDropListData]="selectedActorsArr"
+    (cdkDropListDropped)="dropTable($event)">
+    <ng-container matColumnDef="image">
+        <th mat-header-cell *matHeaderCellDef>No.</th>
+        <td mat-cell *matCellDef="let element">
+            <img [src]="element.picture" style="width: 50px;" />
+        </td>
+    </ng-container>
+     
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let element">
+            {{ element.name }}
+        </td>
+    </ng-container> 
+ 
+    <ng-container matColumnDef="character">
+        <th mat-header-cell *matHeaderCellDef>Character</th>
+        <td mat-cell *matCellDef="let element">
+            <mat-form-field appereance="outline" style="margin-top: 10px;">
+                <mat-label>Character</mat-label>
+                <input matInput [(ngModel)]="element.character"/>
+            </mat-form-field>
+        </td>
+    </ng-container> 
+          
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let element">
+            <mat-icon mat-list-icon (click)="toDelete(element)">
+                delete
+            </mat-icon>
+        </td>
+    </ng-container>   
+    
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row *matRowDef="let rowData; columns: columnsToDisplay" cdkDrag [cdkDragData]="rowData"></tr>
+</table>

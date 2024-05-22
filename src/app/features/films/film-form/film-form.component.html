@@ -1,0 +1,50 @@
+<form 
+    [formGroup]="form"
+    (submit)="onSave()">
+    <mat-form-field appearance="outline">
+        <mat-label appAddRequired>Title</mat-label>
+        <input matInput formControlName="title" required placeholder="Ex.: Pulp Fiction">
+        <mat-error app-error-message [control]="form.get('title')"></mat-error>
+    </mat-form-field>
+    <div class="checkbox-container">
+        <mat-checkbox formControlName="onCinemas">On cinemas</mat-checkbox>
+    </div>
+    <mat-form-field appearance="outline">
+        <mat-label>Trailer</mat-label>
+        <input matInput formControlName="trailer">
+        <mat-error app-error-message [control]="form.get('trailer')"></mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Release date</mat-label>
+        <input matInput [matDatepicker]="releaseDatePicker" formControlName="releaseDate">
+        <mat-datepicker-toggle matSuffix [for]="releaseDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #releaseDatePicker></mat-datepicker>
+    </mat-form-field>
+    <h4>Select the poster</h4>
+    <app-input-img [currentImageUrl]="model?.poster"></app-input-img>
+    <h4>Film resume</h4>
+    <app-input-markdown 
+        [textAreaPlaceholder]="'Resume'"
+        [markdownContent]="model?.resume"></app-input-markdown>
+
+    <h4>Select the gender(s):</h4>
+    <app-multiple-selector 
+        [itemsUnselected]="gendersNotSelected"
+        [itemsSelected]="gendersSelected"></app-multiple-selector>
+
+    <h4>Select the cinema(s):</h4>
+    <app-multiple-selector 
+        [itemsUnselected]="cinemasNotSelected"
+        [itemsSelected]="cinemasSelected"></app-multiple-selector>
+        
+    <h4>Select the actor(s):</h4>
+    <app-autocomplete-actors></app-autocomplete-actors>
+
+    <div>
+        <button 
+            mat-flat-button 
+            color="primary" 
+            [disabled]="form.invalid">Save</button>
+        <a mat-stroked-button routerLink="/">Cancel</a>
+    </div>
+</form>

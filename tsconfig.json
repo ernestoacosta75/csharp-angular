@@ -2,6 +2,24 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@features/*": [
+        "src/app/features/*"
+      ],
+      "@material/*": [
+        "src/app/material/*"
+      ],
+      "@shared/*": [
+        "src/app/shared/*"
+      ],
+      "@utilities/*": [
+        "src/app/utilities/*"
+      ],
+      "@environments/*": [
+        "src/environments/*"
+      ]
+    },
     "outDir": "./dist/out-tsc",
     "skipLibCheck": true,
     "esModuleInterop": true,
