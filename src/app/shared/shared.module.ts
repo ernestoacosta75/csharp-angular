@@ -37,7 +37,8 @@ import { AutocompleteActorsComponent } from './components/autocomplete-actors/au
     FormsModule,
     ReactiveFormsModule,
     MarkdownModule.forRoot(),
-    LeafletModule
+    LeafletModule,
+    HttpClientModule
   ],
   exports: [
     MenuComponent,
@@ -51,4 +52,5 @@ import { AutocompleteActorsComponent } from './components/autocomplete-actors/au
     AutocompleteActorsComponent
   ]
 })
-export class SharedModule { }
+export class SharedModule { }import { HttpClientModule } from '@angular/common/http';
+
