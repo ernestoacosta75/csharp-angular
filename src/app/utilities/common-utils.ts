@@ -51,3 +51,42 @@ export const toConsole = (label: string, value: any) => {
   const tc = value => console.log(label, value);
   R.tap(tc, value);
 };
+
+export const parseApiErrors = (response: any): string[] => {
+  const result: string[] = [];
+  
+  if (R.isNotNil(R.path(['error'], response))) {
+    if (R.equals('string', R.type(R.path(['error'], response)))) {
+      result.push(R.path(['error'], response));
+    }
+    else {
+      const errorsMap = R.path(['error', 'errors'], response);
+
+      if(R.is(Object, errorsMap)) {
+        // iterating over keys
+        R.forEachObjIndexed((errorMsgs, field: any) => {
+          // adding each error to the result array
+          R.forEach(errorMsg => {
+            result.push(`${field}: ${errorMsg}`);
+          }, errorMsgs);
+        }, errorsMap);
+      }
+
+      // const entries = R.keys(errorsMap);
+      // entries.forEach((arr) => {
+      //   const field = arr[0];
+      //   arr[1].forEach(errorMsg => {
+      //     result.push(`${field}: ${errorMsg}`);
+      //   });
+      // }); 
+    }
+  }
+
+  return result;
+};
+
+export class EntityActions {
+  static readonly ADD: string = 'Add';
+  static readonly UPDATE: string = 'Update';
+  static readonly DELETE: string = 'Delete';
+}

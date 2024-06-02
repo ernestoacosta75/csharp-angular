@@ -4,6 +4,7 @@ import { firstLetterUpperCase } from '../../../utilities/validators-utils';
 import { GenderDto } from '../models/gender';
 import { EventService } from 'src/app/event-service';
 import { Events } from '@utilities/events';
+import { toConsole } from '@utilities/common-utils';
 
 @Component({
   selector: 'app-gender-form',
@@ -14,6 +15,12 @@ export class GenderFormComponent implements OnInit {
 
   @Input()
   model: GenderDto;
+
+  @Input()
+  action: string;
+
+  @Input()
+  errors: string[] = [];
 
   form: FormGroup;
   
@@ -32,6 +39,8 @@ export class GenderFormComponent implements OnInit {
     }
   }
 
-  onSave = () => this.eventService.emitEvent(Events.GENDER, this.form.value);
-
+  onSave = () => {
+    toConsole('Emitting event with action:', this.action);
+    this.eventService.emitEvent(Events.GENDER, this.form.value, this.action);
+  };
 }

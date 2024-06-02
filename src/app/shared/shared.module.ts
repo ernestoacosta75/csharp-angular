@@ -27,7 +27,8 @@ import { AutocompleteActorsComponent } from './components/autocomplete-actors/au
     InputMarkdownComponent,
     MapComponent,
     MultipleSelectorComponent,
-    AutocompleteActorsComponent
+    AutocompleteActorsComponent,
+    ShowErrorsComponent
   ],
   imports: [
     CommonModule,
@@ -49,8 +50,10 @@ import { AutocompleteActorsComponent } from './components/autocomplete-actors/au
     InputMarkdownComponent,
     MapComponent,
     MultipleSelectorComponent,
-    AutocompleteActorsComponent
+    AutocompleteActorsComponent,
+    ShowErrorsComponent
   ]
 })
 export class SharedModule { }import { HttpClientModule } from '@angular/common/http';
+import { ShowErrorsComponent } from './components/show-errors/show-errors.component';
 

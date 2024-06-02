@@ -9,11 +9,15 @@ import { environment } from '@environments/environment';
 })
 export class GenderService {
 
-  private apiUrl = environment.apiUrl;
+  private apiUrl = environment.apiUrl + 'genders';
 
   constructor(private http: HttpClient) { }
 
   getAll = (): Observable<GenderDto[]> => {
-    return this.http.get<GenderDto[]>(this.apiUrl + '/api/genders'); 
+    return this.http.get<GenderDto[]>(this.apiUrl); 
   };
+
+  create = (gender: GenderDto) => {
+    return this.http.post<GenderDto>(this.apiUrl, gender);
+  }
 }

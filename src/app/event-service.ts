@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { toConsole } from '@utilities/common-utils';
 import { Subject, filter } from 'rxjs';
 
 @Injectable({
@@ -6,12 +7,13 @@ import { Subject, filter } from 'rxjs';
 })
 export class EventService {
 
-  private eventSubject = new Subject<{ title: string, payload?: any, componentId?: string }>();
+  private eventSubject = new Subject<{ title: string, payload?: any, action?: string }>();
 
   constructor() { }
 
-  emitEvent = (title: string, payload?: any, componentId?: string): void => {
-    this.eventSubject.next({ title, payload, componentId });
+  emitEvent = (title: string, payload?: any, action?: string): void => {
+    toConsole('emitEvent:', { title, payload, action });
+    this.eventSubject.next({ title, payload, action });
   }
 
   onEvent = (title: string) => {
