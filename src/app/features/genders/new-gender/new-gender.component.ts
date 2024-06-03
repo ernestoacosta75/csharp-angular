@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Subscription, filter, switchMap } from 'rxjs';
 import { EventService } from 'src/app/event-service';
 import { Events } from '@utilities/events';
-import { EntityActions, toConsole } from '@utilities/common-utils';
+import { EntityActions, parseApiErrors, toConsole } from '@utilities/common-utils';
 import * as R from 'ramda';
 import { GenderDto } from '../models/gender';
 
@@ -31,7 +31,7 @@ export class NewGenderComponent implements OnInit, OnDestroy {
     )
     .subscribe({
       next: () => this.router.navigateByUrl('/genders'),
-      error: (err) => toConsole('Error saving gender:', err)
+      error: (err) => this.errors = parseApiErrors(err)
     });
  
     this.genderSubscription.add(onNewGenderCreated);
