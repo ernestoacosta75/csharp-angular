@@ -1,12 +1,9 @@
 import { GenderService } from './../services/gender.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription, filter, switchMap } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { EventService } from 'src/app/event-service';
-import { Events } from '@utilities/events';
-import { EntityActions, parseApiErrors, toConsole } from '@utilities/common-utils';
-import * as R from 'ramda';
-import { GenderDto } from '../models/gender';
+import { EntityActions } from '@utilities/common-utils';
 
 @Component({
   selector: 'app-new-gender',
@@ -24,20 +21,9 @@ export class NewGenderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const onNewGenderCreated = this.eventService.onEvent(Events.GENDER)
-    .pipe(
-      filter(genderEvent => genderEvent.action === EntityActions.ADD),
-      switchMap(genderEvent => this.genderService.create(R.path<GenderDto>(['payload'], genderEvent)))
-    )
-    .subscribe({
-      next: () => this.router.navigateByUrl('/genders'),
-      error: (err) => this.errors = parseApiErrors(err)
-    });
- 
-    this.genderSubscription.add(onNewGenderCreated);
   }
 
   ngOnDestroy(): void {
-    this.genderSubscription.unsubscribe();
+
   }
 }

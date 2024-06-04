@@ -5,7 +5,7 @@ import { Subscription, filter } from 'rxjs';
 import { EventService } from 'src/app/event-service';
 import * as R from 'ramda';
 import { FilmDto } from '../models/film-dto';
-import { toConsole } from '@utilities/common-utils';
+import { EntityActions, toConsole } from '@utilities/common-utils';
 
 @Component({
   selector: 'app-new-film',
@@ -21,7 +21,7 @@ export class NewFilmComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const onNewFilmCreated = this.eventService.onEvent(Events.FILM)
+    const onNewFilmCreated = this.eventService.onEvent(EntityActions.ADD)
     .subscribe((filmEvent: any) => {
       toConsole('Film created: ', R.path<FilmDto>(['payload'], filmEvent));
       // this.router.navigateByUrl('/');

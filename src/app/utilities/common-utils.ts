@@ -71,14 +71,6 @@ export const parseApiErrors = (response: any): string[] => {
           }, errorMsgs);
         }, errorsMap);
       }
-
-      // const entries = R.keys(errorsMap);
-      // entries.forEach((arr) => {
-      //   const field = arr[0];
-      //   arr[1].forEach(errorMsg => {
-      //     result.push(`${field}: ${errorMsg}`);
-      //   });
-      // }); 
     }
   }
 

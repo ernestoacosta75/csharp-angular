@@ -2,10 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GenderDto } from '@features/genders/models/gender';
 import { EventService } from 'src/app/event-service';
-import { Subscription } from 'rxjs';
-import { Events } from '@utilities/events';
 import { EntityActions } from '@utilities/common-utils';
-import * as R from 'ramda';
 @Component({
   selector: 'app-edit-gender',
   templateUrl: './edit-gender.component.html',
@@ -19,23 +16,13 @@ export class EditGenderComponent implements OnInit, OnDestroy {
 
   formAction: string = EntityActions.UPDATE;
 
-  genderSubscription: Subscription = new Subscription();
-
   constructor(private router: Router, private activatedRoute: ActivatedRoute, private eventService: EventService) {
     
   }
   ngOnInit(): void {
-    const onGenderEdited = this.eventService.onEvent(Events.GENDER)
-    .subscribe((genderEvent: any) => {
-      if (R.propEq(EntityActions.UPDATE, R.path(['action'], genderEvent))) {
-        // this.genderService.create(R.path<GenderDto>(['payload'], genderEvent));
-        this.router.navigateByUrl('/genders');
-      }
-    });
 
-    this.genderSubscription.add(onGenderEdited);
   }
   ngOnDestroy(): void {
-    this.genderSubscription.unsubscribe();
+
   }
 }
