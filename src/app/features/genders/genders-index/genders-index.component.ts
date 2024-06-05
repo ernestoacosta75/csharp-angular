@@ -10,15 +10,17 @@ import { toConsole } from '@utilities/common-utils';
 })
 export class GendersIndexComponent implements OnInit {
   
+  genders: GenderDto[];
+
   constructor(private genderService: GenderService) {
   }
 
   ngOnInit(): void {
     this.genderService.getAll()
     .subscribe({
-      next: (data: GenderDto[]) => {
-        const genders = data;
-        toConsole('genders: ', genders);
+      next: (genders: GenderDto[]) => {
+        this.genders = genders;
+        toConsole('genders: ', this.genders);
       },
       error: (error: any) => {
         toConsole('error: ', error);
