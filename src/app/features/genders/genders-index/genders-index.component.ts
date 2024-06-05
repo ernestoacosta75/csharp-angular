@@ -11,6 +11,7 @@ import { toConsole } from '@utilities/common-utils';
 export class GendersIndexComponent implements OnInit {
   
   genders: GenderDto[];
+  columnsToDisplay = ['name', 'actions'];
 
   constructor(private genderService: GenderService) {
   }

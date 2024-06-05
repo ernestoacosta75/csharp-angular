@@ -29,3 +29,8 @@ mat-form-field {
     max-width: 500px;
     margin-right: 10px;
 }
+
+.index-table {
+    width: 100%;
+    margin-top: 1rem;
+}

@@ -20,11 +20,4 @@
 
 <ng-container *ngIf="list && list.length > 0">
   <ng-content select="[content]"></ng-content>
-  <!-- <div *ngFor="let item of list; let index = index" class="films-container">
-    <div>
-      {{ item.title }} <button (click)="onRemoveFilm(index)">Delete</button>
-    </div>
-    <div>{{ item.releaseDate | date : "dd/MM/yyyy" }}</div>
-    <div>{{ item.price | currency }}</div>
-  </div> -->
 </ng-container>

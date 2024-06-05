@@ -8,13 +8,8 @@
             #table
             mat-table
             [dataSource]="genders"
-            class="mat-elevation-z8">
-        
-            <ng-container matColumnDef="id">
-                <th mat-header-cell *matHeaderCellDef>Id</th>
-                <td mat-cell *matCellDef="let element">{{ element.id }}</td>
-            </ng-container>
-
+            class="mat-elevation-z8 index-table">
+ 
             <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef>Name</th>
                 <td mat-cell *matCellDef="let element">{{ element.name }}</td>
@@ -26,7 +21,9 @@
                     <a mat-flat-button color="primary" routerLink="/genders/edit/{{ element.id }}">Edit</a>
                     <button mat-flat-button color="warn" type="button">Delete</button>
                 </td>
-            </ng-container>            
+            </ng-container>   
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>         
+            <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>         
         </table>
     </ng-container>
 </app-generic-list>
