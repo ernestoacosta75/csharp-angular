@@ -25,5 +25,11 @@
             <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>         
             <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>         
         </table>
+
+        <mat-paginator 
+            [pageSizeOptions]="pageSizeOptions"
+            showFirstLastButtons
+            [length]="recordsTotalCount"
+            [pageSize]="recordsAmountToShow"></mat-paginator>
     </ng-container>
 </app-generic-list>

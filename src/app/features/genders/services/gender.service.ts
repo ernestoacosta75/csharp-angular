@@ -13,8 +13,8 @@ export class GenderService {
 
   constructor(private http: HttpClient) { }
 
-  getAll = (): Observable<GenderDto[]> => {
-    return this.http.get<GenderDto[]>(this.apiUrl); 
+  getAll = (): Observable<any> => {
+    return this.http.get<any>(this.apiUrl, { observe: 'response'}); 
   };
 
   create = (gender: GenderDto) => {

@@ -12,6 +12,7 @@ import { MatTabsModule } from "@angular/material/tabs";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatTableModule } from "@angular/material/table";
 import { MatExpansionModule } from "@angular/material/expansion";
+import { MatPaginatorModule } from "@angular/material/paginator";
 import { DragDropModule } from "@angular/cdk/drag-drop";
 
 
@@ -29,7 +30,8 @@ const material = [
   MatAutocompleteModule,
   MatTableModule,
   DragDropModule,
-  MatExpansionModule
+  MatExpansionModule,
+  MatPaginatorModule
 ];
 
 @NgModule({
