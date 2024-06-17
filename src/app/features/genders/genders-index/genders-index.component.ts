@@ -4,6 +4,7 @@ import { GenderService } from '../services/gender.service';
 import { toConsole } from '@utilities/common-utils';
 import { HttpResponse } from '@angular/common/http';
 import * as R from 'ramda';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-genders-index',
@@ -23,7 +24,11 @@ export class GendersIndexComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.genderService.getAll()
+    this.loadRecords(this.currentPage, this.recordsAmountToShow);
+  }
+
+  loadRecords = (page: number, itemsToShowAmount: number) => {
+    this.genderService.getAll(page, itemsToShowAmount)
     .subscribe({
       next: (result: HttpResponse<GenderDto>) => {
         this.genders = R.path<GenderDto[]>(['body'], result);
@@ -33,6 +38,12 @@ export class GendersIndexComponent implements OnInit {
       error: (error: any) => {
         toConsole('error: ', error);
       }
-    });    
+    });  
+  }
+
+  updatePagination = (data: PageEvent) => {
+    this.recordsAmountToShow = data.pageSize;
+    this.currentPage = data.pageIndex + 1;
+    this.loadRecords(this.currentPage, this.recordsAmountToShow);
   }
 }

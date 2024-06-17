@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { GenderDto } from '../models/gender';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '@environments/environment';
 
@@ -13,8 +13,11 @@ export class GenderService {
 
   constructor(private http: HttpClient) { }
 
-  getAll = (): Observable<any> => {
-    return this.http.get<any>(this.apiUrl, { observe: 'response'}); 
+  getAll = (page: number, itemsToShowAmount: number): Observable<any> => {
+    let params = new HttpParams();
+    params = params.append('page', page.toString());
+    params = params.append('recordsPerPage', itemsToShowAmount.toString());
+    return this.http.get<any>(this.apiUrl, { observe: 'response', params}); 
   };
 
   create = (gender: GenderDto) => {
