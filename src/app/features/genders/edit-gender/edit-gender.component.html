@@ -1,3 +1,7 @@
 <h2>Gender Edit</h2>
 
-<app-gender-form [model]="model" [action]="formAction"></app-gender-form>
+<app-gender-form *ngIf="model" 
+    [model]="model" 
+    [action]="formAction"></app-gender-form>
+
+<mat-spinner></mat-spinner>

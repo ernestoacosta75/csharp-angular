@@ -14,7 +14,7 @@ import { MatTableModule } from "@angular/material/table";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { DragDropModule } from "@angular/cdk/drag-drop";
-
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
 const material = [
   MatToolbarModule,
@@ -31,7 +31,8 @@ const material = [
   MatTableModule,
   DragDropModule,
   MatExpansionModule,
-  MatPaginatorModule
+  MatPaginatorModule,
+  MatProgressSpinnerModule
 ];
 
 @NgModule({

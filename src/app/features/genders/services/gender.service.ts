@@ -23,4 +23,6 @@ export class GenderService {
   create = (gender: GenderDto) => {
     return this.http.post<GenderDto>(this.apiUrl, gender);
   }
+
+  getGenderById = (genderId: string): Observable<GenderDto> => this.http.get<GenderDto>(`${this.apiUrl}/${genderId}`);
 }
