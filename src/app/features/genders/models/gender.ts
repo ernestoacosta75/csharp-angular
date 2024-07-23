@@ -1,4 +1,4 @@
 export interface GenderDto {
-    id?: number;
+    id?: string;
     name: string;
 }

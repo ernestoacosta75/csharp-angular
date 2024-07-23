@@ -20,7 +20,11 @@ export class GenderService {
     return this.http.get<any>(this.apiUrl, { observe: 'response', params}); 
   };
 
+  getById = (id: string): Observable<GenderDto> => this.http.get<GenderDto>(`${this.apiUrl}/${id}`);
+
   create = (gender: GenderDto) => {
     return this.http.post<GenderDto>(this.apiUrl, gender);
   }
+
+  update = (id:string,  gender: GenderDto): Observable<GenderDto> => this.http.put<GenderDto>(`${this.apiUrl}/${id}`, gender);
 }

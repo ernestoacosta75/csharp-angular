@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GenderDto } from '../models/gender';
 import { EventService } from 'src/app/event-service';
 import { Events } from '@utilities/events';
-import { EntityActions, parseApiErrors } from '@utilities/common-utils';
+import { EntityActions, parseApiErrors, toConsole } from '@utilities/common-utils';
 import { Subscription, filter, switchMap } from 'rxjs';
 import { GenderService } from '../services/gender.service';
 import * as R from 'ramda';
@@ -62,9 +62,11 @@ export class GenderFormComponent implements OnInit, OnDestroy {
     const onGenderEdited = this.eventService.onEvent(EntityActions.UPDATE)
     .pipe(
       filter(genderEvent => genderEvent.action === EntityActions.UPDATE),
+      switchMap(genderEvent => this.genderService.update(this.model.id, this.model))
     )
     .subscribe({
-      next: () => this.router.navigateByUrl('/genders')
+      next: () => this.router.navigateByUrl('/genders'),
+      error: (errors) => this.errors = parseApiErrors(errors)
     });
  
     this.genderSubscription.add(onNewGenderCreated);
