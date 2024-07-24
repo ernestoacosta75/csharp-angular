@@ -4,7 +4,7 @@ import { GenderDto } from '../models/gender';
 import { EventService } from 'src/app/event-service';
 import { Events } from '@utilities/events';
 import { EntityActions, parseApiErrors, toConsole } from '@utilities/common-utils';
-import { Subscription, filter, switchMap } from 'rxjs';
+import { Subscription, filter, switchMap, tap } from 'rxjs';
 import { GenderService } from '../services/gender.service';
 import * as R from 'ramda';
 import { Router } from '@angular/router';
@@ -44,32 +44,30 @@ export class GenderFormComponent implements OnInit, OnDestroy {
     if (this.model !== undefined) {
       this.form.patchValue(this.model);
     }
-  }
 
-  onSave = () => {
-    this.eventService.emitEvent(Events.GENDER, this.form.value, this.action);
-
-    const onNewGenderCreated = this.eventService.onEvent(Events.GENDER)
-    .pipe(
-      filter(genderEvent => genderEvent.action === EntityActions.ADD),
-      switchMap(genderEvent => this.genderService.create(R.path<GenderDto>(['payload'], genderEvent)))
+    const onGenderEvent = this.eventService.onEvent(Events.GENDER)
+    .pipe(      
+      switchMap((genderEvent: any) => {
+        if(genderEvent.action === EntityActions.ADD) {
+          return this.genderService.create(R.path<GenderDto>(['payload'], genderEvent));
+        }
+        else if(genderEvent.action === EntityActions.UPDATE) {
+          return this.genderService.update(this.model.id, R.path<GenderDto>(['payload'], genderEvent));
+        }
+      })
     )
     .subscribe({
       next: () => this.router.navigateByUrl('/genders'),
       error: (err) => this.errors = parseApiErrors(err)
     });
-
-    const onGenderEdited = this.eventService.onEvent(EntityActions.UPDATE)
-    .pipe(
-      filter(genderEvent => genderEvent.action === EntityActions.UPDATE),
-      switchMap(genderEvent => this.genderService.update(this.model.id, this.model))
-    )
-    .subscribe({
-      next: () => this.router.navigateByUrl('/genders'),
-      error: (errors) => this.errors = parseApiErrors(errors)
-    });
  
-    this.genderSubscription.add(onNewGenderCreated);
-    this.genderSubscription.add(onGenderEdited);
+    this.genderSubscription.add(onGenderEvent);
+  }
+
+  onSave = () => {
+    this.eventService.emitEvent(Events.GENDER, this.form.value, this.action);
+    toConsole('onSave form value: ', this.form.value);
+    toConsole('onSave this.action: ', this.action);
+    toConsole('this.action === EntityActions.ADD: ', this.action === EntityActions.ADD);
   };
 }

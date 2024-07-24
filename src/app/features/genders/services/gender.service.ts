@@ -3,6 +3,7 @@ import { GenderDto } from '../models/gender';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '@environments/environment';
+import { toConsole } from '@utilities/common-utils';
 
 @Injectable({
   providedIn: 'root'
@@ -26,5 +27,8 @@ export class GenderService {
     return this.http.post<GenderDto>(this.apiUrl, gender);
   }
 
-  update = (id:string,  gender: GenderDto): Observable<GenderDto> => this.http.put<GenderDto>(`${this.apiUrl}/${id}`, gender);
+  update = (id:string,  gender: GenderDto): Observable<GenderDto> => {
+    toConsole('id in update request: ', id);
+    return this.http.put<GenderDto>(`${this.apiUrl}/${id}`, gender);
+  }
 }
