@@ -16,6 +16,8 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { MapComponent } from './components/map/map.component';
 import { MultipleSelectorComponent } from './components/multiple-selector/multiple-selector.component';
 import { AutocompleteActorsComponent } from './components/autocomplete-actors/autocomplete-actors.component';
+import { HttpClientModule } from '@angular/common/http';
+import { ShowErrorsComponent } from './components/show-errors/show-errors.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +56,5 @@ import { AutocompleteActorsComponent } from './components/autocomplete-actors/au
     ShowErrorsComponent
   ]
 })
-export class SharedModule { }import { HttpClientModule } from '@angular/common/http';
-import { ShowErrorsComponent } from './components/show-errors/show-errors.component';
+export class SharedModule { }
 

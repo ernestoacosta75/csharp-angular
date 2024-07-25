@@ -1,6 +1,7 @@
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import * as R from 'ramda';
+import Swal, { SweetAlertIcon } from 'sweetalert2';
 
 export const writeSearchParametersOnUrl = (formValues: any): string => {
   const queryStrings = [];
@@ -76,6 +77,13 @@ export const parseApiErrors = (response: any): string[] => {
 
   return result;
 };
+
+export const showPopup = (title: string, text: string, icon: SweetAlertIcon, showCancelBt: boolean) => Swal.fire({
+  title: title,
+  text: text,
+  icon: icon,
+  showCancelButton: showCancelBt
+})
 
 export class EntityActions {
   static readonly ADD: string = 'Add';

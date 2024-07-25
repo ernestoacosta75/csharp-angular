@@ -26,7 +26,7 @@ import { ActorFormComponent } from '@features/actors/actor-form/actor-form.compo
 import { ReactiveFormsModule } from '@angular/forms';
 import { CinemaFormComponent } from './features/cinema/cinema-form/cinema-form.component';
 import { FilmFormComponent } from './features/films/film-form/film-form.component';
-
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 @NgModule({
   declarations: [
     AppComponent,
@@ -55,7 +55,8 @@ import { FilmFormComponent } from './features/films/film-form/film-form.componen
     AppRoutingModule,
     MaterialModule,
     SharedModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SweetAlert2Module.forRoot()
   ],
   providers: [
     provideAnimationsAsync()

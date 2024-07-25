@@ -1,10 +1,11 @@
 import { GenderDto } from '@features/genders/models/gender';
 import { Component, OnInit } from '@angular/core';
 import { GenderService } from '../services/gender.service';
-import { toConsole } from '@utilities/common-utils';
+import { showPopup, toConsole } from '@utilities/common-utils';
 import { HttpResponse } from '@angular/common/http';
 import * as R from 'ramda';
 import { PageEvent } from '@angular/material/paginator';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-genders-index',
@@ -55,4 +56,17 @@ export class GendersIndexComponent implements OnInit {
       error: (error) => toConsole('Error deleting gender: ', error)
     });
   }
+
+  show = (id: string) => Swal.fire({
+    title: 'Confirmation',
+    text: 'Do you want to delete this gender?',
+    icon: 'warning',
+    showCancelButton: true
+  }).then((result) => {
+    if(result.isConfirmed) {
+      this.delete(id);
+    }
+  })
+    
+    //showPopup('Confirmation', 'Do you want to delete this gender?', 'warning', true);
 }
