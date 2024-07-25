@@ -23,12 +23,9 @@ export class GenderService {
 
   getById = (id: string): Observable<GenderDto> => this.http.get<GenderDto>(`${this.apiUrl}/${id}`);
 
-  create = (gender: GenderDto) => {
-    return this.http.post<GenderDto>(this.apiUrl, gender);
-  }
+  create = (gender: GenderDto) => this.http.post<GenderDto>(this.apiUrl, gender);
 
-  update = (id:string,  gender: GenderDto): Observable<GenderDto> => {
-    toConsole('id in update request: ', id);
-    return this.http.put<GenderDto>(`${this.apiUrl}/${id}`, gender);
-  }
+  update = (id:string,  gender: GenderDto): Observable<GenderDto> => this.http.put<GenderDto>(`${this.apiUrl}/${id}`, gender);
+
+  delete = (id: string) => this.http.delete(`${this.apiUrl}/${id}`);
 }

@@ -32,7 +32,6 @@ export class GendersIndexComponent implements OnInit {
     .subscribe({
       next: (result: HttpResponse<GenderDto>) => {
         this.genders = R.path<GenderDto[]>(['body'], result);
-        toConsole('Response headers: ', R.path(['headers'], result).get("recordsTotalCount"));
         this.recordsTotalCount = +R.path(['headers'], result).get("recordsTotalCount");
       },
       error: (error: any) => {
@@ -45,5 +44,15 @@ export class GendersIndexComponent implements OnInit {
     this.recordsAmountToShow = data.pageSize;
     this.currentPage = data.pageIndex + 1;
     this.loadRecords(this.currentPage, this.recordsAmountToShow);
+  }
+
+  delete = (id: string) => {
+    this.genderService.delete(id)
+    .subscribe({
+      next: () => {
+        this.loadRecords(this.currentPage, this.recordsAmountToShow);
+      },
+      error: (error) => toConsole('Error deleting gender: ', error)
+    });
   }
 }
