@@ -1,7 +1,7 @@
 import { GenderDto } from '@features/genders/models/gender';
 import { Component, OnInit } from '@angular/core';
 import { GenderService } from '../services/gender.service';
-import { showPopup, toConsole } from '@utilities/common-utils';
+import { toConsole } from '@utilities/common-utils';
 import { HttpResponse } from '@angular/common/http';
 import * as R from 'ramda';
 import { PageEvent } from '@angular/material/paginator';
@@ -67,6 +67,4 @@ export class GendersIndexComponent implements OnInit {
       this.delete(id);
     }
   })
-    
-    //showPopup('Confirmation', 'Do you want to delete this gender?', 'warning', true);
 }
