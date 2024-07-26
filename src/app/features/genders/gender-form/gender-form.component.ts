@@ -31,9 +31,6 @@ export class GenderFormComponent implements OnInit, OnDestroy {
   constructor(private formBuilder: FormBuilder, private eventService: EventService, private genderService: GenderService, private router: Router) {
     
   }
-  ngOnDestroy(): void {
-    this.genderSubscription.unsubscribe();
-  }
   ngOnInit(): void {
     this.form = this.formBuilder.group({
       name: ['', {
@@ -65,9 +62,12 @@ export class GenderFormComponent implements OnInit, OnDestroy {
   }
 
   onSave = () => {
-    this.eventService.emitEvent(Events.GENDER, this.form.value, this.action);
-    toConsole('onSave form value: ', this.form.value);
-    toConsole('onSave this.action: ', this.action);
-    toConsole('this.action === EntityActions.ADD: ', this.action === EntityActions.ADD);
+    if(R.isNotNil(this.form)) {
+      this.eventService.emitEvent(Events.GENDER, this.form.value, this.action);
+    }
   };
+
+  ngOnDestroy(): void {
+    this.genderSubscription.unsubscribe();
+  }
 }

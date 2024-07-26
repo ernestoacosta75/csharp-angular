@@ -1,11 +1,14 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActorDto, ActorEditDto } from '../models/actor-dto';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
 import * as R from 'ramda';
-import { Subscription, filter } from 'rxjs';
+import { Subscription, switchMap } from 'rxjs';
 import { Events } from '@utilities/events';
 import { EventService } from 'src/app/event-service';
+import { ActorService } from '../services/actor.service';
+import { EntityActions, parseApiErrors } from '@utilities/common-utils';
+import { Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-actor-form',
@@ -15,12 +18,20 @@ import { EventService } from 'src/app/event-service';
 export class ActorFormComponent implements OnInit, OnDestroy {
 
   @Input()
-  model: ActorEditDto;
+  model: ActorDto;
+
+  @Input()
+  action: string;
+
+  @Input()
+  errors: string[] = [];
 
   form: FormGroup;
-  eventsSubscription: Subscription = new Subscription();
+  actorsSubscription: Subscription = new Subscription();
 
-  constructor(private formBuilder: FormBuilder, private dateAdapter: DateAdapter<Date>, private eventService: EventService) {
+  constructor(private formBuilder: FormBuilder, private dateAdapter: DateAdapter<Date>, 
+              private eventService: EventService, private actorService: ActorService,
+              private router: Router) {
     this.dateAdapter.setLocale('en-GB');
   }
   ngOnInit(): void {
@@ -51,8 +62,25 @@ export class ActorFormComponent implements OnInit, OnDestroy {
       this.form.patchValue(R.set(archiveLens, R.path(['payload'], imageSelectedEvent), this.form.value));  
     });
 
-    this.eventsSubscription.add(onMarkdownChanged);
-    this.eventsSubscription.add(onImageSelected);
+    const onActorEvent = this.eventService.onEvent(Events.ACTOR)
+    .pipe(      
+      switchMap((actorEvent: any) => {
+        if(actorEvent.action === EntityActions.ADD) {
+          return this.actorService.create(R.path<ActorDto>(['payload'], actorEvent));
+        }
+        else if(actorEvent.action === EntityActions.UPDATE) {
+          return this.actorService.update(this.model.id, R.path<ActorDto>(['payload'], actorEvent));
+        }
+      })
+    )
+    .subscribe({
+      next: () => this.router.navigateByUrl('/actors'),
+      error: (err) => this.errors = parseApiErrors(err)
+    });
+ 
+    this.actorsSubscription.add(onMarkdownChanged);
+    this.actorsSubscription.add(onImageSelected);
+    this.actorsSubscription.add(onActorEvent);
   }
 
   onArchiveSelected = (file: File) => {
@@ -60,10 +88,14 @@ export class ActorFormComponent implements OnInit, OnDestroy {
     this.form.patchValue(R.set(archiveLens, file, this.form.value));
   };
 
-  onSave = () => this.eventService.emitEvent(Events.ACTOR, this.form.value); // this.submitForm.emit(this.form.value);
+  onSave = () => {
+    if(R.isNotNil(this.form)) {
+      this.eventService.emitEvent(Events.ACTOR, this.form.value, this.action);
+    }
+  }
 
   ngOnDestroy(): void {
-    this.eventsSubscription.unsubscribe();
+    this.actorsSubscription.unsubscribe();
   }
 
 }
