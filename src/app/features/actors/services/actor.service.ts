@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { Observable } from 'rxjs';
 import { ActorDto } from '../models/actor-dto';
+import * as R from 'ramda';
+import { formatDate } from '@utilities/common-utils';
 
 @Injectable({
   providedIn: 'root'
@@ -22,9 +24,31 @@ export class ActorService {
 
   getById = (id: string): Observable<ActorDto> => this.http.get<ActorDto>(`${this.apiUrl}/${id}`);
 
-  create = (actor: ActorDto) => this.http.post<ActorDto>(this.apiUrl, actor);
+  create = (actor: ActorDto) => {
+    const formData = this.buildFormData(actor);
+    return this.http.post<ActorDto>(this.apiUrl, formData);
+  }
 
   update = (id:string,  actor: ActorDto): Observable<ActorDto> => this.http.put<ActorDto>(`${this.apiUrl}/${id}`, actor);
 
   delete = (id: string) => this.http.delete(`${this.apiUrl}/${id}`);
+
+  private buildFormData = (actor: ActorDto): FormData => {
+    const formData = new FormData();
+    formData.append('name', R.path(['name'], actor));
+
+    if(actor.biography) {
+      formData.append('biography', R.path(['biography'], actor));
+    }
+
+    if(actor.birthDate) {
+      formData.append('birthDate', formatDate(R.path(['birthDate'], actor)));
+    }
+
+    if (actor.picture) {
+      formData.append('picture', actor.picture);
+    }
+    
+    return formData;
+  }
 }

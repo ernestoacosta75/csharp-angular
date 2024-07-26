@@ -5,6 +5,7 @@ import { HttpResponse } from '@angular/common/http';
 import * as R from 'ramda';
 import { toConsole } from '@utilities/common-utils';
 import Swal from 'sweetalert2';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-actors-index',

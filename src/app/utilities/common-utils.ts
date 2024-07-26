@@ -85,6 +85,28 @@ export const showPopup = (title: string, text: string, icon: SweetAlertIcon, sho
   showCancelButton: showCancelBt
 })
 
+export const formatDate = (date: Date) => {
+  const format = new Intl.DateTimeFormat(
+    'en',
+    {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    }
+  );
+
+  // taking the array returned by format.formatToParts(date)
+  // and destructuring the first three objects  in the array,
+  // that correspond to month, day, and yer. 
+  const [
+    {value: month},,
+    {value: day},,
+    {value: year}
+  ] = format.formatToParts(date);
+
+  return `${year}-${month}-${day}`;
+}
+
 export class EntityActions {
   static readonly ADD: string = 'Add';
   static readonly UPDATE: string = 'Update';

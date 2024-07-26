@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { toBase64, toConsole } from '@utilities/common-utils';
 import { Events } from '@utilities/events';
 import * as R from 'ramda';
@@ -13,9 +13,6 @@ export class InputImgComponent {
 
   @Input()
   currentImageUrl: string;
-  
-  @Output()
-  selectArchive: EventEmitter<File> = new EventEmitter<File>();
 
   imageBase64: string;
 
@@ -24,6 +21,9 @@ export class InputImgComponent {
   }
 
   onChange = (evt: any) => {
+    evt.stopPropagation();
+    evt.preventDefault();
+    
     const isFilesLengthGreaterThanZero = (evt) => R.pathOr(0, ['target', 'files', 'length'], evt) > 0;
 
     if (isFilesLengthGreaterThanZero(evt)) {

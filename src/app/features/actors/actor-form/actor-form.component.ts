@@ -1,14 +1,14 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ActorDto, ActorEditDto } from '../models/actor-dto';
+import { ActorDto } from '../models/actor-dto';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
 import * as R from 'ramda';
-import { Subscription, switchMap } from 'rxjs';
+import { EMPTY, Subscription, switchMap } from 'rxjs';
 import { Events } from '@utilities/events';
 import { EventService } from 'src/app/event-service';
 import { ActorService } from '../services/actor.service';
-import { EntityActions, parseApiErrors } from '@utilities/common-utils';
-import { Route, Router } from '@angular/router';
+import { EntityActions, parseApiErrors, toConsole } from '@utilities/common-utils';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-actor-form',
@@ -27,6 +27,7 @@ export class ActorFormComponent implements OnInit, OnDestroy {
   errors: string[] = [];
 
   form: FormGroup;
+  archiveSelectedEvt: string = '';
   actorsSubscription: Subscription = new Subscription();
 
   constructor(private formBuilder: FormBuilder, private dateAdapter: DateAdapter<Date>, 
@@ -42,7 +43,7 @@ export class ActorFormComponent implements OnInit, OnDestroy {
       birthDate: ['', {
         validators: [Validators.required]
       }],
-      archive: '',
+      picture: '',
       biography: ''
     });
 
@@ -53,12 +54,13 @@ export class ActorFormComponent implements OnInit, OnDestroy {
     const onMarkdownChanged = this.eventService.onEvent(Events.MARKDOWN_CHANGE)
     .subscribe((markdownEvent: any) => {
       const biographyLens = R.lensPath(['biography']);
-      this.form.patchValue(R.set(biographyLens, R.path(['payload'], markdownEvent), this.form.value));
+      this.form.patchValue(R.set(biographyLens, R.path(['payload'], markdownEvent), this.form.value));      
     });
 
     const onImageSelected = this.eventService.onEvent(Events.IMAGE_SELECTED)
     .subscribe((imageSelectedEvent: any) => {
-      const archiveLens = R.lensPath(['archive']);
+      toConsole('Image selected event received:', imageSelectedEvent);
+      const archiveLens = R.lensPath(['picture']);
       this.form.patchValue(R.set(archiveLens, R.path(['payload'], imageSelectedEvent), this.form.value));  
     });
 
@@ -71,6 +73,8 @@ export class ActorFormComponent implements OnInit, OnDestroy {
         else if(actorEvent.action === EntityActions.UPDATE) {
           return this.actorService.update(this.model.id, R.path<ActorDto>(['payload'], actorEvent));
         }
+
+        return EMPTY;
       })
     )
     .subscribe({
@@ -83,19 +87,13 @@ export class ActorFormComponent implements OnInit, OnDestroy {
     this.actorsSubscription.add(onActorEvent);
   }
 
-  onArchiveSelected = (file: File) => {
-    const archiveLens = R.lensPath(['archive']);
-    this.form.patchValue(R.set(archiveLens, file, this.form.value));
-  };
-
   onSave = () => {
-    if(R.isNotNil(this.form)) {
-      this.eventService.emitEvent(Events.ACTOR, this.form.value, this.action);
+    if(R.isNotNil(this.form) && this.form.valid) {
+      this.eventService.emitEvent(Events.ACTOR, this.form.value, EntityActions.ADD);
     }
   }
 
   ngOnDestroy(): void {
     this.actorsSubscription.unsubscribe();
   }
-
 }
