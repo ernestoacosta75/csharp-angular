@@ -34,3 +34,7 @@ mat-form-field {
     width: 100%;
     margin-top: 1rem;
 }
+
+.index-table a {
+    margin-right: 1rem;
+}
