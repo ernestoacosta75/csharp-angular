@@ -6,16 +6,17 @@ import { EventService } from 'src/app/event-service';
 import { Events } from '@utilities/events';
 import { ActorService } from '../services/actor.service';
 import * as R from 'ramda';
-import { toConsole } from '@utilities/common-utils';
+import { EntityActions, toConsole } from '@utilities/common-utils';
 
 @Component({
   selector: 'app-edit-actor',
   templateUrl: './edit-actor.component.html',
-  styleUrl: './edit-actor.component.css'
+  styleUrls: ['./edit-actor.component.css']
 })
 export class EditActorComponent implements OnInit, OnDestroy {
 
   model: ActorDto;
+  formAction: string = EntityActions.UPDATE;
 
   actorSubscription: Subscription = new Subscription();
   
@@ -30,22 +31,25 @@ export class EditActorComponent implements OnInit, OnDestroy {
       switchMap(params => this.actorService.getById(R.path(['id'], params)))
     )
     .subscribe({
-      next: (actor: ActorDto) => this.model = actor,
+      next: (actor: ActorDto) => {
+        this.model = actor;
+        this.eventService.emitEvent(Events.ACTOR, this.model, this.formAction);
+      },
       error: (error) => { 
         toConsole('Error getting actor: ', error);
         this.router.navigate(['/actors']);
       }
     });
 
-    const onActorEdited = this.eventService.onEvent(Events.ACTOR)
-    .subscribe((actorEvent: any) => {
-      this.router.navigateByUrl('/actors');
-    });
+    // const onActorEdited = this.eventService.onEvent(Events.ACTOR)
+    // .subscribe((actorEvent: any) => {
+    //   this.router.navigateByUrl('/actors');
+    // });
 
-    this.actorSubscription.add(onActorEdited);
+    // this.actorSubscription.add(onActorEdited);
   }
 
   ngOnDestroy(): void {
-    this.actorSubscription.unsubscribe();
+    // this.actorSubscription.unsubscribe();
   }
 }

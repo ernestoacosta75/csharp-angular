@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-actor-form',
   templateUrl: './actor-form.component.html',
-  styleUrl: './actor-form.component.css'
+  styleUrls: ['./actor-form.component.css']
 })
 export class ActorFormComponent implements OnInit, OnDestroy {
 
@@ -40,7 +40,7 @@ export class ActorFormComponent implements OnInit, OnDestroy {
       name: ['', {
         validators: [Validators.required]
       }],
-      birthDate: ['', {
+      dateOfBirth: ['', {
         validators: [Validators.required]
       }],
       picture: '',
@@ -71,7 +71,8 @@ export class ActorFormComponent implements OnInit, OnDestroy {
           return this.actorService.create(R.path<ActorDto>(['payload'], actorEvent));
         }
         else if(actorEvent.action === EntityActions.UPDATE) {
-          return this.actorService.update(this.model.id, R.path<ActorDto>(['payload'], actorEvent));
+          this.form.patchValue(R.path<ActorDto>(['payload'], actorEvent));
+          // this.actorService.update(this.model.id, R.path<ActorDto>(['payload'], actorEvent));
         }
 
         return EMPTY;
@@ -89,7 +90,17 @@ export class ActorFormComponent implements OnInit, OnDestroy {
 
   onSave = () => {
     if(R.isNotNil(this.form) && this.form.valid) {
-      this.eventService.emitEvent(Events.ACTOR, this.form.value, EntityActions.ADD);
+      if (this.action === EntityActions.ADD) {
+        this.eventService.emitEvent(Events.ACTOR, this.form.value, EntityActions.ADD);
+      }
+
+      if (this.action === EntityActions.UPDATE) {
+        this.actorService.update(this.model.id, this.form.value)
+        .subscribe({
+          next: () => this.router.navigateByUrl('/actors'),
+          error: (err) => this.errors = parseApiErrors(err)
+        });
+      }
     }
   }
 
