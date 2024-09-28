@@ -29,7 +29,10 @@ export class ActorService {
     return this.http.post<ActorDto>(this.apiUrl, formData);
   }
 
-  update = (id:string,  actor: ActorDto): Observable<ActorDto> => this.http.put<ActorDto>(`${this.apiUrl}/${id}`, actor);
+  update = (id:string,  actor: ActorDto): Observable<ActorDto> => {
+    const formData = this.buildFormData(actor);
+    return this.http.put<ActorDto>(`${this.apiUrl}/${id}`, formData);
+  }
 
   delete = (id: string) => this.http.delete(`${this.apiUrl}/${id}`);
 

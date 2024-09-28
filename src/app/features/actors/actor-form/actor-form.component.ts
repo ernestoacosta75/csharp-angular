@@ -28,6 +28,7 @@ export class ActorFormComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
   archiveSelectedEvt: string = '';
+  imageChanged: boolean = false;
   actorsSubscription: Subscription = new Subscription();
 
   constructor(private formBuilder: FormBuilder, private dateAdapter: DateAdapter<Date>, 

@@ -86,6 +86,8 @@ export const showPopup = (title: string, text: string, icon: SweetAlertIcon, sho
 })
 
 export const formatDate = (date: Date) => {
+  date = new Date(date);
+  
   const format = new Intl.DateTimeFormat(
     'en',
     {
