@@ -1,4 +1,5 @@
 export interface CinemaDto {
+    id?: string;
     name: string;
     latitude: number;
     longitude: number;

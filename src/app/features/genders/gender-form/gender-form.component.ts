@@ -28,7 +28,8 @@ export class GenderFormComponent implements OnInit, OnDestroy {
   form: FormGroup;
   genderSubscription: Subscription = new Subscription();
   
-  constructor(private formBuilder: FormBuilder, private eventService: EventService, private genderService: GenderService, private router: Router) {
+  constructor(private formBuilder: FormBuilder, private eventService: EventService, 
+              private genderService: GenderService, private router: Router) {
     
   }
   ngOnInit(): void {
