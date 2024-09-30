@@ -6,6 +6,7 @@ export interface CinemaDto {
 }
 
 export interface CinemaEditDto {
+    id?: string;
     name: string;
     latitude: number;
     longitude: number;

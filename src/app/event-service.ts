@@ -12,9 +12,9 @@ export class EventService {
   constructor() { }
 
   emitEvent = (title: string, payload?: any, action?: string): void => {
-    toConsole('EventService emitEvent title: ', title);
-    toConsole('EventService emitEvent payload: ', payload);
-    toConsole('EventService emitEvent action: ', action);
+    // toConsole('EventService emitEvent title: ', title);
+    // toConsole('EventService emitEvent payload: ', payload);
+    // toConsole('EventService emitEvent action: ', action);
     this.eventSubject.next({ title, payload, action });
   }
 

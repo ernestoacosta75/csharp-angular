@@ -21,6 +21,9 @@ export class CinemaFormComponent implements OnInit, OnDestroy {
   model: CinemaDto;
 
   @Input()
+  action: string;
+
+  @Input()
   errors: string[] = [];
 
   initialCoordinates: CoordinatesDto[] = [];
@@ -43,6 +46,12 @@ export class CinemaFormComponent implements OnInit, OnDestroy {
         validators: [Validators.required]
       }]
     });
+
+    if (this.model !== undefined) {
+      this.form.patchValue(this.model);
+      this.initialCoordinates
+      .push({latitude: R.path(['latitude'], this.model), longitude: R.path(['longitude'], this.model)});
+    }
 
     const mapCoordinates = this.eventService.onEvent(Events.COORDINATES)
     .subscribe((mapCoordinatesEvent: any) => {
@@ -70,15 +79,10 @@ export class CinemaFormComponent implements OnInit, OnDestroy {
     });    
 
     this.cinemaSubscription.add(mapCoordinates);
-
-    if (this.model !== undefined) {
-      this.form.patchValue(this.model);
-      this.initialCoordinates
-      .push({latitude: R.path(['latitude'], this.model), longitude: R.path(['longitude'], this.model)});
-    }
+    this.cinemaSubscription.add(onCinemaEvent);
   }
 
-  onSave = () => this.eventService.emitEvent(Events.CINEMA, this.form.value); 
+  onSave = () => this.eventService.emitEvent(Events.CINEMA, this.form.value, this.action); 
   ngOnDestroy(): void {
     this.cinemaSubscription.unsubscribe();
   }

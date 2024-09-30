@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { Observable } from 'rxjs';
 import { CinemaDto } from '../models/cinema-dto';
+import { toConsole } from '@utilities/common-utils';
 
 @Injectable({
   providedIn: 'root'
