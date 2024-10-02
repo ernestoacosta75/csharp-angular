@@ -69,7 +69,10 @@ export class CinemaFormComponent implements OnInit, OnDestroy {
           return this.cinemaService.create(R.path<CinemaDto>(['payload'], cinemaEvent));
         }
         else if(cinemaEvent.action === EntityActions.UPDATE) {
-          return this.cinemaService.update(this.model.id, R.path<CinemaDto>(['payload'], cinemaEvent));
+          const payload: CinemaDto = R.path<CinemaDto>(['payload'], cinemaEvent);
+          payload.id = this.model.id;
+
+          return this.cinemaService.update(payload);
         }
       })
     )

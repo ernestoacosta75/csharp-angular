@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { Observable } from 'rxjs';
 import { CinemaDto } from '../models/cinema-dto';
-import { toConsole } from '@utilities/common-utils';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +24,7 @@ export class CinemaService {
 
   create = (cinema: CinemaDto) => this.http.post<CinemaDto>(this.apiUrl, cinema);
 
-  update = (id:string,  cinema: CinemaDto): Observable<CinemaDto> => this.http.put<CinemaDto>(`${this.apiUrl}/${id}`, cinema);
+  update = ( cinema: CinemaDto): Observable<CinemaDto> => this.http.put<CinemaDto>(this.apiUrl, cinema);
 
   delete = (id: string) => this.http.delete(`${this.apiUrl}/${id}`);
 }
