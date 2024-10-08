@@ -1,8 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EventService } from 'src/app/event-service';
-import { ActorService } from '../services/actor.service';
-import { EntityActions } from '@utilities/common-utils';
+import { EntityActions } from '@shared/utilities/common-utils';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { actorsFeature } from '../../../store/actor/actors.reducer';
+import { ActorService } from 'src/app/apis/actor.service';
 
 @Component({
   selector: 'app-new-actor',
@@ -12,13 +15,15 @@ import { EntityActions } from '@utilities/common-utils';
 export class NewActorComponent implements OnInit, OnDestroy {
 
   errors: string [] = [];
+  errors$: Observable<string[]>;
   formAction: string = EntityActions.ADD;
   
-  constructor(private router: Router, private eventService: EventService, private actorService: ActorService) {
+  constructor(private router: Router, private eventService: EventService, 
+              private actorService: ActorService, private store: Store) {
 
   }
   ngOnInit(): void {
-
+    this.errors$ = this.store.select(actorsFeature.selectErrors);
   }
 
   ngOnDestroy(): void {

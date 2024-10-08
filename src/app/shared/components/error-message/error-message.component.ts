@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-import { getValidatorErrorMessage } from '../../../utilities/validators-utils';
+import { getValidatorErrorMessage } from '../../utilities/validators-utils';
 
 @Component({
   selector: '[app-error-message]',

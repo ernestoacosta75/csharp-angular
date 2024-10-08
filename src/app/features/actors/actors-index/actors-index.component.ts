@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActorDto } from '../models/actor-dto';
-import { ActorService } from '../services/actor.service';
-import { HttpResponse } from '@angular/common/http';
-import * as R from 'ramda';
-import { toConsole } from '@utilities/common-utils';
+import { ActorDto } from '@types/actor/actor-dto';
 import Swal from 'sweetalert2';
 import { PageEvent } from '@angular/material/paginator';
+import { Store } from '@ngrx/store';
+import * as ActorsActions from '@store/actor/actors.actions';
+import { map, Observable } from 'rxjs';
+import { selectActorsList } from '@store/actor/actors.selectors';
 
 @Component({
   selector: 'app-actors-index',
@@ -14,21 +14,40 @@ import { PageEvent } from '@angular/material/paginator';
 })
 export class ActorsIndexComponent implements OnInit {
 
-  actors: ActorDto[];
+  // actors: ActorDto[];
+  actors$: Observable<ActorDto[]>;
+  loading$: Observable<boolean>;
+  errors$: Observable<string[]>;
   columnsToDisplay = ['name', 'actions'];
   pageSizeOptions = [5, 10, 20, 50];
   recordsTotalCount: number = 0;
   recordsAmountToShow = 10;
   currentPage = 1;
 
-  constructor(private actorService: ActorService) {
+  constructor(private store: Store<{ actors: ActorDto[]}>) {
 
   }
 
   ngOnInit(): void {
-    this.loadRecords(this.currentPage, this.recordsAmountToShow);
-  }
+    this.actors$ = this.store.select(selectActorsList)
+    .pipe(
+    map(({ actors }) => actors)
+    );
 
+    this.loading$ = this.store.select(selectActorsList)
+    .pipe(
+    map(({ loading }) => loading)
+    );
+
+    this.errors$ = this.store.select(selectActorsList)
+    .pipe(
+    map(({ errors }) => errors)
+    );
+    
+    this.store.dispatch(ActorsActions.loadActors({ page: this.currentPage, itemsToShowAmount: this.recordsAmountToShow}));
+    // this.loadRecords(this.currentPage, this.recordsAmountToShow);
+  }
+/*
   loadRecords = (page: number, itemsToShowAmount: number) => {
     this.actorService.getAll(page, itemsToShowAmount)
     .subscribe({
@@ -41,13 +60,14 @@ export class ActorsIndexComponent implements OnInit {
       }
     });  
   }
-
+*/
   updatePagination = (data: PageEvent) => {
     this.recordsAmountToShow = data.pageSize;
     this.currentPage = data.pageIndex + 1;
-    this.loadRecords(this.currentPage, this.recordsAmountToShow);
+    // this.loadRecords(this.currentPage, this.recordsAmountToShow);
+    this.store.dispatch(ActorsActions.loadActors({ page: this.currentPage, itemsToShowAmount: this.recordsAmountToShow}));
   }
-
+/*
   delete = (id: string) => {
     this.actorService.delete(id)
     .subscribe({
@@ -56,6 +76,10 @@ export class ActorsIndexComponent implements OnInit {
       },
       error: (error) => toConsole('Error deleting actor: ', error)
     });
+  }
+*/
+  delete = (actorId: string) => {
+    this.store.dispatch(ActorsActions.deleteActor({ id: actorId }));
   }
 
   show = (id: string) => Swal.fire({

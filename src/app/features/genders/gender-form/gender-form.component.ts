@@ -1,9 +1,9 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { GenderDto } from '../models/gender';
+import { GenderDto } from '../../../types/gender/gender';
 import { EventService } from 'src/app/event-service';
-import { Events } from '@utilities/events';
-import { EntityActions, parseApiErrors, toConsole } from '@utilities/common-utils';
+import { Events } from '@shared/utilities/events';
+import { EntityActions, parseApiErrors, toConsole } from '@shared/utilities/common-utils';
 import { Subscription, filter, switchMap, tap } from 'rxjs';
 import { GenderService } from '../services/gender.service';
 import * as R from 'ramda';

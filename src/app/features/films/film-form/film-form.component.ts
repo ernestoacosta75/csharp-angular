@@ -1,8 +1,8 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FilmEditDto } from '../models/film-dto';
+import { FilmEditDto } from '../../../types/film/film-dto';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EventService } from 'src/app/event-service';
-import { Events } from '@utilities/events';
+import { Events } from '@shared/utilities/events';
 import { Subscription } from 'rxjs';
 import * as R from 'ramda';
 import { MultipleSelectorDto } from '@shared/components/multiple-selector/models/multipleselectordto';

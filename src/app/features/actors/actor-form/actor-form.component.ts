@@ -1,14 +1,14 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ActorDto } from '../models/actor-dto';
+import { ActorDto } from '@types/actor/actor-dto';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
-import * as R from 'ramda';
-import { EMPTY, Subscription, switchMap } from 'rxjs';
-import { Events } from '@utilities/events';
+import { Observable, Subscription } from 'rxjs';
 import { EventService } from 'src/app/event-service';
-import { ActorService } from '../services/actor.service';
-import { EntityActions, parseApiErrors, toConsole } from '@utilities/common-utils';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { actorsFeature } from '../../../store/actor/actors.reducer';
+import { selectActorsList } from '@store/actor/actors.selectors';
+import * as ActorsActions from '@store/actor/actors.actions';
 
 @Component({
   selector: 'app-actor-form',
@@ -24,7 +24,10 @@ export class ActorFormComponent implements OnInit, OnDestroy {
   action: string;
 
   @Input()
-  errors: string[] = [];
+  errors$: Observable<string[]>;
+  //errors: string[] = [];
+
+  loading$!: Observable<boolean>;
 
   form: FormGroup;
   archiveSelectedEvt: string = '';
@@ -32,8 +35,8 @@ export class ActorFormComponent implements OnInit, OnDestroy {
   actorsSubscription: Subscription = new Subscription();
 
   constructor(private formBuilder: FormBuilder, private dateAdapter: DateAdapter<Date>, 
-              private eventService: EventService, private actorService: ActorService,
-              private router: Router) {
+              private eventService: EventService,
+              private router: Router, private store: Store) {
     this.dateAdapter.setLocale('en-GB');
   }
   ngOnInit(): void {
@@ -48,10 +51,23 @@ export class ActorFormComponent implements OnInit, OnDestroy {
       biography: ''
     });
 
-    if (this.model !== undefined) {
-      this.form.patchValue(this.model);
-    }
+    // Patching form values if editing an existing actor
+    this.store.select(selectActorsList)
+    .subscribe(({ actors }) => {
+      const actor = actors.find(a => a.id === this.model?.id);
+      
+      if (actor) {
+        this.form.patchValue(actor);
+      }
+    });
 
+    // if (this.model !== undefined) {
+    //   this.form.patchValue(this.model);
+    // }
+
+    // Selecting loading state
+    this.loading$ = this.store.select(actorsFeature.selectLoading);
+/*
     const onMarkdownChanged = this.eventService.onEvent(Events.MARKDOWN_CHANGE)
     .subscribe((markdownEvent: any) => {
       const biographyLens = R.lensPath(['biography']);
@@ -86,10 +102,21 @@ export class ActorFormComponent implements OnInit, OnDestroy {
  
     this.actorsSubscription.add(onMarkdownChanged);
     this.actorsSubscription.add(onImageSelected);
-    this.actorsSubscription.add(onActorEvent);
+    this.actorsSubscription.add(onActorEvent);*/
   }
 
   onSave = () => {
+    if(this.form.valid) {
+      const actor = this.form.value;
+
+      if(this.model?.id) {
+        this.store.dispatch(ActorsActions.updateActor({ id: this.model.id, actor }));
+      }
+      else {
+        this.store.dispatch(ActorsActions.addActor({ actor }));
+      }
+    }
+    /*
     if(R.isNotNil(this.form) && this.form.valid) {
       if (this.action === EntityActions.ADD) {
         this.eventService.emitEvent(Events.ACTOR, this.form.value, EntityActions.ADD);
@@ -102,7 +129,7 @@ export class ActorFormComponent implements OnInit, OnDestroy {
           error: (err) => this.errors = parseApiErrors(err)
         });
       }
-    }
+    }*/
   }
 
   ngOnDestroy(): void {

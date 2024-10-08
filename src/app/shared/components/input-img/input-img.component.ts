@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { toBase64, toConsole } from '@utilities/common-utils';
-import { Events } from '@utilities/events';
+import { toBase64, toConsole } from '@shared/utilities/common-utils';
+import { Events } from '@shared/utilities/events';
 import * as R from 'ramda';
 import { EventService } from 'src/app/event-service';
 

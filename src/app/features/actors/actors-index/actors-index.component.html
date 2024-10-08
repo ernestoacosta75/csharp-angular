@@ -2,12 +2,16 @@
 
 <button mat-flat-button color="primary" routerLink="/actors/create">Create</button>
 
-<app-generic-list [list]="actors">
+<div *ngIf="loading$ | async" class="loading-container">
+    <mat-spinner></mat-spinner>
+</div>
+
+<app-generic-list [list]="actors$ | async">
     <ng-container content>
         <table
             #table
             mat-table
-            [dataSource]="actors"
+            [dataSource]="actors$ | async"
             class="mat-elevation-z8 index-table">
  
             <ng-container matColumnDef="name">

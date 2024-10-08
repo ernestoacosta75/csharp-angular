@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { toConsole } from '@utilities/common-utils';
-import { Events } from '@utilities/events';
+import { toConsole } from '@shared/utilities/common-utils';
+import { Events } from '@shared/utilities/events';
 import {
   LeafletMouseEvent,
   Marker,

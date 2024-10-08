@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import * as R from 'ramda';
-import { readQueryParamsFromActivatedRoute } from '@utilities/common-utils';
+import { readQueryParamsFromActivatedRoute } from '@shared/utilities/common-utils';
 
 @Component({
   selector: 'app-film-filter',

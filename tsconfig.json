@@ -14,7 +14,19 @@
         "src/app/shared/*"
       ],
       "@utilities/*": [
-        "src/app/utilities/*"
+        "src/app/shared/utilities/*"
+      ],
+      "@apis/*": [
+        "src/app/apis/*"
+      ],
+      "@types/*": [
+        "src/app/types/*"
+      ],
+      "@core/*": [
+        "src/app/core/*"
+      ],
+      "@store/*": [
+        "src/app/store/*"
       ],
       "@environments/*": [
         "src/environments/*"

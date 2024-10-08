@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GenderDto } from '@features/genders/models/gender';
+import { GenderDto } from 'src/app/types/gender/gender';
 import { EventService } from 'src/app/event-service';
-import { EntityActions, toConsole } from '@utilities/common-utils';
+import { EntityActions, toConsole } from '@shared/utilities/common-utils';
 import { GenderService } from '../services/gender.service';
 import * as R from 'ramda';
 import { Subscription, switchMap } from 'rxjs';

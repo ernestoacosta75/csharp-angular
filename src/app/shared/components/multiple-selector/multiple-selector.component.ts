@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { MultipleSelectorDto } from './models/multipleselectordto';
 import * as R from 'ramda';
 import { EventService } from 'src/app/event-service';
-import { Events } from '@utilities/events';
+import { Events } from '@shared/utilities/events';
 
 @Component({
   selector: 'app-multiple-selector',

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { EntityActions } from '@utilities/common-utils';
+import { EntityActions } from '@shared/utilities/common-utils';
 import { EventService } from 'src/app/event-service';
 
 @Component({

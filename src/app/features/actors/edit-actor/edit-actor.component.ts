@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ActorDto } from '../models/actor-dto';
+import { ActorDto } from '../../../types/actor/actor-dto';
 import { Subscription, switchMap } from 'rxjs';
 import { EventService } from 'src/app/event-service';
-import { Events } from '@utilities/events';
-import { ActorService } from '../services/actor.service';
+import { Events } from '@shared/utilities/events';
 import * as R from 'ramda';
-import { EntityActions, toConsole } from '@utilities/common-utils';
+import { EntityActions, toConsole } from '@shared/utilities/common-utils';
+import { ActorService } from 'src/app/apis/actor.service';
 
 @Component({
   selector: 'app-edit-actor',

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { toConsole } from '@utilities/common-utils';
+import { toConsole } from '@shared/utilities/common-utils';
 import { Subject, filter } from 'rxjs';
 
 @Injectable({

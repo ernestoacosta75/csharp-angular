@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { CinemaDto } from '../models/cinema-dto';
+import { CinemaDto } from '../../../types/cinema/cinema-dto';
 import { CinemaService } from '../services/cinema.service';
 import { HttpResponse } from '@angular/common/http';
 import * as R from 'ramda';
-import { toConsole } from '@utilities/common-utils';
+import { toConsole } from '@shared/utilities/common-utils';
 import { PageEvent } from '@angular/material/paginator';
 import Swal from 'sweetalert2';
 

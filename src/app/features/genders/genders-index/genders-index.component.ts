@@ -1,7 +1,7 @@
-import { GenderDto } from '@features/genders/models/gender';
+import { GenderDto } from 'src/app/types/gender/gender';
 import { Component, OnInit } from '@angular/core';
 import { GenderService } from '../services/gender.service';
-import { toConsole } from '@utilities/common-utils';
+import { toConsole } from '@shared/utilities/common-utils';
 import { HttpResponse } from '@angular/common/http';
 import * as R from 'ramda';
 import { PageEvent } from '@angular/material/paginator';

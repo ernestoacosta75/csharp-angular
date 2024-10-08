@@ -9,6 +9,10 @@ import { NewActorComponent } from '@features/actors/new-actor/new-actor.componen
 import { SharedModule } from '@shared/shared.module';
 import { MaterialModule } from '@material/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { StoreModule } from '@ngrx/store';
+import { actorsFeature } from '@store/actor/actors.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { ActorsEffects } from '@store/actor/actors.effects';
 
 
 @NgModule({
@@ -23,7 +27,15 @@ import { ReactiveFormsModule } from '@angular/forms';
     ActorsModuleRoutingModule,
     SharedModule,
     MaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    StoreModule.forFeature(actorsFeature),
+    EffectsModule.forFeature([ActorsEffects])
+  ],
+  exports: [
+    ActorFormComponent,
+    ActorsIndexComponent,
+    EditActorComponent,
+    NewActorComponent
   ]
 })
 export class ActorsModule { }

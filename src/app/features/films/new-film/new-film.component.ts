@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Events } from '@utilities/events';
+import { Events } from '@shared/utilities/events';
 import { Subscription, filter } from 'rxjs';
 import { EventService } from 'src/app/event-service';
 import * as R from 'ramda';
-import { FilmDto } from '../models/film-dto';
-import { EntityActions, toConsole } from '@utilities/common-utils';
+import { FilmDto } from '../../../types/film/film-dto';
+import { EntityActions, toConsole } from '@shared/utilities/common-utils';
 
 @Component({
   selector: 'app-new-film',

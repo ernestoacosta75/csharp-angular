@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FilmEditDto } from '../models/film-dto';
+import { FilmEditDto } from '../../../types/film/film-dto';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventService } from 'src/app/event-service';
-import { Events } from '@utilities/events';
+import { Events } from '@shared/utilities/events';
 
 @Component({
   selector: 'app-edit-film',

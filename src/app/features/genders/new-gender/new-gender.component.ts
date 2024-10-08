@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { EventService } from 'src/app/event-service';
-import { EntityActions } from '@utilities/common-utils';
+import { EntityActions } from '@shared/utilities/common-utils';
 
 @Component({
   selector: 'app-new-gender',

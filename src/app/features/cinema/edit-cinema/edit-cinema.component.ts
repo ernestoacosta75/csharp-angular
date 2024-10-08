@@ -2,10 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, switchMap } from 'rxjs';
 import { EventService } from 'src/app/event-service';
-import { CinemaDto, CinemaEditDto } from '../models/cinema-dto';
+import { CinemaDto, CinemaEditDto } from '../../../types/cinema/cinema-dto';
 import { CinemaService } from '../services/cinema.service';
 import * as R from 'ramda';
-import { EntityActions, toConsole } from '@utilities/common-utils';
+import { EntityActions, toConsole } from '@shared/utilities/common-utils';
 
 @Component({
   selector: 'app-edit-cinema',

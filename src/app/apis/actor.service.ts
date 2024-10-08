@@ -2,9 +2,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { Observable } from 'rxjs';
-import { ActorDto } from '../models/actor-dto';
 import * as R from 'ramda';
-import { formatDate } from '@utilities/common-utils';
+import { formatDate } from '@shared/utilities/common-utils';
+import { ActorDto } from '../types/actor/actor-dto';
 
 @Injectable({
   providedIn: 'root'

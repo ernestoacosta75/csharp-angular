@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Events } from '@utilities/events';
+import { Events } from '@shared/utilities/events';
 import { EventService } from 'src/app/event-service';
 
 @Component({
