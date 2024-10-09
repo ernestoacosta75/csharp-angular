@@ -1,7 +1,7 @@
 export interface ActorDto {
     id?: string;
     name: string;
-    birthDate: Date;
+    dateOfBirth: Date;
     biography?: string;
     picture?: string | File;
 }

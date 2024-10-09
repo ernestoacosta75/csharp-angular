@@ -19,7 +19,7 @@
       "@apis/*": [
         "src/app/apis/*"
       ],
-      "@types/*": [
+      "@models/*": [
         "src/app/types/*"
       ],
       "@core/*": [

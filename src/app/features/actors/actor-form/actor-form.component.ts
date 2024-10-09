@@ -1,14 +1,18 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ActorDto } from '@types/actor/actor-dto';
+import { ActorDto } from '@models/actor/actor-dto';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
-import { Observable, Subscription } from 'rxjs';
+import { filter, map, Observable, Subscription } from 'rxjs';
 import { EventService } from 'src/app/event-service';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { actorsFeature } from '../../../store/actor/actors.reducer';
-import { selectActorsList } from '@store/actor/actors.selectors';
-import * as ActorsActions from '@store/actor/actors.actions';
+import { selectActorsListViewModel } from '@store/actor/actors.selectors';
+import * as ActorActions from '@store/actor/actors.actions';
+import * as ActorSelectors from '@store/actor/actors.selectors';
+import { Events } from '@shared/utilities/events';
+import { base64ToFile, toConsole } from '@shared/utilities/common-utils';
+import * as R from 'ramda';
 
 @Component({
   selector: 'app-actor-form',
@@ -23,12 +27,12 @@ export class ActorFormComponent implements OnInit, OnDestroy {
   @Input()
   action: string;
 
-  @Input()
-  errors$: Observable<string[]>;
+  // @Input()
+  // errors$: Observable<string[]>;
   //errors: string[] = [];
 
   loading$!: Observable<boolean>;
-
+  vm$ = this.store.select(ActorSelectors.selectActorsListViewModel);
   form: FormGroup;
   archiveSelectedEvt: string = '';
   imageChanged: boolean = false;
@@ -51,35 +55,28 @@ export class ActorFormComponent implements OnInit, OnDestroy {
       biography: ''
     });
 
-    // Patching form values if editing an existing actor
-    this.store.select(selectActorsList)
-    .subscribe(({ actors }) => {
-      const actor = actors.find(a => a.id === this.model?.id);
-      
-      if (actor) {
-        this.form.patchValue(actor);
-      }
-    });
-
-    // if (this.model !== undefined) {
-    //   this.form.patchValue(this.model);
-    // }
+    if (this.model !== undefined) {
+      this.form.patchValue(this.model);
+    }
 
     // Selecting loading state
     this.loading$ = this.store.select(actorsFeature.selectLoading);
-/*
-    const onMarkdownChanged = this.eventService.onEvent(Events.MARKDOWN_CHANGE)
-    .subscribe((markdownEvent: any) => {
-      const biographyLens = R.lensPath(['biography']);
-      this.form.patchValue(R.set(biographyLens, R.path(['payload'], markdownEvent), this.form.value));      
-    });
 
+/*
     const onImageSelected = this.eventService.onEvent(Events.IMAGE_SELECTED)
     .subscribe((imageSelectedEvent: any) => {
       toConsole('Image selected event received:', imageSelectedEvent);
       const archiveLens = R.lensPath(['picture']);
       this.form.patchValue(R.set(archiveLens, R.path(['payload'], imageSelectedEvent), this.form.value));  
     });
+
+    const onMarkdownChanged = this.eventService.onEvent(Events.MARKDOWN_CHANGE)
+    .subscribe((markdownEvent: any) => {
+      const biographyLens = R.lensPath(['biography']);
+      this.form.patchValue(R.set(biographyLens, R.path(['payload'], markdownEvent), this.form.value));      
+    });
+
+
 
     const onActorEvent = this.eventService.onEvent(Events.ACTOR)
     .pipe(      
@@ -101,19 +98,37 @@ export class ActorFormComponent implements OnInit, OnDestroy {
     });
  
     this.actorsSubscription.add(onMarkdownChanged);
-    this.actorsSubscription.add(onImageSelected);
-    this.actorsSubscription.add(onActorEvent);*/
+    
+    this.actorsSubscription.add(onActorEvent);
+    this.actorsSubscription.add(onImageSelected);*/
   }
 
   onSave = () => {
     if(this.form.valid) {
       const actor = this.form.value;
+      let updateActorPayload = null;
+      
+      if(this.model?.id) {  
+        this.store.select(ActorSelectors.selectActorsListViewModel)
+        .pipe(
+          map(vm => vm.actorImg)
+        )
+        .subscribe(actorImg => {
+          if (actorImg && actorImg.startsWith('data:')) {
+            const file = base64ToFile(updateActorPayload.picture, updateActorPayload.name.concat('_image.png'));
+            updateActorPayload = { ...actor, id: this.model.id, picture: file };
+          }
+        });
 
-      if(this.model?.id) {
-        this.store.dispatch(ActorsActions.updateActor({ id: this.model.id, actor }));
+        this.store.dispatch(ActorActions.updateActor({ id: this.model.id, actor: updateActorPayload }));
+/*
+        if (actor.biography) {
+          this.store.dispatch(ActorActions.updateActorBiography({ biography: actor.biography }));
+        }
+          */
       }
       else {
-        this.store.dispatch(ActorsActions.addActor({ actor }));
+        this.store.dispatch(ActorActions.addActor({ actor }));
       }
     }
     /*

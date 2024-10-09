@@ -44,12 +44,15 @@ export class ActorService {
       formData.append('biography', R.path(['biography'], actor));
     }
 
-    if(actor.birthDate) {
-      formData.append('birthDate', formatDate(R.path(['birthDate'], actor)));
+    if(actor.dateOfBirth) {
+      formData.append('dateOfBirth', formatDate(R.path(['dateOfBirth'], actor)));
     }
 
-    if (actor.picture) {
+    if (actor.picture instanceof File) {
       formData.append('picture', actor.picture);
+    }
+    else if(typeof actor.picture === 'string') {
+      formData.append('picture', null);
     }
     
     return formData;

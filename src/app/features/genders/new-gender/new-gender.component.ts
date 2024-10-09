@@ -1,4 +1,4 @@
-import { GenderService } from './../services/gender.service';
+import { GenderService } from '@apis/gender.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';

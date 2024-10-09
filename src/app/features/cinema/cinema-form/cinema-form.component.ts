@@ -1,4 +1,4 @@
-import { CinemaService } from './../services/cinema.service';
+import { CinemaService } from '@apis/cinema.service';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CoordinatesDto } from '@shared/components/map/models/coordinates';

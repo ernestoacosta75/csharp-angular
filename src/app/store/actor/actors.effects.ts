@@ -1,53 +1,71 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { ActorService } from "@apis/actor.service";
-import * as ActorsActions from 'src/app/store/actor/actors.actions';
+import * as ActorActions from 'src/app/store/actor/actors.actions';
 import { catchError, map, of, switchMap } from "rxjs";
 import * as R from 'ramda';
+import { Router } from "@angular/router";
 
 @Injectable()
 export class ActorsEffects {
 
-    constructor(private actions$: Actions, private actorsService: ActorService) {
+    constructor(private actions$: Actions, private actorsService: ActorService, private router: Router) {
 
     }
 
     loadActors$ = createEffect(() => this.actions$.pipe(
-        ofType(ActorsActions.loadActors),
+        ofType(ActorActions.loadActors),
         switchMap(action => this.actorsService.getAll(action.page, action.itemsToShowAmount)
         .pipe(
             map(response => {
                 const actors = R.path<any>(['body'], response);
-                return ActorsActions.loadActorsSucess({ actors })
+                return ActorActions.loadActorsSucess({ actors })
             }),
-            catchError(errors => of(ActorsActions.loadActorsFailure( { errors })))
+            catchError(errors => of(ActorActions.loadActorsFailure( { errors })))
+        ))
+    ));
+
+    loadActor$ = createEffect(() => this.actions$.pipe(
+        ofType(ActorActions.loadActor),
+        switchMap(action => this.actorsService.getById(action.id)
+        .pipe(
+            map(response => {
+                const actor = R.path<any>(['body'], response);
+                return ActorActions.loadActorSucess({ actor })
+            }),
+            catchError(errors => of(ActorActions.loadActorFailure( { errors })))
         ))
     ));
 
     addActors$ = createEffect(() => this.actions$.pipe(
-        ofType(ActorsActions.addActor),
+        ofType(ActorActions.addActor),
         switchMap(({ actor }) => this.actorsService.create(actor)
         .pipe(
-            map(() => ActorsActions.addActorSuccess({ actor })),
-            catchError(errors => of(ActorsActions.addActorFailure( { errors })))
+            map(() => ActorActions.addActorSuccess({ actor })),
+            catchError(errors => of(ActorActions.addActorFailure( { errors })))
         ))
     ));
 
     updateActors$ = createEffect(() => this.actions$.pipe(
-        ofType(ActorsActions.updateActor),
+        ofType(ActorActions.updateActor),
         switchMap(({ id, actor }) => this.actorsService.update(id, actor)
         .pipe(
-            map(() => ActorsActions.updateActorSuccess({ actor })),
-            catchError(errors => of(ActorsActions.updateActorFailure( { errors })))
+            map(() => {
+                this.router.navigate(['/actors']);
+                return ActorActions.updateActorSuccess();
+            }),
+            catchError(errors => {
+                return of(ActorActions.updateActorFailure( { errors }))
+            })
         ))
     ));
 
     deleteActors$ = createEffect(() => this.actions$.pipe(
-        ofType(ActorsActions.deleteActor),
+        ofType(ActorActions.deleteActor),
         switchMap(({ id }) => this.actorsService.delete(id)
         .pipe(
-            map(() => ActorsActions.deleteActorSuccess({ id })),
-            catchError(errors => of(ActorsActions.updateActorFailure( { errors })))
+            map(() => ActorActions.deleteActorSuccess({ id })),
+            catchError(errors => of(ActorActions.updateActorFailure( { errors })))
         ))
     ));
 }

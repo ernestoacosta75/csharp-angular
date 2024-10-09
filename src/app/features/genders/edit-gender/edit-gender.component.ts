@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GenderDto } from 'src/app/types/gender/gender';
 import { EventService } from 'src/app/event-service';
 import { EntityActions, toConsole } from '@shared/utilities/common-utils';
-import { GenderService } from '../services/gender.service';
+import { GenderService } from '@apis/gender.service';
 import * as R from 'ramda';
 import { Subscription, switchMap } from 'rxjs';
 @Component({

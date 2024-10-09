@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CinemaDto } from '../../../types/cinema/cinema-dto';
-import { CinemaService } from '../services/cinema.service';
+import { CinemaService } from '@apis/cinema.service';
 import { HttpResponse } from '@angular/common/http';
 import * as R from 'ramda';
 import { toConsole } from '@shared/utilities/common-utils';

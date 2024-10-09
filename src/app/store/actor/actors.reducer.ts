@@ -1,15 +1,17 @@
 import { createFeature, createReducer, on } from "@ngrx/store";
 import { ActorDto } from "../../types/actor/actor-dto";
-import * as ActorsActions from 'src/app/store/actor/actors.actions';
+import * as ActorActions from 'src/app/store/actor/actors.actions';
 
 interface State {
     actors: ActorDto[];
+    actorImg: string;
     loading: boolean;
     errors: string[] | null;
 }
 
 const initialState: State = {
     actors: [],
+    actorImg: null,
     loading: false,
     errors: null
 };
@@ -19,62 +21,111 @@ export const actorsFeature = createFeature({
     name: 'actors',
     reducer: createReducer(
         initialState,
-        on(ActorsActions.loadActors, (state) => ({
+        // Actors list
+        on(ActorActions.loadActors, (state) => ({
             ...state,
             loading: true,
             errors: []
         })),
-        on(ActorsActions.loadActorsSucess, (state, { actors }) => ({
+        on(ActorActions.loadActorsSucess, (state, { actors }) => ({
             ...state,
             actors,
             loading: false
         })),
-        on(ActorsActions.loadActorsFailure, (state, { errors }) => ({
+        on(ActorActions.loadActorsFailure, (state, { errors }) => ({
             ...state,
             errors,
             loading: false
         })),
-        on(ActorsActions.addActor, (state) => ({
+        // Single actor
+        on(ActorActions.loadActor, (state) => ({
             ...state,
             loading: true,
             errors: []
         })),
-        on(ActorsActions.addActorSuccess, (state, { actor }) => ({
+        on(ActorActions.loadActorSucess, (state, { actor }) => ({
+            ...state,
+            actors: [...state.actors, actor],
+            loading: false,
+            errors: []
+        })),
+        on(ActorActions.loadActorFailure, (state, { errors }) => ({
+            ...state,
+            errors,
+            loading: false
+        })),
+        // New actor
+        on(ActorActions.addActor, (state) => ({
+            ...state,
+            loading: true,
+            errors: []
+        })),
+        on(ActorActions.addActorSuccess, (state, { actor }) => ({
             ...state,
             actors: [...state.actors, actor],
             loading: false
         })),
-        on(ActorsActions.addActorFailure, (state, { errors }) => ({
+        on(ActorActions.addActorFailure, (state, { errors }) => ({
             ...state,
             errors,
             loading: false
         })),
-        on(ActorsActions.updateActor, (state) => ({
+        // Update actor
+        on(ActorActions.updateActor, (state) => ({
             ...state,
             loading: true,
             errors: []
         })),
-        on(ActorsActions.updateActorSuccess, (state, { actor }) => ({
+        on(ActorActions.updateActorSuccess, (state) => ({
+            ...state,
+            errors: [],
+            loading: false
+        })),
+        on(ActorActions.updateActorFailure, (state, { errors }) => ({
+            ...state,
+            errors,
+            loading: false
+        })),
+        // Update actor picture
+        on(ActorActions.updateActorPicture, (state, { picture }) => ({
+            ...state,
+            actorImg: picture,
+            errors: [],
+            loading: false
+        })),
+        on(ActorActions.updateActorPictureSuccess, (state, { actor }) => ({
+        ...state,
+        actors: state.actors.map(a => a.id === actor.id ? actor : a),
+        loading: false
+        })),
+        on(ActorActions.updateActorPictureFailure, (state, { errors }) => ({
+            ...state,
+            errors,
+            loading: false
+        })),
+        // Update actor biography
+        on(ActorActions.updateActorBiography, (state) => ({
+            ...state,
+            loading: true,
+            errors: []
+        })),
+        on(ActorActions.updateActorBiographySuccess, (state, { actor }) => ({
             ...state,
             actors: state.actors.map(a => a.id === actor.id ? actor : a),
             loading: false
         })),
-        on(ActorsActions.addActorFailure, (state, { errors }) => ({
-            ...state,
-            errors,
-            loading: false
-        })),
-        on(ActorsActions.deleteActor, (state) => ({
+        // Delete actor
+        on(ActorActions.deleteActor, (state) => ({
             ...state,
             loading: true,
             errors: []
         })),
-        on(ActorsActions.deleteActorSuccess, (state, { id }) => ({
+        on(ActorActions.deleteActorSuccess, (state, { id }) => ({
             ...state,
             actors: state.actors.filter(a => a.id !== id),
             loading: false
         })),
-        on(ActorsActions.addActorFailure, (state, { errors }) => ({
+        on(ActorActions.deleteActorFailure, (state, { errors }) => ({
             ...state,
             errors,
             loading: false

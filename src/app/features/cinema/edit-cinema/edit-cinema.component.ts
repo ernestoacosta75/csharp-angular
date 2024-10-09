@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, switchMap } from 'rxjs';
 import { EventService } from 'src/app/event-service';
 import { CinemaDto, CinemaEditDto } from '../../../types/cinema/cinema-dto';
-import { CinemaService } from '../services/cinema.service';
+import { CinemaService } from '@apis/cinema.service';
 import * as R from 'ramda';
 import { EntityActions, toConsole } from '@shared/utilities/common-utils';
 

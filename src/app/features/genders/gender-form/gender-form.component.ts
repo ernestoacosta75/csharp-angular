@@ -5,7 +5,7 @@ import { EventService } from 'src/app/event-service';
 import { Events } from '@shared/utilities/events';
 import { EntityActions, parseApiErrors, toConsole } from '@shared/utilities/common-utils';
 import { Subscription, filter, switchMap, tap } from 'rxjs';
-import { GenderService } from '../services/gender.service';
+import { GenderService } from '@apis/gender.service';
 import * as R from 'ramda';
 import { Router } from '@angular/router';
 

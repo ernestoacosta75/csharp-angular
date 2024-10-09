@@ -1,8 +1,10 @@
 import { Component, Input } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { toBase64, toConsole } from '@shared/utilities/common-utils';
 import { Events } from '@shared/utilities/events';
 import * as R from 'ramda';
 import { EventService } from 'src/app/event-service';
+import * as ActorActions from '@store/actor/actors.actions';
 
 @Component({
   selector: 'app-input-img',
@@ -14,9 +16,11 @@ export class InputImgComponent {
   @Input()
   currentImageUrl: string;
 
+  @Input() actorId: string; 
+
   imageBase64: string;
 
-  constructor(private eventService: EventService) {
+  constructor(private eventService: EventService, private store: Store) {
 
   }
 
@@ -28,11 +32,15 @@ export class InputImgComponent {
 
     if (isFilesLengthGreaterThanZero(evt)) {
       const file: File = R.prop(0, evt.target.files);
+      
       toBase64(file)
-      .then((value: string) => this.imageBase64 = value)
+      .then((value: string) => {
+        this.imageBase64 = value;
+        this.store.dispatch(ActorActions.updateActorPicture({ picture: this.imageBase64 }));
+      })
       .catch((err) => toConsole('Error: ',err));
 
-      this.eventService.emitEvent(Events.IMAGE_SELECTED, file);
+      // this.eventService.emitEvent(Events.IMAGE_SELECTED, file);
       this.currentImageUrl = null;
     }
   }

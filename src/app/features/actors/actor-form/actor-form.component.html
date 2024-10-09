@@ -1,4 +1,7 @@
-<app-show-errors [errors]="errors"></app-show-errors>
+<!-- <ng-container *ngIf="vm$ | async as vm">
+    <app-show-errors [errors]="vm.errors | async"></app-show-errors>
+</ng-container> -->
+
 
 <form 
     [formGroup]="form"
@@ -17,7 +20,7 @@
         <mat-error app-error-message [control]="form.get('dateOfBirth')!"></mat-error>
     </mat-form-field>
     
-    <app-input-img [currentImageUrl]="model?.picture"></app-input-img>
+    <app-input-img [currentImageUrl]="model?.picture" [actorId]="model?.id"></app-input-img>
 
     <app-input-markdown [markdownContent]="model?.biography"></app-input-markdown>
 

@@ -1,6 +1,6 @@
 import { GenderDto } from 'src/app/types/gender/gender';
 import { Component, OnInit } from '@angular/core';
-import { GenderService } from '../services/gender.service';
+import { GenderService } from '@apis/gender.service';
 import { toConsole } from '@shared/utilities/common-utils';
 import { HttpResponse } from '@angular/common/http';
 import * as R from 'ramda';

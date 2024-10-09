@@ -8,9 +8,34 @@ import { actorsFeature } from "./actors.reducer";
  // Here, the name of the feature selector is "selectActorsState"
  // where "actors" is the feature name.
  // The names of the child selectors are "selectActors", "selectLoading" and "selectErrors". 
-export const selectActorsList = createSelector(
+export const selectActorsListViewModel = createSelector(
     actorsFeature.selectActors,
     actorsFeature.selectLoading,
     actorsFeature.selectErrors,
-    (actors, loading, errors) => ({ actors, loading, errors })
+    actorsFeature.selectActorImg,
+    (actors, loading, errors, actorImg) => ({ actors, loading, errors, actorImg })
+);
+
+export const selectActorsDictionary = createSelector(
+    actorsFeature.selectActors,
+    (actors) => {
+        // Ensure that actors is defined and is an array
+        if (!actors || !Array.isArray(actors)) {
+            return {}; // Return an empty dictionary if actors are not valid
+        }
+        
+        return actors.reduce((acc, actor) => {
+            // Check if actor has an id
+            if (actor && actor.id) {
+                acc[actor.id] = actor;
+            }
+            return acc;
+        }, {} as { [id: string]: typeof actors[0]});
+    }
+);
+
+export const selectActorById = (id: string | number) => 
+createSelector(
+    selectActorsDictionary,
+    (actorsDictionary) => actorsDictionary[id]
 );

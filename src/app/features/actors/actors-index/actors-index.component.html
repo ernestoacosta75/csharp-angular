@@ -2,42 +2,45 @@
 
 <button mat-flat-button color="primary" routerLink="/actors/create">Create</button>
 
-<div *ngIf="loading$ | async" class="loading-container">
-    <mat-spinner></mat-spinner>
-</div>
+<ng-container *ngIf="vm$ | async as vm">
+    <!-- <pre>{{ vm.actors | json }}</pre> -->
+    <div *ngIf="vm.loading" class="loading-container">
+        <mat-spinner></mat-spinner>
+    </div>
 
-<app-generic-list [list]="actors$ | async">
-    <ng-container content>
-        <table
-            #table
-            mat-table
-            [dataSource]="actors$ | async"
-            class="mat-elevation-z8 index-table">
- 
-            <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef>Name</th>
-                <td mat-cell *matCellDef="let element">{{ element.name }}</td>
-            </ng-container>  
-            
-            <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef>Actions</th>
-                <td mat-cell *matCellDef="let element">
-                    <a mat-flat-button color="primary" routerLink="/actors/edit/{{ element.id }}">Edit</a>
-                    <button mat-flat-button 
-                        color="warn" 
-                        type="button"                         
-                        (click)="show(element.id)">Delete</button>
-                </td>
-            </ng-container>   
-            <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>         
-            <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>         
-        </table>
-
-        <mat-paginator 
-            [pageSizeOptions]="pageSizeOptions"
-            showFirstLastButtons
-            [length]="recordsTotalCount"
-            [pageSize]="recordsAmountToShow"
-            (page)="updatePagination($event)"></mat-paginator>
-    </ng-container>
-</app-generic-list>
+    <app-generic-list [list]="vm?.actors">
+        <ng-container content>
+            <table
+                #table
+                mat-table
+                [dataSource]="vm.actors"
+                class="mat-elevation-z8 index-table">
+     
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef>Name</th>
+                    <td mat-cell *matCellDef="let element">{{ element?.name }}</td>
+                </ng-container>  
+                
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef>Actions</th>
+                    <td mat-cell *matCellDef="let element">
+                        <a mat-flat-button color="primary" routerLink="/actors/edit/{{ element?.id }}">Edit</a>
+                        <button mat-flat-button 
+                            color="warn" 
+                            type="button"                         
+                            (click)="show(element.id)">Delete</button>
+                    </td>
+                </ng-container>   
+                <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>         
+                <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>         
+            </table>
+    
+            <mat-paginator 
+                [pageSizeOptions]="pageSizeOptions"
+                showFirstLastButtons
+                [length]="recordsTotalCount"
+                [pageSize]="recordsAmountToShow"
+                (page)="updatePagination($event)"></mat-paginator>
+        </ng-container>
+    </app-generic-list> <!-- -->
+</ng-container>
