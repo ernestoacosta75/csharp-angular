@@ -14,7 +14,7 @@ export const addActorSuccess = createAction('[Actor] Add Actor Success', props<{
 export const addActorFailure = createAction('[Actor] Add Actor Failure', props<{ errors: string[] }>());
 
 export const updateActor = createAction('[Actor] Update Actor', props<{ id: string, actor: ActorDto }>());
-export const updateActorSuccess = createAction('[Actor] Update Actor Success');
+export const updateActorSuccess = createAction('[Actor] Update Actor Success', props<{ actor: ActorDto }>());
 export const updateActorFailure = createAction('[Actor] Update Actor Failure', props<{ errors: string[] }>());
 
 export const deleteActor = createAction('[Actor] Delete Actor', props<{ id: string }>());

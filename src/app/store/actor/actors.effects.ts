@@ -52,7 +52,7 @@ export class ActorsEffects {
         .pipe(
             map(() => {
                 this.router.navigate(['/actors']);
-                return ActorActions.updateActorSuccess();
+                return ActorActions.updateActorSuccess({ actor });
             }),
             catchError(errors => {
                 return of(ActorActions.updateActorFailure( { errors }))

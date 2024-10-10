@@ -4,6 +4,7 @@ import * as ActorActions from 'src/app/store/actor/actors.actions';
 
 interface State {
     actors: ActorDto[];
+    actor: ActorDto;
     actorImg: string;
     loading: boolean;
     errors: string[] | null;
@@ -11,6 +12,7 @@ interface State {
 
 const initialState: State = {
     actors: [],
+    actor: null,
     actorImg: null,
     loading: false,
     errors: null
@@ -46,6 +48,7 @@ export const actorsFeature = createFeature({
         on(ActorActions.loadActorSucess, (state, { actor }) => ({
             ...state,
             actors: [...state.actors, actor],
+            actor: actor,
             loading: false,
             errors: []
         })),
@@ -55,14 +58,16 @@ export const actorsFeature = createFeature({
             loading: false
         })),
         // New actor
-        on(ActorActions.addActor, (state) => ({
+        on(ActorActions.addActor, (state, { actor }) => ({
             ...state,
+            actor: actor,
             loading: true,
             errors: []
         })),
         on(ActorActions.addActorSuccess, (state, { actor }) => ({
             ...state,
             actors: [...state.actors, actor],
+            actor: actor,
             loading: false
         })),
         on(ActorActions.addActorFailure, (state, { errors }) => ({
@@ -71,13 +76,15 @@ export const actorsFeature = createFeature({
             loading: false
         })),
         // Update actor
-        on(ActorActions.updateActor, (state) => ({
+        on(ActorActions.updateActor, (state, { actor }) => ({
             ...state,
+            actor: actor,
             loading: true,
             errors: []
         })),
-        on(ActorActions.updateActorSuccess, (state) => ({
+        on(ActorActions.updateActorSuccess, (state, { actor }) => ({
             ...state,
+            actor: actor,
             errors: [],
             loading: false
         })),
