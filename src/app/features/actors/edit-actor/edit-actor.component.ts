@@ -8,7 +8,7 @@ import * as R from 'ramda';
 import { EntityActions, toConsole } from '@shared/utilities/common-utils';
 import { ActorService } from 'src/app/apis/actor.service';
 import * as ActorsActions from '@store/actor/actors.actions';
-import * as ActorsSelectors from '@store/actor/actors.selectors';
+import * as ActorSelectors from '@store/actor/actors.selectors';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -39,11 +39,12 @@ export class EditActorComponent implements OnInit, OnDestroy {
         this.store.dispatch(ActorsActions.loadActor({ id: actorId}));
 
         // Selecting the actor from the store
-        return this.store.select(ActorsSelectors.selectActorById(actorId))
+        return this.store.select(ActorSelectors.selectActorsListViewModel)
         .pipe(
+          map(vm => vm.actor),
           map(actor => {
             if(actor) {
-              this.model = actor;
+              this.model = {...actor};
               toConsole('Actor: ', actor);
             }
             else {

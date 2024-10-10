@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActorDto } from '@models/actor/actor-dto';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
-import { filter, map, Observable, Subscription } from 'rxjs';
+import { filter, map, Observable, Subscription, take } from 'rxjs';
 import { EventService } from 'src/app/event-service';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -61,66 +61,37 @@ export class ActorFormComponent implements OnInit, OnDestroy {
 
     // Selecting loading state
     this.loading$ = this.store.select(actorsFeature.selectLoading);
-
-/*
-    const onImageSelected = this.eventService.onEvent(Events.IMAGE_SELECTED)
-    .subscribe((imageSelectedEvent: any) => {
-      toConsole('Image selected event received:', imageSelectedEvent);
-      const archiveLens = R.lensPath(['picture']);
-      this.form.patchValue(R.set(archiveLens, R.path(['payload'], imageSelectedEvent), this.form.value));  
-    });
-
-    const onMarkdownChanged = this.eventService.onEvent(Events.MARKDOWN_CHANGE)
-    .subscribe((markdownEvent: any) => {
-      const biographyLens = R.lensPath(['biography']);
-      this.form.patchValue(R.set(biographyLens, R.path(['payload'], markdownEvent), this.form.value));      
-    });
-
-
-
-    const onActorEvent = this.eventService.onEvent(Events.ACTOR)
-    .pipe(      
-      switchMap((actorEvent: any) => {
-        if(actorEvent.action === EntityActions.ADD) {
-          return this.actorService.create(R.path<ActorDto>(['payload'], actorEvent));
-        }
-        else if(actorEvent.action === EntityActions.UPDATE) {
-          this.form.patchValue(R.path<ActorDto>(['payload'], actorEvent));
-          // this.actorService.update(this.model.id, R.path<ActorDto>(['payload'], actorEvent));
-        }
-
-        return EMPTY;
-      })
-    )
-    .subscribe({
-      next: () => this.router.navigateByUrl('/actors'),
-      error: (err) => this.errors = parseApiErrors(err)
-    });
- 
-    this.actorsSubscription.add(onMarkdownChanged);
-    
-    this.actorsSubscription.add(onActorEvent);
-    this.actorsSubscription.add(onImageSelected);*/
   }
 
   onSave = () => {
     if(this.form.valid) {
       const actor = this.form.value;
-      let updateActorPayload = null;
+      let updateActorPayload = { ...actor, id: this.model?.id };
       
       if(this.model?.id) {  
+        // Handling the image first and afteward dispatching the action
+        this.vm$
+        .pipe(
+          map(vm => vm.actorImg),
+          filter(actorImg => actorImg && actorImg.startsWith('data:')),
+          take(1)
+        )
+        .subscribe(file => {
+          updateActorPayload.picture = file;
+            this.store.dispatch(ActorActions.updateActor({ id: this.model.id, actor: updateActorPayload }));
+        });
+/*
         this.store.select(ActorSelectors.selectActorsListViewModel)
         .pipe(
-          map(vm => vm.actorImg)
+          map(vm => vm.actorImg),
+          filter(actorImg => actorImg && actorImg.startsWith('data:'))
         )
         .subscribe(actorImg => {
-          if (actorImg && actorImg.startsWith('data:')) {
-            const file = base64ToFile(updateActorPayload.picture, updateActorPayload.name.concat('_image.png'));
-            updateActorPayload = { ...actor, id: this.model.id, picture: file };
-          }
+          const file = base64ToFile(actorImg, `${updateActorPayload.name}_image.png`);
+            updateActorPayload.picture = file;
+            this.store.dispatch(ActorActions.updateActor({ id: this.model.id, actor: updateActorPayload }));
         });
-
-        this.store.dispatch(ActorActions.updateActor({ id: this.model.id, actor: updateActorPayload }));
+*/        
 /*
         if (actor.biography) {
           this.store.dispatch(ActorActions.updateActorBiography({ biography: actor.biography }));
