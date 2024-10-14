@@ -47,9 +47,10 @@ export const actorsFeature = createFeature({
         })),
         on(ActorActions.loadActorSucess, (state, { actor }) => ({
             ...state,
-            actors: [...state.actors, actor],
-            actor: actor,
-            loading: false,
+            actors: state.actors.some(a => a.id === actor.id)
+            ? state.actors.map(a => a.id === actor.id ? actor : a)
+            : [...state.actors, actor],
+             loading: false,
             errors: []
         })),
         on(ActorActions.loadActorFailure, (state, { errors }) => ({
@@ -111,8 +112,12 @@ export const actorsFeature = createFeature({
             loading: false
         })),
         // Update actor biography
-        on(ActorActions.updateActorBiography, (state) => ({
+        on(ActorActions.updateActorBiography, (state, { id, biography }) => ({
             ...state,
+            actors: state.actors.map(actor =>
+                actor.id === id? {...actor, biography } : actor
+            ),
+            actor: state.actor && state.actor.id === id ? { ...state.actor, biography } : state.actor,
             loading: true,
             errors: []
         })),

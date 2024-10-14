@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { toBase64, toConsole } from '@shared/utilities/common-utils';
-import { Events } from '@shared/utilities/events';
 import * as R from 'ramda';
 import { EventService } from 'src/app/event-service';
 import * as ActorActions from '@store/actor/actors.actions';
@@ -39,8 +38,6 @@ export class InputImgComponent {
         this.store.dispatch(ActorActions.updateActorPicture({ picture: this.imageBase64 }));
       })
       .catch((err) => toConsole('Error: ',err));
-
-      // this.eventService.emitEvent(Events.IMAGE_SELECTED, file);
       this.currentImageUrl = null;
     }
   }

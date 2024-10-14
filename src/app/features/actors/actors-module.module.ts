@@ -13,6 +13,7 @@ import { StoreModule } from '@ngrx/store';
 import { actorsFeature } from '@store/actor/actors.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { ActorsEffects } from '@store/actor/actors.effects';
+import { NgrxFormsModule } from 'ngrx-forms';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { ActorsEffects } from '@store/actor/actors.effects';
     MaterialModule,
     ReactiveFormsModule,
     StoreModule.forFeature(actorsFeature),
-    EffectsModule.forFeature([ActorsEffects])
+    EffectsModule.forFeature([ActorsEffects]),
+    NgrxFormsModule
   ],
   exports: [
     ActorFormComponent,

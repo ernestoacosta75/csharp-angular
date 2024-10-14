@@ -27,6 +27,7 @@
     "@ngrx/store-devtools": "^18.0.2",
     "@sweetalert2/ngx-sweetalert2": "^12.4.0",
     "leaflet": "^1.9.4",
+    "ngrx-forms": "^8.0.0",
     "ngx-markdown": "^17.2.1",
     "ramda": "^0.30.0",
     "rxjs": "~7.8.0",

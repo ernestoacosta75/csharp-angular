@@ -10,6 +10,7 @@ import { ActorService } from 'src/app/apis/actor.service';
 import * as ActorsActions from '@store/actor/actors.actions';
 import * as ActorSelectors from '@store/actor/actors.selectors';
 import { Store } from '@ngrx/store';
+import { selectActorById } from '@store/actor/actors.selectors';
 
 @Component({
   selector: 'app-edit-actor',
@@ -36,12 +37,11 @@ export class EditActorComponent implements OnInit, OnDestroy {
         const actorId = R.path(['id'], params);
 
         // Dispatching an action to load the actor by Id
-        this.store.dispatch(ActorsActions.loadActor({ id: actorId}));
+        // this.store.dispatch(ActorsActions.loadActor({ id: actorId}));
 
         // Selecting the actor from the store
-        return this.store.select(ActorSelectors.selectActorsListViewModel)
+        return this.store.select(selectActorById(actorId))
         .pipe(
-          map(vm => vm.actor),
           map(actor => {
             if(actor) {
               this.model = {...actor};

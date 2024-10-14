@@ -2,17 +2,14 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActorDto } from '@models/actor/actor-dto';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
-import { filter, map, Observable, Subscription, take } from 'rxjs';
+import { map, Observable, Subscription, take } from 'rxjs';
 import { EventService } from 'src/app/event-service';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { actorsFeature } from '../../../store/actor/actors.reducer';
-import { selectActorsListViewModel } from '@store/actor/actors.selectors';
 import * as ActorActions from '@store/actor/actors.actions';
 import * as ActorSelectors from '@store/actor/actors.selectors';
-import { Events } from '@shared/utilities/events';
 import { base64ToFile, toConsole } from '@shared/utilities/common-utils';
-import * as R from 'ramda';
 
 @Component({
   selector: 'app-actor-form',
@@ -64,22 +61,29 @@ export class ActorFormComponent implements OnInit, OnDestroy {
   }
 
   onSave = () => {
-    if(this.form.valid) {
+    if(!this.form.valid) {
+      return;
+    }
+    else {
       const actor = this.form.value;
       let updateActorPayload = { ...actor, id: this.model?.id };
       
-      if(this.model?.id) {  
-        // Handling the image first and afteward dispatching the action
-        this.vm$
+      this.vm$
         .pipe(
           map(vm => vm.actorImg),
-          filter(actorImg => actorImg && actorImg.startsWith('data:')),
           take(1)
         )
         .subscribe(file => {
-          updateActorPayload.picture = file;
-            this.store.dispatch(ActorActions.updateActor({ id: this.model.id, actor: updateActorPayload }));
-        });
+          if (file && file.startsWith('data:')) {
+            const img = base64ToFile(file, `${updateActorPayload.name}_image.png`);
+            updateActorPayload = {...updateActorPayload, picture: img};
+          }
+          updateActorPayload.picture = file;          
+      });
+
+      if(this.model?.id) {  
+        // Handling the image first and afteward dispatching the action
+        
 /*
         this.store.select(ActorSelectors.selectActorsListViewModel)
         .pipe(
@@ -97,9 +101,12 @@ export class ActorFormComponent implements OnInit, OnDestroy {
           this.store.dispatch(ActorActions.updateActorBiography({ biography: actor.biography }));
         }
           */
+
+        // this.store.dispatch(ActorActions.updateActor({ id: this.model.id, actor: updateActorPayload }));
       }
       else {
-        this.store.dispatch(ActorActions.addActor({ actor }));
+        toConsole('New actor: ', updateActorPayload);
+        // this.store.dispatch(ActorActions.addActor({ actor }));
       }
     }
     /*

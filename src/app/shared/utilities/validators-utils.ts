@@ -3,6 +3,7 @@ import {
   ValidatorFn,
 } from '@angular/forms';
 import * as R from 'ramda';
+import { toConsole } from './common-utils';
 
 /**
  * This is a constant Map object that maps validator names to their error messages
@@ -110,6 +111,7 @@ export const getValidatorErrorMessage = (
   const validatorErrorsKey = messages.get(validatorName)?.validatorErrorsKey;
 
   if (validatorErrorsKey && control.errors) {
+    toConsole('Control: ', control);
     const args = validatorErrorsKey.map((name) => {
         const errorKey = Object.keys(control.errors).find(key => control.errors[key].hasOwnProperty(name));
 

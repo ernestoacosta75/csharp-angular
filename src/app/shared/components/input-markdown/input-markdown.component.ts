@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
-import { Events } from '@shared/utilities/events';
-import { EventService } from 'src/app/event-service';
+import { Store } from '@ngrx/store';
+import * as ActorActions from '@store/actor/actors.actions';
+import { actorsFeature } from '@store/actor/actors.reducer';
+import * as ActorSelectors from '@store/actor/actors.selectors';
 
 @Component({
   selector: 'app-input-markdown',
@@ -15,10 +17,16 @@ export class InputMarkdownComponent {
   @Input()
   textAreaPlaceholder: string = 'Text';
 
-  constructor(private eventService: EventService) {
+  actor$ = this.store.select(actorsFeature.selectActor);
+
+  constructor(private store: Store) {
 
   }
 
-  inputTextArea = () => this.eventService.emitEvent(Events.MARKDOWN_CHANGE, this.markdownContent);
-
+  inputTextArea = () =>  {
+    this.actor$
+    .subscribe(actor => {
+      this.store.dispatch(ActorActions.updateActorBiography({ id: actor.id, biography: this.markdownContent }));
+    });
+  }
 }
