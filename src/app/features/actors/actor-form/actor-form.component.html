@@ -1,12 +1,12 @@
-<!-- <ng-container *ngIf="vm$ | async as vm">
-    <app-show-errors [errors]="vm.errors | async"></app-show-errors>
-</ng-container> -->
+<ng-container *ngIf="errors$ | async as errors">
+    <app-show-errors [errors]="errors"></app-show-errors>
+</ng-container>
 
 
 <form 
     [formGroup]="form"
     (submit)="onSave()">
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" class="mb-4">
         <mat-label appAddRequired>Name</mat-label>
         <input matInput formControlName="name" required placeholder="Ex.: Drama">
         <mat-error app-error-message [control]="form.get('name')!"></mat-error>

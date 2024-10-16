@@ -25,7 +25,7 @@ export class ActorFormComponent implements OnInit, OnDestroy {
   action: string;
 
   // @Input()
-  // errors$: Observable<string[]>;
+  errors$: Observable<string[]>;
   //errors: string[] = [];
 
   loading$!: Observable<boolean>;
@@ -58,6 +58,9 @@ export class ActorFormComponent implements OnInit, OnDestroy {
 
     // Selecting loading state
     this.loading$ = this.store.select(actorsFeature.selectLoading);
+
+    // Selecting errors
+    this.errors$ = this.store.select(actorsFeature.selectErrors);
   }
 
   onSave = () => {
@@ -105,7 +108,18 @@ export class ActorFormComponent implements OnInit, OnDestroy {
         // this.store.dispatch(ActorActions.updateActor({ id: this.model.id, actor: updateActorPayload }));
       }
       else {
-        toConsole('New actor: ', updateActorPayload);
+        this.store.select(actorsFeature.selectActorBiography)
+        .subscribe({
+          next: (biography) => {
+            updateActorPayload.biography = biography;
+            toConsole('New actor: ', updateActorPayload);
+            // this.store.dispatch(ActorActions.addActor({ actor: updateActorPayload }));
+          },
+          error: (err) => {
+            toConsole('Error getting actor biography:', err);
+            this.store.dispatch(ActorActions.addActor({ actor: updateActorPayload }));
+          }
+        });
         // this.store.dispatch(ActorActions.addActor({ actor }));
       }
     }

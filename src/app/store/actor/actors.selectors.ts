@@ -14,7 +14,8 @@ export const selectActorsListViewModel = createSelector(
     actorsFeature.selectLoading,
     actorsFeature.selectErrors,
     actorsFeature.selectActorImg,
-    (actors, actor, loading, errors, actorImg) => ({ actors, actor, loading, errors, actorImg })
+    actorsFeature.selectActorBiography,
+    (actors, actor, loading, errors, actorImg, actorBiography) => ({ actors, actor, loading, errors, actorImg, actorBiography })
 );
 
 export const selectActorsDictionary = createSelector(

@@ -20,7 +20,7 @@ export class ErrorMessageComponent {
 
   get errorMessage() {
     if (this.control && this.control.errors) {
-      toConsole('this.control?.errors: ', this.control?.errors);
+      // toConsole('this.control?.errors: ', this.control?.errors);
       for (const validatorName in this.control.errors) {
         return getValidatorErrorMessage(validatorName, this.control.errors[validatorName]);
       }

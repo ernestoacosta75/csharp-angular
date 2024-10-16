@@ -6,6 +6,7 @@ interface State {
     actors: ActorDto[];
     actor: ActorDto;
     actorImg: string;
+    actorBiography: string;
     loading: boolean;
     errors: string[] | null;
 }
@@ -14,6 +15,7 @@ const initialState: State = {
     actors: [],
     actor: null,
     actorImg: null,
+    actorBiography: null,
     loading: false,
     errors: null
 };
@@ -112,20 +114,26 @@ export const actorsFeature = createFeature({
             loading: false
         })),
         // Update actor biography
-        on(ActorActions.updateActorBiography, (state, { id, biography }) => ({
-            ...state,
-            actors: state.actors.map(actor =>
-                actor.id === id? {...actor, biography } : actor
-            ),
-            actor: state.actor && state.actor.id === id ? { ...state.actor, biography } : state.actor,
-            loading: true,
-            errors: []
-        })),
-        on(ActorActions.updateActorBiographySuccess, (state, { actor }) => ({
-            ...state,
-            actors: state.actors.map(a => a.id === actor.id ? actor : a),
-            loading: false
-        })),
+        on(ActorActions.updateActorBiography, (state, { id, biography }) => {
+            if (id) {
+                return {
+                    ...state,
+                    actors: state.actors.map(actor =>
+                        actor.id === id ? { ...actor, biography } : actor
+                    ),
+                    actor: state.actor && state.actor.id === id ? { ...state.actor, biography } : state.actor,
+                    loading: true,
+                    errors: []
+                };
+            } else {
+                return {
+                    ...state,
+                    actorBiography: biography,
+                    loading: true,
+                    errors: []
+                };
+            }
+        }),
         // Delete actor
         on(ActorActions.deleteActor, (state) => ({
             ...state,
