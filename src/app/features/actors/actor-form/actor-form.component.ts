@@ -123,20 +123,6 @@ export class ActorFormComponent implements OnInit, OnDestroy {
         // this.store.dispatch(ActorActions.addActor({ actor }));
       }
     }
-    /*
-    if(R.isNotNil(this.form) && this.form.valid) {
-      if (this.action === EntityActions.ADD) {
-        this.eventService.emitEvent(Events.ACTOR, this.form.value, EntityActions.ADD);
-      }
-
-      if (this.action === EntityActions.UPDATE) {
-        this.actorService.update(this.model.id, this.form.value)
-        .subscribe({
-          next: () => this.router.navigateByUrl('/actors'),
-          error: (err) => this.errors = parseApiErrors(err)
-        });
-      }
-    }*/
   }
 
   ngOnDestroy(): void {
