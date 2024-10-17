@@ -80,12 +80,13 @@ export class ActorFormComponent implements OnInit, OnDestroy {
       if(this.model?.id) {  
         this.store.select(ActorSelectors.selectActorsListViewModel)
         .pipe(
-          map(vm => vm.actorImg),
-          filter(actorImg => actorImg && actorImg.startsWith('data:'))
+          map(({actorImg, actorBiography}) => ({actorImg, actorBiography})),
+          // filter(actorImg => actorImg && actorImg.startsWith('data:'))
         )
-        .subscribe(actorImg => {
+        .subscribe(({actorImg, actorBiography}) => {
           const file = base64ToFile(actorImg, `${updateActorPayload.name}_image.png`);
             updateActorPayload.picture = file;
+            updateActorPayload.biography = actorBiography;
             this.store.dispatch(ActorActions.updateActor({ id: this.model.id, actor: updateActorPayload }));
         });
       }

@@ -41,7 +41,10 @@ export class ActorsEffects {
         ofType(ActorActions.addActor),
         switchMap(({ actor }) => this.actorsService.create(actor)
         .pipe(
-            map(() => ActorActions.addActorSuccess({ actor })),
+            map(() => {
+                this.router.navigate(['/actors']);
+                return ActorActions.addActorSuccess({ actor })
+            }),
             catchError(errors => of(ActorActions.addActorFailure( { errors })))
         ))
     ));
