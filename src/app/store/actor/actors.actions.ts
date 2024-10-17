@@ -22,8 +22,5 @@ export const deleteActorSuccess = createAction('[Actor] Delete Actor Success', p
 export const deleteActorFailure = createAction('[Actor] Delete Actor Failure', props<{ errors: string[] }>());
 
 export const updateActorPicture = createAction('[Actor] Update Actor Picture', props<{ picture: string }>());
-export const updateActorPictureSuccess = createAction('[Actor] Update Actor Picture Success', props<{ actor: ActorDto }>());
-export const updateActorPictureFailure = createAction('[Actor] Update Actor Picture Failure', props<{ errors: string[] }>());
 
 export const updateActorBiography = createAction('[Actor] Update Actor Biography', props<{ id?: string, biography: string }>());
-export const updateActorBiographySuccess = createAction('[Actor] Update Actor Biography Success', props<{ actor: ActorDto }>());

@@ -103,16 +103,6 @@ export const actorsFeature = createFeature({
             errors: [],
             loading: false
         })),
-        on(ActorActions.updateActorPictureSuccess, (state, { actor }) => ({
-        ...state,
-        actors: state.actors.map(a => a.id === actor.id ? actor : a),
-        loading: false
-        })),
-        on(ActorActions.updateActorPictureFailure, (state, { errors }) => ({
-            ...state,
-            errors,
-            loading: false
-        })),
         // Update actor biography
         on(ActorActions.updateActorBiography, (state, { id, biography }) => {
             if (id) {

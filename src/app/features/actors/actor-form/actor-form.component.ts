@@ -2,9 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActorDto } from '@models/actor/actor-dto';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
-import { map, Observable, Subscription, take } from 'rxjs';
-import { EventService } from 'src/app/event-service';
-import { Router } from '@angular/router';
+import { filter, map, Observable, take } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { actorsFeature } from '../../../store/actor/actors.reducer';
 import * as ActorActions from '@store/actor/actors.actions';
@@ -24,20 +22,15 @@ export class ActorFormComponent implements OnInit, OnDestroy {
   @Input()
   action: string;
 
-  // @Input()
   errors$: Observable<string[]>;
-  //errors: string[] = [];
 
   loading$!: Observable<boolean>;
   vm$ = this.store.select(ActorSelectors.selectActorsListViewModel);
   form: FormGroup;
   archiveSelectedEvt: string = '';
   imageChanged: boolean = false;
-  actorsSubscription: Subscription = new Subscription();
-
-  constructor(private formBuilder: FormBuilder, private dateAdapter: DateAdapter<Date>, 
-              private eventService: EventService,
-              private router: Router, private store: Store) {
+  
+  constructor(private formBuilder: FormBuilder, private dateAdapter: DateAdapter<Date>, private store: Store) {
     this.dateAdapter.setLocale('en-GB');
   }
   ngOnInit(): void {
@@ -85,9 +78,6 @@ export class ActorFormComponent implements OnInit, OnDestroy {
       });
 
       if(this.model?.id) {  
-        // Handling the image first and afteward dispatching the action
-        
-/*
         this.store.select(ActorSelectors.selectActorsListViewModel)
         .pipe(
           map(vm => vm.actorImg),
@@ -98,14 +88,6 @@ export class ActorFormComponent implements OnInit, OnDestroy {
             updateActorPayload.picture = file;
             this.store.dispatch(ActorActions.updateActor({ id: this.model.id, actor: updateActorPayload }));
         });
-*/        
-/*
-        if (actor.biography) {
-          this.store.dispatch(ActorActions.updateActorBiography({ biography: actor.biography }));
-        }
-          */
-
-        // this.store.dispatch(ActorActions.updateActor({ id: this.model.id, actor: updateActorPayload }));
       }
       else {
         this.store.select(actorsFeature.selectActorBiography)
@@ -113,19 +95,18 @@ export class ActorFormComponent implements OnInit, OnDestroy {
           next: (biography) => {
             updateActorPayload.biography = biography;
             toConsole('New actor: ', updateActorPayload);
-            // this.store.dispatch(ActorActions.addActor({ actor: updateActorPayload }));
+            this.store.dispatch(ActorActions.addActor({ actor: updateActorPayload }));
           },
           error: (err) => {
             toConsole('Error getting actor biography:', err);
             this.store.dispatch(ActorActions.addActor({ actor: updateActorPayload }));
           }
         });
-        // this.store.dispatch(ActorActions.addActor({ actor }));
       }
     }
   }
 
   ngOnDestroy(): void {
-    this.actorsSubscription.unsubscribe();
+
   }
 }
