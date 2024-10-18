@@ -19,6 +19,7 @@ import { AutocompleteActorsComponent } from './components/autocomplete-actors/au
 import { HttpClientModule } from '@angular/common/http';
 import { ShowErrorsComponent } from './components/show-errors/show-errors.component';
 import { FormelementWrapperComponent } from './components/formelement-wrapper/formelement-wrapper.component';
+import { NamedateformComponent } from './components/sub-forms/namedateform/namedateform.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { FormelementWrapperComponent } from './components/formelement-wrapper/fo
     MultipleSelectorComponent,
     AutocompleteActorsComponent,
     ShowErrorsComponent,
-    FormelementWrapperComponent
+    FormelementWrapperComponent,
+    NamedateformComponent
   ],
   imports: [
     CommonModule,
@@ -56,7 +58,8 @@ import { FormelementWrapperComponent } from './components/formelement-wrapper/fo
     MultipleSelectorComponent,
     AutocompleteActorsComponent,
     ShowErrorsComponent,
-    FormelementWrapperComponent
+    FormelementWrapperComponent,
+    NamedateformComponent
   ]
 })
 export class SharedModule { }
