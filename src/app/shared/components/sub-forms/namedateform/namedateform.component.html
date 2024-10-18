@@ -1,0 +1,22 @@
+<div [formGroup]="form">
+    <ng-container *ngFor="let field of fields">
+      <app-formelement-wrapper>
+        <span label appAddRequired>{{ field.label }}</span>
+        <input
+          matInput
+          [formControlName]="field.controlName"
+          [placeholder]="field.placeholder"
+          [required]="field.required"
+          [type]="field.type || 'text'" 
+          content
+        />
+        <span error app-error-message [control]="form.get(field.controlName)!"></span>
+        
+        <ng-container *ngIf="field.type === 'date'">
+          <mat-datepicker-toggle matSuffix [for]="field.controlName"></mat-datepicker-toggle>
+          <mat-datepicker #field.controlName></mat-datepicker>
+        </ng-container>
+      </app-formelement-wrapper>
+    </ng-container>
+  </div>
+  
