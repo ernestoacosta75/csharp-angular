@@ -18,6 +18,7 @@ import { MultipleSelectorComponent } from './components/multiple-selector/multip
 import { AutocompleteActorsComponent } from './components/autocomplete-actors/autocomplete-actors.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ShowErrorsComponent } from './components/show-errors/show-errors.component';
+import { FormelementWrapperComponent } from './components/formelement-wrapper/formelement-wrapper.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { ShowErrorsComponent } from './components/show-errors/show-errors.compon
     MapComponent,
     MultipleSelectorComponent,
     AutocompleteActorsComponent,
-    ShowErrorsComponent
+    ShowErrorsComponent,
+    FormelementWrapperComponent
   ],
   imports: [
     CommonModule,
@@ -53,7 +55,8 @@ import { ShowErrorsComponent } from './components/show-errors/show-errors.compon
     MapComponent,
     MultipleSelectorComponent,
     AutocompleteActorsComponent,
-    ShowErrorsComponent
+    ShowErrorsComponent,
+    FormelementWrapperComponent
   ]
 })
 export class SharedModule { }
