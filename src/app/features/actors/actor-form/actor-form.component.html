@@ -45,35 +45,3 @@
         </div>        
     </form>
 </ng-container>
-
-<!-- <form 
-    [formGroup]="form"
-    (submit)="onSave()">
-    <mat-form-field appearance="outline" class="mb-4">
-        <mat-label appAddRequired>Name</mat-label>
-        <input matInput formControlName="name" required placeholder="Ex.: Drama">
-        <mat-error app-error-message [control]="form.get('name')!"></mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-        <mat-label appAddRequired>Birth date</mat-label>
-        <input matInput [matDatepicker]="birthDatePicker" required formControlName="dateOfBirth">
-        <mat-datepicker-toggle matSuffix [for]="birthDatePicker"></mat-datepicker-toggle>
-        <mat-datepicker #birthDatePicker></mat-datepicker>
-        <mat-error app-error-message [control]="form.get('dateOfBirth')!"></mat-error>
-    </mat-form-field>
-    
-    <app-input-img [currentImageUrl]="model?.picture" [actorId]="model?.id"></app-input-img>
-
-    <app-input-markdown [markdownContent]="model?.biography"></app-input-markdown>
-
-    <div>
-        <button 
-            mat-flat-button 
-            color="primary" 
-            type="submit"
-            [disabled]="form.invalid">Save</button>
-
-        <a mat-stroked-button class="button-form" routerLink="/actors">Cancel</a>
-    </div>
-</form> -->
