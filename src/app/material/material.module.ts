@@ -15,6 +15,10 @@ import { MatExpansionModule } from "@angular/material/expansion";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { DragDropModule } from "@angular/cdk/drag-drop";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { MatListModule } from '@angular/material/list';
+import { NgrxMatSelectViewAdapter } from './mat-select-view-adapter';
+import { CustomErrorStateMatcherDirective } from './error-state-matcher';
+import { MatListOptionFixDirective } from './mat-list-option-fix';
 
 
 const material = [
@@ -33,12 +37,22 @@ const material = [
   DragDropModule,
   MatExpansionModule,
   MatPaginatorModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatListModule
 ];
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    NgrxMatSelectViewAdapter,
+    CustomErrorStateMatcherDirective,
+    MatListOptionFixDirective,
+  ],
   imports: [material],
-  exports: [material]
+  exports: [
+    material,
+    NgrxMatSelectViewAdapter,
+    CustomErrorStateMatcherDirective,
+    MatListOptionFixDirective,
+  ]
 })
 export class MaterialModule { }

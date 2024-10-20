@@ -4,11 +4,12 @@
             <mat-label>{{ textAreaPlaceholder }}</mat-label>
             <textarea 
                 matInput
-                [(ngModel)]="markdownContent"
-                (ngModelChange)="inputTextArea()"></textarea>
+                [(ngModel)]="markdownControlState.value"
+                (ngModelChange)="inputTextArea()"
+                placeholder="{{ textAreaPlaceholder }}"></textarea>
         </mat-form-field>
     </mat-tab>
     <mat-tab label="Preview">
-        <markdown [data]="markdownContent" ngPreserveWhitespaces></markdown>
+        <markdown [data]="markdownControlState.value" ngPreserveWhitespaces></markdown>
     </mat-tab>
 </mat-tab-group>

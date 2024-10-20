@@ -1,15 +1,21 @@
+import { actorsFeature } from '@store/actor/actors.reducer';
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { ActorService } from "@apis/actor.service";
 import * as ActorActions from 'src/app/store/actor/actors.actions';
-import { catchError, map, of, switchMap } from "rxjs";
+import { catchError, map, of, switchMap, withLatestFrom } from "rxjs";
 import * as R from 'ramda';
 import { Router } from "@angular/router";
+import { Store } from "@ngrx/store";
+import { ActorDto } from '@models/actor/actor-dto';
 
 @Injectable()
 export class ActorsEffects {
 
-    constructor(private actions$: Actions, private actorsService: ActorService, private router: Router) {
+    constructor(private actions$: Actions, 
+                private actorsService: ActorService, 
+                private router: Router,
+                private store: Store) {
 
     }
 
@@ -37,38 +43,52 @@ export class ActorsEffects {
         ))
     ));
 
-    addActors$ = createEffect(() => this.actions$.pipe(
-        ofType(ActorActions.addActor),
-        switchMap(({ actor }) => this.actorsService.create(actor)
-        .pipe(
-            map(() => {
-                this.router.navigate(['/actors']);
-                return ActorActions.addActorSuccess({ actor })
-            }),
-            catchError(errors => of(ActorActions.addActorFailure( { errors })))
-        ))
-    ));
+    saveActors$ = createEffect(() => this.actions$.pipe(
+        ofType(ActorActions.saveActor),
+        withLatestFrom(this.store.select(actorsFeature.selectSubmittedValue)),
+        switchMap(([ action, submittedValue ]) => {
+            // Creating the ActorDto instance from the submittedValue
+            const actor: ActorDto = {
+                id: submittedValue?.id || null,
+                name: submittedValue.name,
+                dateOfBirth: new Date(submittedValue.dateOfBirth),
+                biography: submittedValue.biography,
+                picture: submittedValue.picture
+            };
 
-    updateActors$ = createEffect(() => this.actions$.pipe(
-        ofType(ActorActions.updateActor),
-        switchMap(({ id, actor }) => this.actorsService.update(id, actor)
-        .pipe(
-            map(() => {
-                this.router.navigate(['/actors']);
-                return ActorActions.updateActorSuccess({ actor });
-            }),
-            catchError(errors => {
-                return of(ActorActions.updateActorFailure( { errors }))
-            })
-        ))
+            if(!actor.id) {
+                return this.actorsService.create(actor)
+                .pipe(
+                    map(() => {
+                        this.router.navigate(['/actors']);
+                        return ActorActions.saveActorSuccess();     
+                    }),
+                    catchError(errors => of(ActorActions.saveActorFailure( { errors })))
+                );
+            }
+            else {
+                return this.actorsService.update(actor.id, actor)
+                .pipe(
+                    map(() => {
+                        this.router.navigate(['/actors']);
+                        return ActorActions.updateActorSuccess();     
+                    }),
+                    catchError(errors => of(ActorActions.updateActorFailure( { errors })))
+                );
+            }
+            
+        })
     ));
 
     deleteActors$ = createEffect(() => this.actions$.pipe(
         ofType(ActorActions.deleteActor),
         switchMap(({ id }) => this.actorsService.delete(id)
         .pipe(
-            map(() => ActorActions.deleteActorSuccess({ id })),
-            catchError(errors => of(ActorActions.updateActorFailure( { errors })))
+            map(() =>{ 
+                this.router.navigate(['/actors']);
+                return ActorActions.deleteActorSuccess({ id });
+            }),
+            catchError(errors => of(ActorActions.deleteActorFailure( { errors })))
         ))
     ));
 }

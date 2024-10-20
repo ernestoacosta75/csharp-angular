@@ -1,9 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as ActorActions from '@store/actor/actors.actions';
-import { actorsFeature } from '@store/actor/actors.reducer';
-import * as ActorSelectors from '@store/actor/actors.selectors';
-import { debounceTime, distinctUntilChanged, filter, Subject, withLatestFrom } from 'rxjs';
+import { FormControlState } from 'ngrx-forms';
+import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-input-markdown',
@@ -12,13 +11,11 @@ import { debounceTime, distinctUntilChanged, filter, Subject, withLatestFrom } f
 })
 export class InputMarkdownComponent implements OnInit {
   
-  @Input()
-  markdownContent: string = '';
+  @Input() markdownControlState: FormControlState<string>;
   
   @Input()
   textAreaPlaceholder: string = 'Text';
 
-  actor$ = this.store.select(actorsFeature.selectActor);
   inputSubject$ = new Subject<string>();
 
   constructor(private store: Store) {
@@ -26,19 +23,27 @@ export class InputMarkdownComponent implements OnInit {
   }
 
   ngOnInit() {
+    // Subscribe to changes in the markdown control state
     this.inputSubject$
       .pipe(
-        debounceTime(300), // Waits for 300ms pause in events
-        distinctUntilChanged(), // Only emits when the value changes
-        withLatestFrom(this.actor$), // Combines the latest value from actor$
-        // filter(([content, actor]) => !!actor) // Ensure actor is not null or undefined
+        debounceTime(300),
+        distinctUntilChanged()
       )
-      .subscribe(([content, actor]) => {
-        this.store.dispatch(ActorActions.updateActorBiography({ id: actor?.id, biography: content }));
+      .subscribe((content) => {
+        // Dispatch the action to update the actor's biography in the store
+        this.store.dispatch(ActorActions.setBiographyValue({
+          controlId: this.markdownControlState.id,
+          value: content
+        }));
       });
+
+    // Initialize the subject with the current value of the control
+    if (this.markdownControlState) {
+      this.inputSubject$.next(this.markdownControlState.value);
+    }
   }
 
   inputTextArea = () =>  {
-    this.inputSubject$.next(this.markdownContent);
+    this.inputSubject$.next(this.markdownControlState.value);
   }
 }

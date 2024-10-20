@@ -1,144 +1,134 @@
+import { ActorDto } from "@models/actor/actor-dto";
 import { createFeature, createReducer, on } from "@ngrx/store";
-import { ActorDto } from "../../types/actor/actor-dto";
+import {
+    createFormGroupState,
+    createFormStateReducerWithUpdate,
+    FormGroupState,
+    onNgrxForms,
+    setValue,
+    updateGroup,
+    validate,
+  } from 'ngrx-forms';
+import { required } from 'ngrx-forms/validation';
 import * as ActorActions from 'src/app/store/actor/actors.actions';
 
-interface State {
+export interface ActorFormValue {
+    id?: string;
+    name: string;
+    picture: string;
+    dateOfBirth: string;
+    biography: string;
+}
+
+export interface State {
     actors: ActorDto[];
-    actor: ActorDto;
-    actorImg: string;
-    actorBiography: string;
+    actorForm: FormGroupState<ActorFormValue>;
+    submittedValue: ActorFormValue | undefined;
     loading: boolean;
     errors: string[] | null;
 }
 
+export const ACTOR_FORM_ID = 'actorForm';
+
+export const INITIAL_ACTOR_FORM_STATE = createFormGroupState<ActorFormValue>(ACTOR_FORM_ID, {
+    id: '',
+    name: '',
+    picture: '',
+    dateOfBirth: new Date(Date.UTC(1970, 0, 1)).toISOString(),
+    biography: '',
+});
+
+const validationActorFormGroupReducer = createFormStateReducerWithUpdate<ActorFormValue>(
+    updateGroup<ActorFormValue>({
+        name: validate(required),
+        dateOfBirth: validate(required)
+}));
+
 const initialState: State = {
     actors: [],
-    actor: null,
-    actorImg: null,
-    actorBiography: null,
+    actorForm: INITIAL_ACTOR_FORM_STATE,
+    submittedValue: undefined,
     loading: false,
     errors: null
 };
 
+
+
 // With CreateFeature, the feature name and reducer are passed to it
 export const actorsFeature = createFeature({
     name: 'actors',
-    reducer: createReducer(
-        initialState,
-        // Actors list
-        on(ActorActions.loadActors, (state) => ({
-            ...state,
-            loading: true,
-            errors: []
-        })),
-        on(ActorActions.loadActorsSucess, (state, { actors }) => ({
-            ...state,
-            actors,
-            loading: false
-        })),
-        on(ActorActions.loadActorsFailure, (state, { errors }) => ({
-            ...state,
-            errors,
-            loading: false
-        })),
-        // Single actor
-        on(ActorActions.loadActor, (state) => ({
-            ...state,
-            loading: true,
-            errors: []
-        })),
-        on(ActorActions.loadActorSucess, (state, { actor }) => ({
-            ...state,
-            actors: state.actors.some(a => a.id === actor.id)
-            ? state.actors.map(a => a.id === actor.id ? actor : a)
-            : [...state.actors, actor],
-             loading: false,
-            errors: []
-        })),
-        on(ActorActions.loadActorFailure, (state, { errors }) => ({
-            ...state,
-            errors,
-            loading: false
-        })),
-        // New actor
-        on(ActorActions.addActor, (state, { actor }) => ({
-            ...state,
-            actor: actor,
-            loading: true,
-            errors: []
-        })),
-        on(ActorActions.addActorSuccess, (state, { actor }) => ({
-            ...state,
-            actors: [...state.actors, actor],
-            actor: actor,
-            loading: false
-        })),
-        on(ActorActions.addActorFailure, (state, { errors }) => ({
-            ...state,
-            errors,
-            loading: false
-        })),
-        // Update actor
-        on(ActorActions.updateActor, (state, { actor }) => ({
-            ...state,
-            actor: actor,
-            loading: true,
-            errors: []
-        })),
-        on(ActorActions.updateActorSuccess, (state, { actor }) => ({
-            ...state,
-            actor: actor,
-            errors: [],
-            loading: false
-        })),
-        on(ActorActions.updateActorFailure, (state, { errors }) => ({
-            ...state,
-            errors,
-            loading: false
-        })),
-        // Update actor picture
-        on(ActorActions.updateActorPicture, (state, { picture }) => ({
-            ...state,
-            actorImg: picture,
-            errors: [],
-            loading: false
-        })),
-        // Update actor biography
-        on(ActorActions.updateActorBiography, (state, { id, biography }) => {
-            if (id) {
-                return {
-                    ...state,
-                    actors: state.actors.map(actor =>
-                        actor.id === id ? { ...actor, biography } : actor
-                    ),
-                    actor: state.actor && state.actor.id === id ? { ...state.actor, biography } : state.actor,
-                    loading: true,
-                    errors: []
-                };
-            } else {
-                return {
-                    ...state,
-                    actorBiography: biography,
-                    loading: true,
-                    errors: []
-                };
-            }
-        }),
-        // Delete actor
-        on(ActorActions.deleteActor, (state) => ({
-            ...state,
-            loading: true,
-            errors: []
-        })),
-        on(ActorActions.deleteActorSuccess, (state, { id }) => ({
-            ...state,
-            actors: state.actors.filter(a => a.id !== id),
-            loading: false
-        })),
-        on(ActorActions.deleteActorFailure, (state, { errors }) => ({
-            ...state,
-            errors,
-            loading: false
-        }))
-    )
+    reducer: (state: State | undefined, action): State => {
+        // If the state is undefined, return the initial state
+        if(!state) {
+            state = initialState;
+        }
+
+        // First, updating the actorForm state with validation
+        const actorFormStateUpdated = validationActorFormGroupReducer(state?.actorForm, action);
+        
+        // Then, updating the rest of the state using the main reducer
+        return createReducer(
+            state,
+            onNgrxForms(),
+            on(ActorActions.loadActors, (state) => ({
+                ...state,
+                loading: true,
+                errors: []
+            })),
+            on(ActorActions.loadActorsSucess, (state, { actors }) => ({
+                ...state,
+                actors,
+                loading: false
+            })),
+            on(ActorActions.loadActorsFailure, (state, { errors }) => ({
+                ...state,
+                errors,
+                loading: false
+            })),
+            on(ActorActions.saveActor, state => ({
+                ...state,
+                loading: true,
+                error: null
+            })),
+            on(ActorActions.saveActorSuccess, (state) => ({
+                ...state,
+                actorForm: INITIAL_ACTOR_FORM_STATE,
+                loading: false
+            })),
+            on(ActorActions.saveActorFailure, (state, { errors }) => ({
+                ...state,
+                errors,
+                loading: false
+            })),
+
+            on(ActorActions.updateActorSuccess, (state) => ({
+                ...state,
+                loading: false
+            })),
+            on(ActorActions.updateActorFailure, (state, { errors }) => ({
+                ...state,
+                errors,
+                loading: false
+            })),
+            on(ActorActions.setSubmmittedValue, (state,  { submittedValue }) => ({
+                ...state,
+                submittedValue
+            })),
+            on(ActorActions.setPictureValue, (state,  { controlId, value }) => ({
+                ...state,
+                actorForm: updateGroup<ActorFormValue>({
+                    picture: setValue(value)
+                })(state.actorForm)
+            })),
+            on(ActorActions.setBiographyValue, (state,  { controlId, value }) => ({
+                ...state,
+                actorForm: updateGroup<ActorFormValue>({
+                    biography: setValue(value)
+                })(state.actorForm)
+            }))
+        )({
+            ...state, 
+            actorForm: actorFormStateUpdated
+        }, action);
+    }
 });

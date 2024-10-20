@@ -2,37 +2,66 @@
     <app-show-errors [errors]="errors"></app-show-errors>
 </ng-container>
 
+<ng-container *ngIf="(actorFormState$ | async) as formState">
+    <form [ngrxFormState]="formState" (submit)="onSave()">
+        <mat-form-field appearance="outline" class="mb-4">
+            <mat-label appAddRequired>Name</mat-label>
+            <input matInput 
+                   [ngrxFormControlState]="formState.controls.name" 
+                   required 
+                   placeholder="Ex.: Drama">
+            <mat-error app-error-message [control]="formState.controls.name"></mat-error>
+        </mat-form-field>  
+        
+        <mat-form-field appearance="outline">
+            <mat-label appAddRequired>Birth date</mat-label>
+            <input matInput 
+                  [matDatepicker]="birthDatePicker" 
+                  required 
+                  [ngrxFormControlState]="formState.controls.dateOfBirth"
+                  [ngrxValueConverter]="dateValueConverter">
+            <mat-datepicker-toggle matSuffix [for]="birthDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #birthDatePicker></mat-datepicker>
+            <mat-error app-error-message [control]="formState.controls.dateOfBirth"></mat-error>
+        </mat-form-field>
+        
+        <app-input-img 
+            [pictureControlState]="formState.controls.picture"
+            [currentImageUrl]="formState.value.picture" 
+            [actorId]="formState.value.id"></app-input-img>
 
-<form 
+        <app-input-markdown 
+            [markdownControlState]="formState.controls.biography"
+            textAreaPlaceholder="Enter the biography"></app-input-markdown>    
+        
+        <div>
+            <button 
+                mat-flat-button 
+                color="primary" 
+                type="submit"
+                [disabled]="formState.isInvalid">Save</button>
+    
+            <a mat-stroked-button class="button-form" routerLink="/actors">Cancel</a>
+        </div>        
+    </form>
+</ng-container>
+
+<!-- <form 
     [formGroup]="form"
     (submit)="onSave()">
-    <app-formelement-wrapper>
-        <span label appAddRequired>Name</span>
-        <input matInput formControlName="name" required placeholder="Ex.: Drama" content>
-        <span error app-error-message [control]="form.get('name')!"></span>
-    </app-formelement-wrapper>
-
-    <!-- <mat-form-field appearance="outline" class="mb-4">
+    <mat-form-field appearance="outline" class="mb-4">
         <mat-label appAddRequired>Name</mat-label>
         <input matInput formControlName="name" required placeholder="Ex.: Drama">
         <mat-error app-error-message [control]="form.get('name')!"></mat-error>
-    </mat-form-field> -->
+    </mat-form-field>
 
-    <app-formelement-wrapper>
-        <span label appAddRequired>Birth date</span>
-        <input matInput [matDatepicker]="birthDatePicker" required formControlName="dateOfBirth" content>
-        <mat-datepicker-toggle matSuffix [for]="birthDatePicker"></mat-datepicker-toggle>
-        <mat-datepicker #birthDatePicker></mat-datepicker>
-        <span error app-error-message [control]="form.get('dateOfBirth')!"></span>
-    </app-formelement-wrapper>
-
-    <!-- <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline">
         <mat-label appAddRequired>Birth date</mat-label>
         <input matInput [matDatepicker]="birthDatePicker" required formControlName="dateOfBirth">
         <mat-datepicker-toggle matSuffix [for]="birthDatePicker"></mat-datepicker-toggle>
         <mat-datepicker #birthDatePicker></mat-datepicker>
         <mat-error app-error-message [control]="form.get('dateOfBirth')!"></mat-error>
-    </mat-form-field> -->
+    </mat-form-field>
     
     <app-input-img [currentImageUrl]="model?.picture" [actorId]="model?.id"></app-input-img>
 
@@ -47,4 +76,4 @@
 
         <a mat-stroked-button class="button-form" routerLink="/actors">Cancel</a>
     </div>
-</form>
+</form> -->

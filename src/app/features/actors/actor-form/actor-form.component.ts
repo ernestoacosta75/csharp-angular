@@ -1,13 +1,13 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ActorDto } from '@models/actor/actor-dto';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
 import { filter, map, Observable, take } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { actorsFeature } from '../../../store/actor/actors.reducer';
+import { ActorFormValue, actorsFeature } from '../../../store/actor/actors.reducer';
 import * as ActorActions from '@store/actor/actors.actions';
 import * as ActorSelectors from '@store/actor/actors.selectors';
-import { base64ToFile, toConsole } from '@shared/utilities/common-utils';
+import { toConsole } from '@shared/utilities/common-utils';
+import { FormGroupState, NgrxValueConverter, NgrxValueConverters } from 'ngrx-forms';
 
 @Component({
   selector: 'app-actor-form',
@@ -16,12 +16,8 @@ import { base64ToFile, toConsole } from '@shared/utilities/common-utils';
 })
 export class ActorFormComponent implements OnInit, OnDestroy {
 
-  @Input()
-  model: ActorDto;
-
-  @Input()
-  action: string;
-
+  actorFormState$: Observable<FormGroupState<ActorFormValue>>;
+  submittedValue$: Observable<ActorFormValue | undefined>;
   errors$: Observable<string[]>;
 
   loading$!: Observable<boolean>;
@@ -29,26 +25,26 @@ export class ActorFormComponent implements OnInit, OnDestroy {
   form: FormGroup;
   archiveSelectedEvt: string = '';
   imageChanged: boolean = false;
+  dateValueConverter: NgrxValueConverter<Date | null, string | null> = {
+    convertViewToStateValue(value) {
+      if (value === null) {
+        return null;
+      }
+
+      // the value provided by the date picker is in local time but we want UTC so we recreate the date as UTC
+      value = new Date(Date.UTC(value.getFullYear(), value.getMonth(), value.getDate()));
+      return NgrxValueConverters.dateToISOString.convertViewToStateValue(value);
+    },
+    // tslint:disable-next-line: no-unbound-method
+    convertStateToViewValue: NgrxValueConverters.dateToISOString.convertStateToViewValue,
+  };
   
   constructor(private formBuilder: FormBuilder, private dateAdapter: DateAdapter<Date>, private store: Store) {
     this.dateAdapter.setLocale('en-GB');
+    this.actorFormState$ = this.store.select(actorsFeature.selectActorForm);
+    this.submittedValue$ = this.store.select(actorsFeature.selectSubmittedValue);
   }
   ngOnInit(): void {
-    this.form = this.formBuilder.group({
-      name: ['', {
-        validators: [Validators.required]
-      }],
-      dateOfBirth: ['', {
-        validators: [Validators.required]
-      }],
-      picture: '',
-      biography: ''
-    });
-
-    if (this.model !== undefined) {
-      this.form.patchValue(this.model);
-    }
-
     // Selecting loading state
     this.loading$ = this.store.select(actorsFeature.selectLoading);
 
@@ -57,54 +53,20 @@ export class ActorFormComponent implements OnInit, OnDestroy {
   }
 
   onSave = () => {
-    if(!this.form.valid) {
-      return;
-    }
-    else {
-      const actor = this.form.value;
-      let updateActorPayload = { ...actor, id: this.model?.id };
-      
-      this.vm$
-        .pipe(
-          map(vm => vm.actorImg),
-          take(1)
-        )
-        .subscribe(file => {
-          if (file && file.startsWith('data:')) {
-            const img = base64ToFile(file, `${updateActorPayload.name}_image.png`);
-            updateActorPayload = {...updateActorPayload, picture: img};
-          }
-          updateActorPayload.picture = file;          
-      });
-
-      if(this.model?.id) {  
-        this.store.select(ActorSelectors.selectActorsListViewModel)
-        .pipe(
-          map(({actorImg, actorBiography}) => ({actorImg, actorBiography})),
-          // filter(actorImg => actorImg && actorImg.startsWith('data:'))
-        )
-        .subscribe(({actorImg, actorBiography}) => {
-          const file = base64ToFile(actorImg, `${updateActorPayload.name}_image.png`);
-            updateActorPayload.picture = file;
-            updateActorPayload.biography = actorBiography;
-            this.store.dispatch(ActorActions.updateActor({ id: this.model.id, actor: updateActorPayload }));
-        });
-      }
-      else {
-        this.store.select(actorsFeature.selectActorBiography)
-        .subscribe({
-          next: (biography) => {
-            updateActorPayload.biography = biography;
-            toConsole('New actor: ', updateActorPayload);
-            this.store.dispatch(ActorActions.addActor({ actor: updateActorPayload }));
-          },
-          error: (err) => {
-            toConsole('Error getting actor biography:', err);
-            this.store.dispatch(ActorActions.addActor({ actor: updateActorPayload }));
-          }
-        });
-      }
-    }
+    this.actorFormState$
+    .pipe(
+      take(1),
+      filter(f => {
+        toConsole('Form valid: ', f.isValid);
+        return f.isValid;
+      }),
+      map((formState: any) => {
+        toConsole('Form: ', formState.value);
+        this.store.dispatch(ActorActions.setSubmmittedValue({ submittedValue: formState.value }));
+        this.store.dispatch(ActorActions.saveActor());
+      })
+    )
+    .subscribe();
   }
 
   ngOnDestroy(): void {
