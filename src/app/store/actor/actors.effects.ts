@@ -10,7 +10,7 @@ import { Store } from "@ngrx/store";
 import { ActorDto } from '@models/actor/actor-dto';
 
 @Injectable()
-export class ActorsEffects {
+export class ActorEffects {
 
     constructor(private actions$: Actions, 
                 private actorsService: ActorService, 

@@ -90,12 +90,6 @@ export const actorsFeature = createFeature({
                 errors,
                 loading: false
             })),
-            on(ActorActions.loadActorSucess, (state, { actor }) => ({
-                ...state,
-                actors: [...state.actors, actor],
-                loading: false,
-                errors: []
-            })),
             on(ActorActions.loadActorFailure, (state, { errors }) => ({
                 ...state,
                 errors,

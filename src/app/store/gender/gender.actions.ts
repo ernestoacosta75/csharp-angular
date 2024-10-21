@@ -1,5 +1,6 @@
 import { GenderDto } from "@models/gender/gender";
 import { createAction, props } from "@ngrx/store";
+import { GenderFormValue } from "./gender.reducer";
 
 export const loadGenders = createAction('[Gender] Load Genders', props<{ page: number, itemsToShowAmount: number }>());
 export const loadGendersSucess = createAction('[Gender] Load Genders Success', props<{ genders: GenderDto[] }>());
@@ -19,3 +20,5 @@ export const updateGenderFailure = createAction('[Gender] Update Gender Failure'
 export const deleteGender = createAction('[Gender] Delete Gender', props<{ id: string }>());
 export const deleteGenderSuccess = createAction('[Gender] Delete Gender Success', props<{ id: string }>());
 export const deleteGenderFailure = createAction('[Gender] Delete Gender Failure', props<{ errors: string[] }>());
+
+export const setSubmmittedValue = createAction('[Gender] Set Submitted Value', props<{ submittedValue: GenderFormValue }>());

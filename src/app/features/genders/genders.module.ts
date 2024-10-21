@@ -9,6 +9,11 @@ import { GenderFormComponent } from '@features/genders/gender-form/gender-form.c
 import { GendersIndexComponent } from '@features/genders/genders-index/genders-index.component';
 import { NewGenderComponent } from '@features/genders/new-gender/new-gender.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { genderFeature } from '@store/gender/gender.reducer';
+import { NgrxFormsModule } from 'ngrx-forms';
+import { StoreModule } from '@ngrx/store';
+import { GenderEffects } from '@store/gender/gender.effects';
+import { EffectsModule } from '@ngrx/effects';
 
 
 @NgModule({
@@ -23,7 +28,10 @@ import { ReactiveFormsModule } from '@angular/forms';
     GendersRoutingModule,
     SharedModule,
     MaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    StoreModule.forFeature(genderFeature),
+    EffectsModule.forFeature([GenderEffects]),
+    NgrxFormsModule
   ],
   exports: [
     EditGenderComponent,

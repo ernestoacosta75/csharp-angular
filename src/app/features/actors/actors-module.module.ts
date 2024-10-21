@@ -12,7 +12,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { actorsFeature } from '@store/actor/actors.reducer';
 import { EffectsModule } from '@ngrx/effects';
-import { ActorsEffects } from '@store/actor/actors.effects';
+import { ActorEffects } from '@store/actor/actors.effects';
 import { NgrxFormsModule } from 'ngrx-forms';
 
 
@@ -30,7 +30,7 @@ import { NgrxFormsModule } from 'ngrx-forms';
     MaterialModule,
     ReactiveFormsModule,
     StoreModule.forFeature(actorsFeature),
-    EffectsModule.forFeature([ActorsEffects]),
+    EffectsModule.forFeature([ActorEffects]),
     NgrxFormsModule
   ],
   exports: [
