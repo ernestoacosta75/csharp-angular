@@ -1,5 +1,6 @@
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { NgrxValueConverter, NgrxValueConverters } from 'ngrx-forms';
 import * as R from 'ramda';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
 
@@ -122,6 +123,21 @@ export const formatDate = (date: Date) => {
 
   return `${year}-${month}-${day}`;
 }
+
+export const getDateValueConverter = (): NgrxValueConverter<Date | null, string | null> => {
+  return {
+    convertViewToStateValue: (value) => {
+      if(value === null) {
+        return null;
+      }
+
+      // the value provided by the date picker is in local time but will be recreated with the date as UTC
+      value = new Date(Date.UTC(value.getFullYear(), value.getMonth(), value.getDate()));
+      return NgrxValueConverters.dateToISOString.convertViewToStateValue(value);
+    },
+    convertStateToViewValue: NgrxValueConverters.dateToISOString.convertStateToViewValue,
+  };
+};
 
 export class EntityActions {
   static readonly ADD: string = 'Add';

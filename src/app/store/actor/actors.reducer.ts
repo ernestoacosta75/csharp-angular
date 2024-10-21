@@ -75,12 +75,28 @@ export const actorsFeature = createFeature({
                 loading: true,
                 errors: []
             })),
+            on(ActorActions.loadActor, (state, { id }) => ({
+                ...state,
+                loading: true,
+                errors: []
+            })),            
             on(ActorActions.loadActorsSucess, (state, { actors }) => ({
                 ...state,
                 actors,
                 loading: false
             })),
             on(ActorActions.loadActorsFailure, (state, { errors }) => ({
+                ...state,
+                errors,
+                loading: false
+            })),
+            on(ActorActions.loadActorSucess, (state, { actor }) => ({
+                ...state,
+                actors: [...state.actors, actor],
+                loading: false,
+                errors: []
+            })),
+            on(ActorActions.loadActorFailure, (state, { errors }) => ({
                 ...state,
                 errors,
                 loading: false
