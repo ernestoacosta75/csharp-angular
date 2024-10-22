@@ -1,4 +1,32 @@
-<form [formGroup]="form" 
+<ng-container *ngIf="errors$ | async as errors">
+    <app-show-errors [errors]="errors"></app-show-errors>
+</ng-container>
+
+<ng-container *ngIf="(cinemaFormState$ | async) as formState">
+    <form [ngrxFormState]="formState" (submit)="onSave()">
+        <mat-form-field appearance="outline">
+            <mat-label appAddRequired>Name</mat-label>
+            <input matInput [ngrxFormControlState]="formState.controls.name" required placeholder="Ex.: Cityplex">
+            <mat-error app-error-message [control]="formState.controls.name"></mat-error>
+        </mat-form-field>
+    
+        <h4>Select the cinema location in the map</h4>
+        <div>
+            <app-map [coordinatesControlState]="formState.controls.coordinates"></app-map>
+        </div>
+    
+        <div>
+            <button 
+                mat-flat-button 
+                color="primary" 
+                [disabled]="formState.isInvalid">Save</button>
+    
+            <a mat-stroked-button class="button-form" routerLink="/cinemas">Cancel</a>
+        </div>        
+    </form>
+</ng-container>
+
+<!-- <form [formGroup]="form" 
       (submit)="onSave()">
     <mat-form-field appearance="outline">
         <mat-label appAddRequired>Name</mat-label>
@@ -19,4 +47,4 @@
 
         <a mat-stroked-button class="button-form" routerLink="/cinemas">Cancel</a>
     </div>
-</form>
+</form> -->

@@ -1,11 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription, switchMap } from 'rxjs';
-import { EventService } from 'src/app/event-service';
-import { CinemaDto, CinemaEditDto } from '../../../types/cinema/cinema-dto';
-import { CinemaService } from '@apis/cinema.service';
+import { map, Subscription, switchMap } from 'rxjs';
+import { CinemaEditDto } from '../../../types/cinema/cinema-dto';
 import * as R from 'ramda';
-import { EntityActions, toConsole } from '@shared/utilities/common-utils';
+import { toConsole } from '@shared/utilities/common-utils';
+import { CinemaState } from '@store/cinema/cinema.reducer';
+import { Store } from '@ngrx/store';
+import * as CinemaActions from '@store/cinema/cinema.actions';
+import { selectCinemaById } from '@store/cinema/cinema.selectors';
 
 @Component({
   selector: 'app-edit-cinema',
@@ -15,26 +17,38 @@ import { EntityActions, toConsole } from '@shared/utilities/common-utils';
 export class EditCinemaComponent implements OnInit, OnDestroy {
 
   model: CinemaEditDto;
-  formAction: string = EntityActions.UPDATE;
   cinemaSubscription: Subscription = new Subscription();
   
   constructor(private router: Router, private activatedRoute: ActivatedRoute, 
-              private eventService: EventService, private cinemaService: CinemaService) { 
+              private store: Store<CinemaState>) { 
 
   }
 
   ngOnInit(): void {
-    this.activatedRoute.params
+    const editCinema = this.activatedRoute.params
     .pipe(
-      switchMap(params => this.cinemaService.getById(R.path(['id'], params)))
+      switchMap(params => {
+        const cinemaId = R.path(['id'], params);
+
+        this.store.dispatch(CinemaActions.loadCinema({ id: cinemaId }));
+
+        return this.store.select(selectCinemaById(cinemaId))
+        .pipe(
+          map(cinema => {
+            if(cinema) {
+              this.model = {...cinema};
+              toConsole('Cinema: ', cinema);
+            }
+            else {
+              this.router.navigate(['/cinemas']);
+            }
+          })
+        );
+      })
     )
-    .subscribe({
-      next: (cinema: CinemaDto) => this.model = cinema,
-      error: (error) => { 
-        toConsole('Error getting cinema: ', error);
-        this.router.navigate(['/cinemas']);
-      }
-    });
+    .subscribe();
+
+    this.cinemaSubscription.add(editCinema);
   }
   ngOnDestroy(): void {
     this.cinemaSubscription.unsubscribe();

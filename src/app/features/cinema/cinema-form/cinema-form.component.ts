@@ -3,12 +3,17 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CoordinatesDto } from '@shared/components/map/models/coordinates';
 import { Events } from '@shared/utilities/events';
-import { Subscription, switchMap } from 'rxjs';
+import { filter, map, Observable, Subscription, switchMap, take } from 'rxjs';
 import { EventService } from 'src/app/event-service';
 import * as R from 'ramda';
 import { CinemaDto } from '../../../types/cinema/cinema-dto';
-import { EntityActions, parseApiErrors } from '@shared/utilities/common-utils';
+import { EntityActions, parseApiErrors, toConsole } from '@shared/utilities/common-utils';
 import { Router } from '@angular/router';
+import { CinemaFormValue, CinemaState, cinemaFeature } from '@store/cinema/cinema.reducer';
+import { FormGroupState } from 'ngrx-forms';
+import * as CinemaSelectors from '@store/cinema/cinema.selectors';
+import * as CinemaActions from '@store/cinema/cinema.actions';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-cinema-form',
@@ -17,41 +22,20 @@ import { Router } from '@angular/router';
 })
 export class CinemaFormComponent implements OnInit, OnDestroy {
 
-  @Input()
-  model: CinemaDto;
-
-  @Input()
-  action: string;
-
-  @Input()
-  errors: string[] = [];
+  vm$ = this.store.select(CinemaSelectors.selectCinemaListViewModel);
+  cinemaFormState$: Observable<FormGroupState<CinemaFormValue>>;
+  submittedValue$: Observable<CinemaFormValue | undefined>;
+  errors$: Observable<string[]>;
+  loading$!: Observable<boolean>;
 
   initialCoordinates: CoordinatesDto[] = [];
-
-  form: FormGroup;
   cinemaSubscription: Subscription = new Subscription();
 
-  constructor(private formBuilder: FormBuilder, private eventService: EventService, 
-              private cinemaService: CinemaService, private router: Router) {}
+  constructor(private store: Store<CinemaState>) {}
 
   ngOnInit(): void {
-    this.form = this.formBuilder.group({
-      name: ['', {
-        validators: [Validators.required]
-      }],
-      latitude: ['', {
-        validators: [Validators.required]
-      }],
-      longitude: ['', {
-        validators: [Validators.required]
-      }]
-    });
-
-    if (this.model !== undefined) {
-      this.form.patchValue(this.model);
-      this.initialCoordinates
-      .push({latitude: R.path(['latitude'], this.model), longitude: R.path(['longitude'], this.model)});
-    }
+    this.loading$ = this.store.select(cinemaFeature.selectLoading);
+    this.errors$ = this.store.select(cinemaFeature.selectErrors);
 
     const mapCoordinates = this.eventService.onEvent(Events.COORDINATES)
     .subscribe((mapCoordinatesEvent: any) => {
@@ -62,30 +46,25 @@ export class CinemaFormComponent implements OnInit, OnDestroy {
       this.form.patchValue(R.set(longitudeLens, R.path(['payload', 'longitude'], mapCoordinatesEvent), this.form.value));
     });
 
-    const onCinemaEvent = this.eventService.onEvent(Events.CINEMA)
-    .pipe(      
-      switchMap((cinemaEvent: any) => {
-        if(cinemaEvent.action === EntityActions.ADD) {
-          return this.cinemaService.create(R.path<CinemaDto>(['payload'], cinemaEvent));
-        }
-        else if(cinemaEvent.action === EntityActions.UPDATE) {
-          const payload: CinemaDto = R.path<CinemaDto>(['payload'], cinemaEvent);
-          payload.id = this.model.id;
-
-          return this.cinemaService.update(payload);
-        }
-      })
-    )
-    .subscribe({
-      next: () => this.router.navigateByUrl('/cinemas'),
-      error: (err) => this.errors = parseApiErrors(err)
-    });    
-
     this.cinemaSubscription.add(mapCoordinates);
-    this.cinemaSubscription.add(onCinemaEvent);
   }
 
-  onSave = () => this.eventService.emitEvent(Events.CINEMA, this.form.value, this.action); 
+  onSave = () => {
+    this.cinemaFormState$
+    .pipe(
+      take(1),
+      filter(f => {
+        toConsole('Form valid: ', f.isValid);
+        return f.isValid;
+      }),
+      map((formState: any) => {
+        toConsole('Form: ', formState.value);
+        this.store.dispatch(CinemaActions.setSubmmittedValue({ submittedValue: formState.value }));
+        this.store.dispatch(CinemaActions.saveCinema());
+      })
+    )
+    .subscribe();    
+  }; 
   ngOnDestroy(): void {
     this.cinemaSubscription.unsubscribe();
   }

@@ -10,7 +10,7 @@ export const loadGender = createAction('[Gender] Load Gender', props<{ id: strin
 export const loadGenderSucess = createAction('[Gender] Load Gender Success', props<{ gender: GenderDto }>());
 export const loadGenderFailure = createAction('[Gender] Load Gender Failure', props<{ errors: string[] }>());
 
-export const saveGender = createAction('[Gender] Save Actor');
+export const saveGender = createAction('[Gender] Save Gender');
 export const saveGenderSuccess = createAction('[Gender] Save Gender Success');
 export const saveGenderFailure = createAction('[Gender] Save Gender Failure', props<{ errors: string[] }>());
 

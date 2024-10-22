@@ -37,7 +37,7 @@ export class EditGenderComponent implements OnInit, OnDestroy {
           map(gender => {
             if(gender) {
               this.model = {...gender};
-              toConsole('Actor: ', gender);
+              toConsole('Gender: ', gender);
             }
             else {
               this.router.navigate(['/genders']);

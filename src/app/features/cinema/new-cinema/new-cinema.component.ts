@@ -1,7 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
 import { EntityActions } from '@shared/utilities/common-utils';
-import { EventService } from 'src/app/event-service';
 
 @Component({
   selector: 'app-new-cinema',
@@ -11,9 +9,8 @@ import { EventService } from 'src/app/event-service';
 export class NewCinemaComponent {
 
   errors: string [] = [];
-  formAction: string = EntityActions.ADD;
 
-  constructor(private router: Router, private eventService: EventService) {
+  constructor() {
 
   }
 }

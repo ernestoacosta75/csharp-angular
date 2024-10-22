@@ -1,6 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { toConsole } from '@shared/utilities/common-utils';
-import { Events } from '@shared/utilities/events';
 import {
   LeafletMouseEvent,
   Marker,
@@ -9,9 +7,13 @@ import {
   marker,
   tileLayer,
 } from 'leaflet';
-import { EventService } from 'src/app/event-service';
 import { CoordinatesDto } from './models/coordinates';
 import * as R from 'ramda';
+import { Store } from '@ngrx/store';
+import * as CinemaActions from '@store/cinema/cinema.actions';
+import { FormControlState, FormGroupState } from 'ngrx-forms';
+import { CinemaFormValue } from '@store/cinema/cinema.reducer';
+import { map, Observable, take } from 'rxjs';
 
 @Component({
   selector: 'app-map',
@@ -20,7 +22,7 @@ import * as R from 'ramda';
 })
 export class MapComponent implements OnInit {
   @Input()
-  model: CoordinatesDto[] = [];
+  coordinatesControlState: FormControlState<string>;
 
   options = {
     layers: [
@@ -35,26 +37,38 @@ export class MapComponent implements OnInit {
 
   layers: Marker<any>[] = [];
 
-  constructor(private eventService: EventService) {}
+  cinemaFormState$: Observable<FormGroupState<CinemaFormValue>>;
+
+  constructor(private store: Store) {}
   ngOnInit(): void {
-    this.layers = R.map(value => marker([value.latitude, value.longitude], {
-      icon: icon({
-        iconSize: [25, 41],
-        iconAnchor: [13, 41],
-        iconUrl:'assets/marker-icon.png',
-        iconRetinaUrl:'assets/marker-icon-2x.png',
-        shadowUrl:'assets/marker-shadow.png',
-      }),
-    }), this.model);
+    this.cinemaFormState$
+    .pipe(
+      take(1),
+      map((formState: any) => {
+        this.layers = R.values(
+          R.map(value => marker([value.latitude, value.longitude], {
+            icon: icon({
+              iconSize: [25, 41],
+              iconAnchor: [13, 41],
+              iconUrl: 'assets/marker-icon.png',
+              iconRetinaUrl: 'assets/marker-icon-2x.png',
+              shadowUrl: 'assets/marker-shadow.png',
+            }),
+          }), R.path<any>(['coordinates'], formState))
+        );
+      })
+    );
   }
 
   manageMapClick = (evt: LeafletMouseEvent) => {
-    const latitude = evt.latlng.lat;
-    const longitude = evt.latlng.lng;
+    const coordinatesDto: CoordinatesDto = {
+      latitude: evt.latlng.lat,
+      longitude: evt.latlng.lng
+    };
 
     this.layers = [];
     this.layers.push(
-      marker([latitude, longitude], {
+      marker([coordinatesDto.latitude, coordinatesDto.longitude], {
         icon: icon({
           iconSize: [25, 41],
           iconAnchor: [13, 41],
@@ -65,9 +79,6 @@ export class MapComponent implements OnInit {
       })
     );
 
-    this.eventService.emitEvent(Events.COORDINATES, {
-      latitude: latitude,
-      longitude: longitude,
-    });
+    this.store.dispatch(CinemaActions.setCoordinatesValue({ controlId: this.coordinatesControlState.id, coordinates: coordinatesDto }));
   };
 }

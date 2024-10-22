@@ -9,6 +9,11 @@ import { NewCinemaComponent } from '@features/cinema/new-cinema/new-cinema.compo
 import { SharedModule } from '@shared/shared.module';
 import { MaterialModule } from '@material/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { cinemaFeature } from '@store/cinema/cinema.reducer';
+import { CinemaEffects } from '@store/cinema/cinema.effects';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { NgrxFormsModule } from 'ngrx-forms';
 
 
 @NgModule({
@@ -23,7 +28,10 @@ import { ReactiveFormsModule } from '@angular/forms';
     CinemaModuleRoutingModule,
     SharedModule,
     MaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    StoreModule.forFeature(cinemaFeature),
+    EffectsModule.forFeature([CinemaEffects]),
+    NgrxFormsModule
   ]
 })
 export class CinemaModule { }
