@@ -25,7 +25,8 @@ export class GenderEffects {
         .pipe(
             map(response => {
                 const genders = R.path<any>(['body'], response);
-                return GenderActions.loadGendersSucess({ genders })
+                const recordsTotalCount = +R.path(['headers'], response).get("recordsTotalCount");
+                return GenderActions.loadGendersSucess({ genders, recordsTotalCount })
             }),
             catchError(errors => of(GenderActions.loadGendersFailure( { errors })))
         ))

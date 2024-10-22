@@ -1,8 +1,8 @@
-import { actorsFeature } from '@store/actor/actors.reducer';
+import { actorsFeature } from '@store/actor/actor.reducer';
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { ActorService } from "@apis/actor.service";
-import * as ActorActions from 'src/app/store/actor/actors.actions';
+import * as ActorActions from '@store/actor/actor.actions';
 import { catchError, map, of, switchMap, withLatestFrom } from "rxjs";
 import * as R from 'ramda';
 import { Router } from "@angular/router";

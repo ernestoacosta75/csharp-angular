@@ -1,18 +1,26 @@
-<app-show-errors [errors]="errors"></app-show-errors>
+<ng-container *ngIf="errors$ | async as errors">
+    <app-show-errors [errors]="errors"></app-show-errors>
+</ng-container>
 
-<form 
-    [formGroup]="form"
-    (submit)="onSave()">
-    <mat-form-field appearance="outline">
-        <mat-label appAddRequired>Name</mat-label>
-        <input matInput formControlName="name" required placeholder="Ex.: Drama">
-        <mat-error app-error-message [control]="form.get('name')"></mat-error>
-    </mat-form-field>
-    <div>
-        <button 
-            mat-flat-button 
-            color="primary" 
-            type="submit">Save</button>
-        <a mat-stroked-button routerLink="/genders">Cancel</a>
-    </div>
-</form>
+<ng-container *ngIf="(genderFormState$ | async) as formState">
+    <form [ngrxFormState]="formState" (submit)="onSave()">
+        <mat-form-field appearance="outline" class="mb-4">
+            <mat-label appAddRequired>Name</mat-label>
+            <input matInput 
+                   [ngrxFormControlState]="formState.controls.name" 
+                   required 
+                   placeholder="Ex.: Drama">
+            <mat-error app-error-message [control]="formState.controls.name"></mat-error>
+        </mat-form-field>
+        
+        <div>
+            <button 
+                mat-flat-button 
+                color="primary" 
+                type="submit"
+                [disabled]="formState.isInvalid">Save</button>
+    
+            <a mat-stroked-button class="button-form" routerLink="/genders">Cancel</a>
+        </div>  
+    </form>
+</ng-container>

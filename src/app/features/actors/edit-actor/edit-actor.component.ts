@@ -2,13 +2,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ActorDto } from '../../../types/actor/actor-dto';
 import { map, Subscription, switchMap } from 'rxjs';
-import { EventService } from 'src/app/event-service';
 import * as R from 'ramda';
 import { EntityActions, toConsole } from '@shared/utilities/common-utils';
-import { ActorService } from 'src/app/apis/actor.service';
 import { Store } from '@ngrx/store';
-import { selectActorById } from '@store/actor/actors.selectors';
-import * as ActorActions from '@store/actor/actors.actions';
+import { selectActorById } from '@store/actor/actor.selectors';
+import * as ActorActions from '@store/actor/actor.actions';
+import { ActorState } from '@store/actor/actor.reducer';
 
 @Component({
   selector: 'app-edit-actor',
@@ -23,8 +22,7 @@ export class EditActorComponent implements OnInit, OnDestroy {
   actorSubscription: Subscription = new Subscription();
   
   constructor(private router: Router, private activatedRoute: ActivatedRoute, 
-              private eventService: EventService, private actorService: ActorService,
-              private store: Store) { 
+              private store: Store<ActorState>) { 
 
   }
 
@@ -35,7 +33,7 @@ export class EditActorComponent implements OnInit, OnDestroy {
         const actorId = R.path(['id'], params);
 
         // Dispatching an action to load the actor by Id
-        this.store.dispatch(ActorActions.loadActor({ id: actorId}));
+        this.store.dispatch(ActorActions.loadActor({ id: actorId }));
 
         // Selecting the actor from the store
         return this.store.select(selectActorById(actorId))

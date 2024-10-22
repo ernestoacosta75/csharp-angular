@@ -1,8 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { toBase64, toConsole } from '@shared/utilities/common-utils';
-import * as R from 'ramda';
-import * as ActorActions from '@store/actor/actors.actions';
+import * as ActorActions from '@store/actor/actor.actions';
 import { FormControlState } from 'ngrx-forms';
 
 @Component({
@@ -31,10 +30,9 @@ export class InputImgComponent {
     evt.preventDefault();
     
     const input = evt.target as HTMLInputElement;
-    const isFilesLengthGreaterThanZero = (evt) => R.pathOr(0, ['target', 'files', 'length'], evt) > 0;
-
+  
     if (input.files && input.files.length > 0) {
-      const file: File = input.files[0]; //  R.prop(0, evt.target.files);
+      const file: File = input.files[0];
       
       toBase64(file)
       .then((base64: string) => {

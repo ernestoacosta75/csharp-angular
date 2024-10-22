@@ -3,7 +3,7 @@ import { createAction, props } from "@ngrx/store";
 import { GenderFormValue } from "./gender.reducer";
 
 export const loadGenders = createAction('[Gender] Load Genders', props<{ page: number, itemsToShowAmount: number }>());
-export const loadGendersSucess = createAction('[Gender] Load Genders Success', props<{ genders: GenderDto[] }>());
+export const loadGendersSucess = createAction('[Gender] Load Genders Success', props<{ genders: GenderDto[], recordsTotalCount: number }>());
 export const loadGendersFailure = createAction('[Gender] Load Genders Failure', props<{ errors: string[] }>());
 
 export const loadGender = createAction('[Gender] Load Gender', props<{ id: string }>());

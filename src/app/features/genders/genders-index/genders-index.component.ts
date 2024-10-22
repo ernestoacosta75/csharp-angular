@@ -1,11 +1,10 @@
-import { GenderDto } from 'src/app/types/gender/gender';
 import { Component, OnInit } from '@angular/core';
-import { GenderService } from '@apis/gender.service';
-import { toConsole } from '@shared/utilities/common-utils';
-import { HttpResponse } from '@angular/common/http';
-import * as R from 'ramda';
+import * as GenderActions from '@store/gender/gender.actions';
+import * as GenderSelectors from '@store/gender/gender.selectors';
 import { PageEvent } from '@angular/material/paginator';
-import Swal from 'sweetalert2';
+import { GenderState } from '@store/gender/gender.reducer';
+import * as ConfirmationActions from '@store/confirmation/confirmation.actions';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-genders-index',
@@ -14,57 +13,35 @@ import Swal from 'sweetalert2';
 })
 export class GendersIndexComponent implements OnInit {
   
-  genders: GenderDto[];
+  vm$ = this.store.select(GenderSelectors.selectGendersListViewModel);
   columnsToDisplay = ['name', 'actions'];
   pageSizeOptions = [5, 10, 20, 50];
   recordsTotalCount: number = 0;
   recordsAmountToShow = 10;
   currentPage = 1;
 
-  constructor(private genderService: GenderService) {
+  constructor(private store: Store<GenderState>) {
   }
 
   ngOnInit(): void {
-    this.loadRecords(this.currentPage, this.recordsAmountToShow);
-  }
-
-  loadRecords = (page: number, itemsToShowAmount: number) => {
-    this.genderService.getAll(page, itemsToShowAmount)
-    .subscribe({
-      next: (result: HttpResponse<GenderDto>) => {
-        this.genders = R.path<GenderDto[]>(['body'], result);
-        this.recordsTotalCount = +R.path(['headers'], result).get("recordsTotalCount");
-      },
-      error: (error: any) => {
-        toConsole('error: ', error);
-      }
-    });  
+    this.store.dispatch(GenderActions.loadGenders({ page: this.currentPage, itemsToShowAmount: this.recordsAmountToShow}));
   }
 
   updatePagination = (data: PageEvent) => {
     this.recordsAmountToShow = data.pageSize;
     this.currentPage = data.pageIndex + 1;
-    this.loadRecords(this.currentPage, this.recordsAmountToShow);
+    this.store.dispatch(GenderActions.loadGenders({ page: this.currentPage, itemsToShowAmount: this.recordsAmountToShow}));
   }
 
-  delete = (id: string) => {
-    this.genderService.delete(id)
-    .subscribe({
-      next: () => {
-        this.loadRecords(this.currentPage, this.recordsAmountToShow);
-      },
-      error: (error) => toConsole('Error deleting gender: ', error)
-    });
+  delete = (genderId: string) => {
+    this.store.dispatch(GenderActions.deleteGender({ id: genderId }));
   }
 
-  show = (id: string) => Swal.fire({
-    title: 'Confirmation',
-    text: 'Do you want to delete this gender?',
-    icon: 'warning',
-    showCancelButton: true
-  }).then((result) => {
-    if(result.isConfirmed) {
-      this.delete(id);
-    }
-  })
+  show = (genderId: string) => {
+    this.store.dispatch(ConfirmationActions.confirmAction({
+      entityType: 'gender',
+      entityId: genderId,
+      message: 'Do you want to delete this gender?'
+    }));
+  }
 }

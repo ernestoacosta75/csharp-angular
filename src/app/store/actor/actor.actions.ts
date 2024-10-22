@@ -1,6 +1,6 @@
 import { createAction, props } from "@ngrx/store";
 import { ActorDto } from "../../types/actor/actor-dto";
-import { ActorFormValue } from "./actors.reducer";
+import { ActorFormValue } from "./actor.reducer";
 
 export const loadActors = createAction('[Actor] Load Actors', props<{ page: number, itemsToShowAmount: number }>());
 export const loadActorsSucess = createAction('[Actor] Load Actors Success', props<{ actors: ActorDto[] }>());

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import * as ActorActions from '@store/actor/actors.actions';
+import * as ActorActions from '@store/actor/actor.actions';
 import { FormControlState } from 'ngrx-forms';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 

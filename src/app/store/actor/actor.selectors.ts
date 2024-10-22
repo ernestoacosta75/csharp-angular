@@ -1,5 +1,5 @@
 import { createSelector } from "@ngrx/store";
-import { actorsFeature } from "./actors.reducer";
+import { actorFeature } from "./actor.reducer";
 
 // Since we use createFeature in the reducer file, it will
  // automatically generate the selectors for us.
@@ -9,16 +9,16 @@ import { actorsFeature } from "./actors.reducer";
  // where "actors" is the feature name.
  // The names of the child selectors are "selectActors", "selectLoading" and "selectErrors". 
 export const selectActorsListViewModel = createSelector(
-    actorsFeature.selectActors,
-    actorsFeature.selectActorForm,
-    actorsFeature.selectSubmittedValue,
-    actorsFeature.selectLoading,
-    actorsFeature.selectErrors,
+    actorFeature.selectActors,
+    actorFeature.selectActorForm,
+    actorFeature.selectSubmittedValue,
+    actorFeature.selectLoading,
+    actorFeature.selectErrors,
     (actors, actorForm, submittedValue, loading, errors) => ({ actors, actorForm, submittedValue, loading, errors })
 );
 
 export const selectActorsDictionary = createSelector(
-    actorsFeature.selectActors,
+    actorFeature.selectActors,
     (actors) => {
         // Ensure that actors is defined and is an array
         if (!actors || !Array.isArray(actors)) {

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Store } from '@ngrx/store';
-import * as ActorsActions from '@store/actor/actors.actions';
-import * as ActorsListSelectors from '@store/actor/actors.selectors';
+import * as ActorActions from '@store/actor/actor.actions';
+import { ActorState } from '@store/actor/actor.reducer';
+import * as ActorSelectors from '@store/actor/actor.selectors';
 import * as ConfirmationActions from '@store/confirmation/confirmation.actions';
 
 @Component({
@@ -12,33 +13,32 @@ import * as ConfirmationActions from '@store/confirmation/confirmation.actions';
 })
 export class ActorsIndexComponent implements OnInit {
 
-  vm$ = this.store.select(ActorsListSelectors.selectActorsListViewModel);
+  vm$ = this.store.select(ActorSelectors.selectActorsListViewModel);
   columnsToDisplay = ['name', 'actions'];
   pageSizeOptions = [5, 10, 20, 50];
   recordsTotalCount: number = 0;
   recordsAmountToShow = 10;
   currentPage = 1;
 
-  constructor(private store: Store) {
+  constructor(private store: Store<ActorState>) {
 
   }
 
   ngOnInit(): void {   
-    this.store.dispatch(ActorsActions.loadActors({ page: this.currentPage, itemsToShowAmount: this.recordsAmountToShow}));
+    this.store.dispatch(ActorActions.loadActors({ page: this.currentPage, itemsToShowAmount: this.recordsAmountToShow}));
   }
 
   updatePagination = (data: PageEvent) => {
     this.recordsAmountToShow = data.pageSize;
     this.currentPage = data.pageIndex + 1;
-    this.store.dispatch(ActorsActions.loadActors({ page: this.currentPage, itemsToShowAmount: this.recordsAmountToShow}));
+    this.store.dispatch(ActorActions.loadActors({ page: this.currentPage, itemsToShowAmount: this.recordsAmountToShow}));
   }
 
   delete = (actorId: string) => {
-    this.store.dispatch(ActorsActions.deleteActor({ id: actorId }));
+    this.store.dispatch(ActorActions.deleteActor({ id: actorId }));
   }
 
   show = (actorId: string) => {
-    // Dispatching the action to open the confirmation dialog
     this.store.dispatch(ConfirmationActions.confirmAction({
       entityType: 'actor',
       entityId: actorId,

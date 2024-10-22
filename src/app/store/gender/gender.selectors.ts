@@ -3,11 +3,12 @@ import { genderFeature } from "./gender.reducer";
 
 export const selectGendersListViewModel = createSelector(
     genderFeature.selectGenders,
+    genderFeature.selectRecordsTotalCount,
     genderFeature.selectGenderForm,
     genderFeature.selectSubmittedValue,
     genderFeature.selectLoading,
     genderFeature.selectErrors,
-    (genders, genderForm, submittedValue, loading, errors) => ({ genders, genderForm, submittedValue, loading, errors })
+    (genders, recordsTotalCount, genderForm, submittedValue, loading, errors) => ({ genders, recordsTotalCount, genderForm, submittedValue, loading, errors })
 );
 
 export const selectGendersDictionary = createSelector(

@@ -1,13 +1,11 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { GenderDto } from '../../../types/gender/gender';
-import { EventService } from 'src/app/event-service';
-import { Events } from '@shared/utilities/events';
-import { EntityActions, parseApiErrors, toConsole } from '@shared/utilities/common-utils';
-import { Subscription, filter, switchMap, tap } from 'rxjs';
-import { GenderService } from '@apis/gender.service';
-import * as R from 'ramda';
-import { Router } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { filter, map, Observable, take } from 'rxjs';
+import { GenderFormValue, GenderState, genderFeature } from '@store/gender/gender.reducer';
+import { FormGroupState } from 'ngrx-forms';
+import * as GenderSelectors from '@store/gender/gender.selectors';
+import * as GenderActions from '@store/gender/gender.actions';
+import { Store } from '@ngrx/store';
+import { toConsole } from '@shared/utilities/common-utils';
 
 @Component({
   selector: 'app-gender-form',
@@ -16,59 +14,39 @@ import { Router } from '@angular/router';
 })
 export class GenderFormComponent implements OnInit, OnDestroy {
 
-  @Input()
-  model: GenderDto;
-
-  @Input()
-  action: string;
-
-  @Input()
-  errors: string[] = [];
-
-  form: FormGroup;
-  genderSubscription: Subscription = new Subscription();
+  vm$ = this.store.select(GenderSelectors.selectGendersListViewModel);
+  genderFormState$: Observable<FormGroupState<GenderFormValue>>;
+  submittedValue$: Observable<GenderFormValue | undefined>;
+  errors$: Observable<string[]>;
+  loading$!: Observable<boolean>;
   
-  constructor(private formBuilder: FormBuilder, private eventService: EventService, 
-              private genderService: GenderService, private router: Router) {
-    
+  constructor(private store: Store<GenderState>) {
+    this.genderFormState$ = this.store.select(genderFeature.selectGenderForm);
+    this.submittedValue$ = this.store.select(genderFeature.selectSubmittedValue);
   }
   ngOnInit(): void {
-    this.form = this.formBuilder.group({
-      name: ['', {
-        validators: [Validators.required, Validators.minLength(3)/*, firstLetterUpperCase()*/]
-      }]
-    });
-
-    if (this.model !== undefined) {
-      this.form.patchValue(this.model);
-    }
-
-    const onGenderEvent = this.eventService.onEvent(Events.GENDER)
-    .pipe(      
-      switchMap((genderEvent: any) => {
-        if(genderEvent.action === EntityActions.ADD) {
-          return this.genderService.create(R.path<GenderDto>(['payload'], genderEvent));
-        }
-        else if(genderEvent.action === EntityActions.UPDATE) {
-          return this.genderService.update(this.model.id, R.path<GenderDto>(['payload'], genderEvent));
-        }
-      })
-    )
-    .subscribe({
-      next: () => this.router.navigateByUrl('/genders'),
-      error: (err) => this.errors = parseApiErrors(err)
-    });
- 
-    this.genderSubscription.add(onGenderEvent);
+    this.loading$ = this.store.select(genderFeature.selectLoading);
+    this.errors$ = this.store.select(genderFeature.selectErrors);
   }
 
   onSave = () => {
-    if(R.isNotNil(this.form)) {
-      this.eventService.emitEvent(Events.GENDER, this.form.value, this.action);
-    }
+    this.genderFormState$
+    .pipe(
+      take(1),
+      filter(f => {
+        toConsole('Form valid: ', f.isValid);
+        return f.isValid;
+      }),
+      map((formState: any) => {
+        toConsole('Form: ', formState.value);
+        this.store.dispatch(GenderActions.setSubmmittedValue({ submittedValue: formState.value }));
+        this.store.dispatch(GenderActions.saveGender());
+      })
+    )
+    .subscribe();
   };
 
   ngOnDestroy(): void {
-    this.genderSubscription.unsubscribe();
+
   }
 }

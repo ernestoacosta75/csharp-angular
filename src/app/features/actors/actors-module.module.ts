@@ -10,9 +10,9 @@ import { SharedModule } from '@shared/shared.module';
 import { MaterialModule } from '@material/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
-import { actorsFeature } from '@store/actor/actors.reducer';
+import { actorFeature } from '@store/actor/actor.reducer';
 import { EffectsModule } from '@ngrx/effects';
-import { ActorEffects } from '@store/actor/actors.effects';
+import { ActorEffects } from '@store/actor/actor.effects';
 import { NgrxFormsModule } from 'ngrx-forms';
 
 
@@ -29,7 +29,7 @@ import { NgrxFormsModule } from 'ngrx-forms';
     SharedModule,
     MaterialModule,
     ReactiveFormsModule,
-    StoreModule.forFeature(actorsFeature),
+    StoreModule.forFeature(actorFeature),
     EffectsModule.forFeature([ActorEffects]),
     NgrxFormsModule
   ],

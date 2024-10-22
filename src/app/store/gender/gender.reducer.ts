@@ -11,6 +11,7 @@ export interface GenderFormValue {
 
 export interface GenderState {
     genders: GenderDto[];
+    recordsTotalCount: number;
     genderForm: FormGroupState<GenderFormValue>;
     submittedValue: GenderFormValue | undefined;
     loading: boolean;
@@ -31,6 +32,7 @@ const validationGenderFormGroupReducer = createFormStateReducerWithUpdate<Gender
 
 const initialState: GenderState = {
     genders: [],
+    recordsTotalCount: 0,
     genderForm: INITIAL_GENDER_FORM_STATE,
     submittedValue: undefined,
     loading: false,
@@ -54,9 +56,10 @@ export const genderFeature = createFeature({
                 loading: true,
                 errors: []
             })),           
-            on(GenderActions.loadGendersSucess, (state, { genders }) => ({
+            on(GenderActions.loadGendersSucess, (state, { genders, recordsTotalCount }) => ({
                 ...state,
                 genders,
+                recordsTotalCount,
                 loading: false
             })),
             on(GenderActions.loadGendersFailure, (state, { errors }) => ({
@@ -93,7 +96,6 @@ export const genderFeature = createFeature({
                 errors,
                 loading: false
             })),
-
             on(GenderActions.updateGenderSuccess, (state) => ({
                 ...state,
                 loading: false

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import * as ConfirmationActions from '@store/confirmation/confirmation.actions';
-import * as ActorActions from '@store/actor/actors.actions';
+import * as ActorActions from '@store/actor/actor.actions';
 import { switchMap } from "rxjs";
 import Swal from "sweetalert2";
 import { Store } from "@ngrx/store";

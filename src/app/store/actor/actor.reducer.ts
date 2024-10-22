@@ -10,7 +10,7 @@ import {
     validate,
   } from 'ngrx-forms';
 import { required } from 'ngrx-forms/validation';
-import * as ActorActions from 'src/app/store/actor/actors.actions';
+import * as ActorActions from '@store/actor/actor.actions';
 
 export interface ActorFormValue {
     id?: string;
@@ -20,7 +20,7 @@ export interface ActorFormValue {
     biography: string;
 }
 
-export interface State {
+export interface ActorState {
     actors: ActorDto[];
     actorForm: FormGroupState<ActorFormValue>;
     submittedValue: ActorFormValue | undefined;
@@ -44,7 +44,7 @@ const validationActorFormGroupReducer = createFormStateReducerWithUpdate<ActorFo
         dateOfBirth: validate(required)
 }));
 
-const initialState: State = {
+const initialState: ActorState = {
     actors: [],
     actorForm: INITIAL_ACTOR_FORM_STATE,
     submittedValue: undefined,
@@ -55,9 +55,9 @@ const initialState: State = {
 
 
 // With CreateFeature, the feature name and reducer are passed to it
-export const actorsFeature = createFeature({
+export const actorFeature = createFeature({
     name: 'actors',
-    reducer: (state: State | undefined, action): State => {
+    reducer: (state: ActorState | undefined, action): ActorState => {
         // If the state is undefined, return the initial state
         if(!state) {
             state = initialState;
