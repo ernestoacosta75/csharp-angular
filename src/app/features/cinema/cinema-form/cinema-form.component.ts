@@ -37,16 +37,16 @@ export class CinemaFormComponent implements OnInit, OnDestroy {
     this.loading$ = this.store.select(cinemaFeature.selectLoading);
     this.errors$ = this.store.select(cinemaFeature.selectErrors);
 
-    const mapCoordinates = this.eventService.onEvent(Events.COORDINATES)
-    .subscribe((mapCoordinatesEvent: any) => {
-      const latitudeLens = R.lensPath(['latitude']);
-      const longitudeLens = R.lensPath(['longitude']);
+    // const mapCoordinates = this.eventService.onEvent(Events.COORDINATES)
+    // .subscribe((mapCoordinatesEvent: any) => {
+    //   const latitudeLens = R.lensPath(['latitude']);
+    //   const longitudeLens = R.lensPath(['longitude']);
       
-      this.form.patchValue(R.set(latitudeLens, R.path(['payload', 'latitude'], mapCoordinatesEvent), this.form.value));
-      this.form.patchValue(R.set(longitudeLens, R.path(['payload', 'longitude'], mapCoordinatesEvent), this.form.value));
-    });
+    //   this.form.patchValue(R.set(latitudeLens, R.path(['payload', 'latitude'], mapCoordinatesEvent), this.form.value));
+    //   this.form.patchValue(R.set(longitudeLens, R.path(['payload', 'longitude'], mapCoordinatesEvent), this.form.value));
+    // });
 
-    this.cinemaSubscription.add(mapCoordinates);
+    // this.cinemaSubscription.add(mapCoordinates);
   }
 
   onSave = () => {

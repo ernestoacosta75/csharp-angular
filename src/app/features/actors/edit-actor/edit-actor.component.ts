@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ActorDto } from '../../../types/actor/actor-dto';
 import { map, Subscription, switchMap } from 'rxjs';
 import * as R from 'ramda';
-import { EntityActions, toConsole } from '@shared/utilities/common-utils';
+import { EntityActions, toConsole, transformActorApiResponse } from '@shared/utilities/common-utils';
 import { Store } from '@ngrx/store';
 import { selectActorById } from '@store/actor/actor.selectors';
 import * as ActorActions from '@store/actor/actor.actions';
@@ -41,6 +41,7 @@ export class EditActorComponent implements OnInit, OnDestroy {
           map(actor => {
             if(actor) {
               this.model = {...actor};
+              this.store.dispatch(ActorActions.setActorFormValue({ existingValue: transformActorApiResponse(actor) }));
               toConsole('Actor: ', actor);
             }
             else {

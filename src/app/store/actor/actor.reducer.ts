@@ -1,3 +1,4 @@
+import { setActorFormValue } from './actor.actions';
 import { ActorDto } from "@models/actor/actor-dto";
 import { createFeature, createReducer, on } from "@ngrx/store";
 import {
@@ -16,7 +17,7 @@ export interface ActorFormValue {
     id?: string;
     name: string;
     picture: string;
-    dateOfBirth: string;
+    dateOfBirth: string | Date;
     biography: string;
 }
 
@@ -120,9 +121,19 @@ export const actorFeature = createFeature({
                 errors,
                 loading: false
             })),
+            on(ActorActions.setActorFormValue, (state,  { existingValue }) => ({
+                ...state,
+                actorForm: updateGroup<ActorFormValue>({
+                    id: setValue(existingValue.id || ''),
+                    name: setValue(existingValue.name),
+                    picture: setValue(existingValue.picture),
+                    dateOfBirth: setValue(existingValue.dateOfBirth),
+                    biography: setValue(existingValue.biography)
+                })(state.actorForm),
+            })),            
             on(ActorActions.setSubmmittedValue, (state,  { submittedValue }) => ({
                 ...state,
-                submittedValue
+                submittedValue,
             })),
             on(ActorActions.setPictureValue, (state,  { controlId, value }) => ({
                 ...state,

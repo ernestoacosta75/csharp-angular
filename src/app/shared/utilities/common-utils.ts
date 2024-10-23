@@ -1,5 +1,7 @@
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { ActorDto } from '@models/actor/actor-dto';
+import { ActorFormValue } from '@store/actor/actor.reducer';
 import { NgrxValueConverter, NgrxValueConverters } from 'ngrx-forms';
 import * as R from 'ramda';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
@@ -136,6 +138,16 @@ export const getDateValueConverter = (): NgrxValueConverter<Date | null, string 
       return NgrxValueConverters.dateToISOString.convertViewToStateValue(value);
     },
     convertStateToViewValue: NgrxValueConverters.dateToISOString.convertStateToViewValue,
+  };
+};
+
+export const transformActorApiResponse = (apiResponse: any): ActorFormValue => {
+  return {
+    ...apiResponse,
+    dateOfBirth: typeof apiResponse.dateOfBirth === 'string'
+      ? (apiResponse.dateOfBirth as string).substring(0, 10)
+      : (apiResponse.dateOfBirth as Date).toISOString().substring(0, 10),
+    picture: typeof apiResponse.picture === 'string' ? apiResponse.picture : '',
   };
 };
 

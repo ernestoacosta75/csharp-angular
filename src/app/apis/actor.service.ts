@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { Observable } from 'rxjs';
 import * as R from 'ramda';
-import { formatDate } from '@shared/utilities/common-utils';
+import { base64ToFile, formatDate } from '@shared/utilities/common-utils';
 import { ActorDto } from '../types/actor/actor-dto';
 
 @Injectable({
@@ -24,8 +24,8 @@ export class ActorService {
 
   getById = (id: string): Observable<ActorDto> => this.http.get<ActorDto>(`${this.apiUrl}/${id}`);
 
-  create = (actor: ActorDto) => {
-    const formData = this.buildFormData(actor);
+  create = (actor: ActorDto, pictureName?: string) => {
+    const formData = this.buildFormData(actor, pictureName);
     return this.http.post<ActorDto>(this.apiUrl, formData);
   }
 
@@ -36,7 +36,7 @@ export class ActorService {
 
   delete = (id: string) => this.http.delete(`${this.apiUrl}/${id}`);
 
-  private buildFormData = (actor: ActorDto): FormData => {
+  private buildFormData = (actor: ActorDto, pictureName?: string): FormData => {
     const formData = new FormData();
     formData.append('name', R.path(['name'], actor));
 
@@ -50,6 +50,9 @@ export class ActorService {
 
     if (actor.picture instanceof File) {
       formData.append('picture', actor.picture);
+    }
+    else if(typeof actor.picture === 'string' && actor.picture.startsWith('data')) {
+      formData.append('picture', base64ToFile(actor.picture, pictureName));
     }
     else if(typeof actor.picture === 'string') {
       formData.append('picture', null);

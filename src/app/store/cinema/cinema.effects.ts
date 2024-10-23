@@ -79,15 +79,15 @@ export class CinemaEffects {
         })
     ));
 
-    deleteGender$ = createEffect(() => this.actions$.pipe(
-        ofType(GenderActions.deleteGender),
-        switchMap(({ id }) => this.genderService.delete(id)
+    deleteCinema$ = createEffect(() => this.actions$.pipe(
+        ofType(CinemaActions.deleteCinema),
+        switchMap(({ id }) => this.cinemaService.delete(id)
         .pipe(
             map(() =>{ 
                 this.router.navigate(['/genders']);
-                return GenderActions.deleteGenderSuccess({ id });
+                return CinemaActions.deleteCinemaSuccess({ id });
             }),
-            catchError(errors => of(GenderActions.deleteGenderFailure( { errors })))
+            catchError(errors => of(CinemaActions.deleteCinemaFailure( { errors })))
         ))
     ));
 }

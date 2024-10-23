@@ -4,8 +4,8 @@
             <mat-label>{{ textAreaPlaceholder }}</mat-label>
             <textarea 
                 matInput
-                [(ngModel)]="markdownControlState.value"
-                (ngModelChange)="inputTextArea()"
+                [ngModel]="markdownControlState.value"
+                (ngModelChange)="onInputChange($event)"
                 placeholder="{{ textAreaPlaceholder }}"></textarea>
         </mat-form-field>
     </mat-tab>

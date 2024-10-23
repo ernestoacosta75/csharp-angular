@@ -1,4 +1,4 @@
-import { actorsFeature } from '@store/actor/actor.reducer';
+import { actorFeature } from '@store/actor/actor.reducer';
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { ActorService } from "@apis/actor.service";
@@ -45,7 +45,7 @@ export class ActorEffects {
 
     saveActors$ = createEffect(() => this.actions$.pipe(
         ofType(ActorActions.saveActor),
-        withLatestFrom(this.store.select(actorsFeature.selectSubmittedValue)),
+        withLatestFrom(this.store.select(actorFeature.selectSubmittedValue)),
         switchMap(([ action, submittedValue ]) => {
             // Creating the ActorDto instance from the submittedValue
             const actor: ActorDto = {
@@ -57,7 +57,7 @@ export class ActorEffects {
             };
 
             if(!actor.id) {
-                return this.actorsService.create(actor)
+                return this.actorsService.create(actor, submittedValue.name)
                 .pipe(
                     map(() => {
                         this.router.navigate(['/actors']);

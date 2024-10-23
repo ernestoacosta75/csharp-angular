@@ -22,6 +22,7 @@ export const deleteActor = createAction('[Actor] Delete Actor', props<{ id: stri
 export const deleteActorSuccess = createAction('[Actor] Delete Actor Success', props<{ id: string }>());
 export const deleteActorFailure = createAction('[Actor] Delete Actor Failure', props<{ errors: string[] }>());
 
+export const setActorFormValue = createAction('[Actor] Set ActorForm Value', props<{ existingValue: ActorFormValue }>());
 export const setSubmmittedValue = createAction('[Actor] Set Submitted Value', props<{ submittedValue: ActorFormValue }>());
-export const setPictureValue = createAction('[Actor] Set Picture Value', props<{ controlId: string, value: string }>());
+export const setPictureValue = createAction('[Actor] Set Picture Value', props<{ controlId?: string, value: string }>());
 export const setBiographyValue = createAction('[Actor] Set Biography Value', props<{ controlId: string, value: string }>());

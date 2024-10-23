@@ -43,6 +43,10 @@ export class InputMarkdownComponent implements OnInit {
     }
   }
 
+  onInputChange(content: string) {
+    this.inputSubject$.next(content);
+  }
+
   inputTextArea = () =>  {
     this.inputSubject$.next(this.markdownControlState.value);
   }
