@@ -65,7 +65,7 @@ export const base64ToFile = (base64: string, filename: string): File => {
   return new File([u8arr], filename, {type: mime? mime[1] : undefined});
 }
 
-export const toConsole = (label: string, value: any) => {
+export const toConsole = (label: string, value?: any) => {
   const tc = value => console.log(label, value);
   R.tap(tc, value);
 };
@@ -150,6 +150,10 @@ export const transformActorApiResponse = (apiResponse: any): ActorFormValue => {
     picture: typeof apiResponse.picture === 'string' ? apiResponse.picture : '',
   };
 };
+
+export const manageImageValue = (picture: string | File) => {
+  
+}
 
 export class EntityActions {
   static readonly ADD: string = 'Add';

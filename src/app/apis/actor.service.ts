@@ -1,9 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import * as R from 'ramda';
-import { base64ToFile, formatDate } from '@shared/utilities/common-utils';
+import { base64ToFile, formatDate, toConsole } from '@shared/utilities/common-utils';
 import { ActorDto } from '../types/actor/actor-dto';
 
 @Injectable({
@@ -26,11 +26,13 @@ export class ActorService {
 
   create = (actor: ActorDto, pictureName?: string) => {
     const formData = this.buildFormData(actor, pictureName);
+
     return this.http.post<ActorDto>(this.apiUrl, formData);
   }
 
   update = (id:string,  actor: ActorDto): Observable<ActorDto> => {
     const formData = this.buildFormData(actor);
+
     return this.http.put<ActorDto>(`${this.apiUrl}/${id}`, formData);
   }
 

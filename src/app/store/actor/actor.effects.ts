@@ -57,7 +57,7 @@ export class ActorEffects {
             };
 
             if(!actor.id) {
-                return this.actorsService.create(actor, submittedValue.name)
+                return this.actorsService.create(actor, submittedValue.name.concat('_image.png'))
                 .pipe(
                     map(() => {
                         this.router.navigate(['/actors']);
