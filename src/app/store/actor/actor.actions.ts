@@ -3,7 +3,7 @@ import { ActorDto } from "../../types/actor/actor-dto";
 import { ActorFormValue } from "./actor.reducer";
 
 export const loadActors = createAction('[Actor] Load Actors', props<{ page: number, itemsToShowAmount: number }>());
-export const loadActorsSucess = createAction('[Actor] Load Actors Success', props<{ actors: ActorDto[] }>());
+export const loadActorsSucess = createAction('[Actor] Load Actors Success', props<{ actors: ActorDto[], recordsTotalCount: number }>());
 export const loadActorsFailure = createAction('[Actor] Load Actors Failure', props<{ errors: string[] }>());
 
 export const loadActor = createAction('[Actor] Load Actor', props<{ id: string }>());

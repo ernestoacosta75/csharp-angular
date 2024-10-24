@@ -37,7 +37,7 @@
             <mat-paginator 
                 [pageSizeOptions]="pageSizeOptions"
                 showFirstLastButtons
-                [length]="recordsTotalCount"
+                [length]="vm.recordsTotalCount"
                 [pageSize]="recordsAmountToShow"
                 (page)="updatePagination($event)"></mat-paginator>
         </ng-container>

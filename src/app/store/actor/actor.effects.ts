@@ -25,7 +25,8 @@ export class ActorEffects {
         .pipe(
             map(response => {
                 const actors = R.path<any>(['body'], response);
-                return ActorActions.loadActorsSucess({ actors })
+                const recordsTotalCount = +R.path<any>(['headers'], response).get("recordsTotalCount");
+                return ActorActions.loadActorsSucess({ actors, recordsTotalCount })
             }),
             catchError(errors => of(ActorActions.loadActorsFailure( { errors })))
         ))

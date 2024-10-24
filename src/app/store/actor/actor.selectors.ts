@@ -10,11 +10,12 @@ import { actorFeature } from "./actor.reducer";
  // The names of the child selectors are "selectActors", "selectLoading" and "selectErrors". 
 export const selectActorsListViewModel = createSelector(
     actorFeature.selectActors,
+    actorFeature.selectRecordsTotalCount,
     actorFeature.selectActorForm,
     actorFeature.selectSubmittedValue,
     actorFeature.selectLoading,
     actorFeature.selectErrors,
-    (actors, actorForm, submittedValue, loading, errors) => ({ actors, actorForm, submittedValue, loading, errors })
+    (actors, recordsTotalCount, actorForm, submittedValue, loading, errors) => ({ actors, recordsTotalCount, actorForm, submittedValue, loading, errors })
 );
 
 export const selectActorsDictionary = createSelector(

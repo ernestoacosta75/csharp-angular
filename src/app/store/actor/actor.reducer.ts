@@ -23,6 +23,7 @@ export interface ActorFormValue {
 
 export interface ActorState {
     actors: ActorDto[];
+    recordsTotalCount: number;
     actorForm: FormGroupState<ActorFormValue>;
     submittedValue: ActorFormValue | undefined;
     loading: boolean;
@@ -47,6 +48,7 @@ const validationActorFormGroupReducer = createFormStateReducerWithUpdate<ActorFo
 
 const initialState: ActorState = {
     actors: [],
+    recordsTotalCount: 0,
     actorForm: INITIAL_ACTOR_FORM_STATE,
     submittedValue: undefined,
     loading: false,
@@ -81,9 +83,10 @@ export const actorFeature = createFeature({
                 loading: true,
                 errors: []
             })),            
-            on(ActorActions.loadActorsSucess, (state, { actors }) => ({
+            on(ActorActions.loadActorsSucess, (state, { actors, recordsTotalCount }) => ({
                 ...state,
                 actors,
+                recordsTotalCount,
                 loading: false
             })),
             on(ActorActions.loadActorsFailure, (state, { errors }) => ({

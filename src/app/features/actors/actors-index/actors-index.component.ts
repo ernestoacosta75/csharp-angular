@@ -16,7 +16,6 @@ export class ActorsIndexComponent implements OnInit {
   vm$ = this.store.select(ActorSelectors.selectActorsListViewModel);
   columnsToDisplay = ['name', 'actions'];
   pageSizeOptions = [5, 10, 20, 50];
-  recordsTotalCount: number = 0;
   recordsAmountToShow = 10;
   currentPage = 1;
 
