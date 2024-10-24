@@ -1,6 +1,7 @@
+import { setGenderFormValue } from './gender.actions';
 import { GenderDto } from "@models/gender/gender";
 import { createFeature, createReducer, on } from "@ngrx/store";
-import { createFormGroupState, createFormStateReducerWithUpdate, FormGroupState, onNgrxForms, updateGroup, validate } from "ngrx-forms";
+import { createFormGroupState, createFormStateReducerWithUpdate, FormGroupState, onNgrxForms, setValue, updateGroup, validate } from "ngrx-forms";
 import { required } from "ngrx-forms/validation";
 import * as GenderActions from '@store/gender/gender.actions';
 
@@ -105,6 +106,13 @@ export const genderFeature = createFeature({
                 errors,
                 loading: false
             })),
+            on(GenderActions.setGenderFormValue, (state,  { existingValue }) => ({
+                ...state,
+                genderForm: updateGroup<GenderFormValue>({
+                    id: setValue(existingValue.id || ''),
+                    name: setValue(existingValue.name)
+                })(state.genderForm),
+            })),              
             on(GenderActions.setSubmmittedValue, (state,  { submittedValue }) => ({
                 ...state,
                 submittedValue

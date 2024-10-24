@@ -21,4 +21,5 @@ export const deleteGender = createAction('[Gender] Delete Gender', props<{ id: s
 export const deleteGenderSuccess = createAction('[Gender] Delete Gender Success', props<{ id: string }>());
 export const deleteGenderFailure = createAction('[Gender] Delete Gender Failure', props<{ errors: string[] }>());
 
+export const setGenderFormValue = createAction('[Actor] Set GenderForm Value', props<{ existingValue: GenderFormValue }>());
 export const setSubmmittedValue = createAction('[Gender] Set Submitted Value', props<{ submittedValue: GenderFormValue }>());

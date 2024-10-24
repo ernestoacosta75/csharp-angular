@@ -37,6 +37,7 @@ export class EditGenderComponent implements OnInit, OnDestroy {
           map(gender => {
             if(gender) {
               this.model = {...gender};
+              this.store.dispatch(GenderActions.setGenderFormValue({ existingValue: gender }));
               toConsole('Gender: ', gender);
             }
             else {
