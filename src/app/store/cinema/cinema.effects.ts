@@ -8,6 +8,7 @@ import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { cinemaFeature } from './cinema.reducer';
 import { CinemaDto } from "@models/cinema/cinema-dto";
+import { extractFriendlyErrorMessage } from "@shared/utilities/common-utils";
 
 @Injectable()
 export class CinemaEffects {
@@ -51,31 +52,27 @@ export class CinemaEffects {
             const cinema: CinemaDto = {
                 id: R.ifElse(R.propSatisfies(R.isNil, 'id'), R.always(null), R.prop('id'))(submittedValue),
                 name: R.path<string>(['name'], submittedValue),
-                latitude: R.path<number>(['latitude'], submittedValue),
-                longitude: R.path<number>(['longitude'], submittedValue)
+                latitude: R.path<number>(['coordinates', 'latitude'], submittedValue),
+                longitude: R.path<number>(['coordinates', 'longitude'], submittedValue)
             };
 
-            if(!cinema.id) {
-                return this.cinemaService.create(cinema)
-                .pipe(
-                    map(() => {
-                        this.router.navigate(['/genders']);
-                        return CinemaActions.saveCinemaSuccess();     
-                    }),
-                    catchError(errors => of(CinemaActions.saveCinemaFailure( { errors })))
-                );
-            }
-            else {
-                return this.cinemaService.update(cinema)
-                .pipe(
-                    map(() => {
-                        this.router.navigate(['/genders']);
-                        return CinemaActions.updateCinemaSuccess();     
-                    }),
-                    catchError(errors => of(CinemaActions.updateCinemaFailure( { errors })))
-                );
-            }
-            
+            const actions$ = !cinema.id
+                ? this.cinemaService.create(cinema)
+                : this.cinemaService.update(cinema);    
+                
+            return actions$
+            .pipe(
+                map(() => {
+                    this.router.navigate(['/cinemas']);
+                    return cinema.id
+                        ? CinemaActions.updateCinemaSuccess()
+                        : CinemaActions.saveCinemaSuccess();     
+                }),
+                catchError((errorResponse) => {
+                    const errorMessage = extractFriendlyErrorMessage(errorResponse);
+                    return of(CinemaActions.saveCinemaFailure( { errors: [errorMessage] }))
+                })
+            );                
         })
     ));
 
@@ -84,7 +81,7 @@ export class CinemaEffects {
         switchMap(({ id }) => this.cinemaService.delete(id)
         .pipe(
             map(() =>{ 
-                this.router.navigate(['/genders']);
+                this.router.navigate(['/cinemas']);
                 return CinemaActions.deleteCinemaSuccess({ id });
             }),
             catchError(errors => of(CinemaActions.deleteCinemaFailure( { errors })))

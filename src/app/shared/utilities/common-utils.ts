@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ActorDto } from '@models/actor/actor-dto';
@@ -151,8 +152,13 @@ export const transformActorApiResponse = (apiResponse: any): ActorFormValue => {
   };
 };
 
-export const manageImageValue = (picture: string | File) => {
-  
+export const extractFriendlyErrorMessage = (errorResponse: HttpErrorResponse): string => {
+  // Check if the error is due to data truncation
+  if (errorResponse.error?.includes('String or binary data would be truncated')) {
+      return 'The provided name is too long. Please enter a shorter name.';
+  }
+  // Add more cases as necessary or return a generic error message
+  return 'An error occurred while saving the gender. Please try again later.';
 }
 
 export class EntityActions {

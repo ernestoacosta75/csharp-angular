@@ -23,6 +23,7 @@ export class GenderFormComponent implements OnInit, OnDestroy {
   constructor(private store: Store<GenderState>) {
     this.genderFormState$ = this.store.select(genderFeature.selectGenderForm);
     this.submittedValue$ = this.store.select(genderFeature.selectSubmittedValue);
+    this.errors$ = this.store.select(genderFeature.selectErrors);
   }
   ngOnInit(): void {
     this.loading$ = this.store.select(genderFeature.selectLoading);

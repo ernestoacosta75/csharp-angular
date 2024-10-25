@@ -1,6 +1,6 @@
 import { createFeature, createReducer, on } from "@ngrx/store";
 import { createFormGroupState, createFormStateReducerWithUpdate, FormGroupState, onNgrxForms, setValue, updateGroup, validate } from "ngrx-forms";
-import { required } from "ngrx-forms/validation";
+import { maxLength, required } from "ngrx-forms/validation";
 import * as CinemaActions from '@store/cinema/cinema.actions';
 import { CinemaDto } from "@models/cinema/cinema-dto";
 import { CoordinatesDto } from "@models/coordinates/coordinates-dto";
@@ -33,7 +33,7 @@ export const INITIAL_CINEMA_FORM_STATE = createFormGroupState<CinemaFormValue>(C
 
 const validationCinemaFormGroupReducer = createFormStateReducerWithUpdate<CinemaFormValue>(
     updateGroup<CinemaFormValue>({
-        name: validate(required),
+        name: validate([required, maxLength(75)]),
         coordinates: validate(required),
 }));
 
@@ -95,7 +95,7 @@ export const cinemaFeature = createFeature({
             })),
             on(CinemaActions.saveCinemaSuccess, (state) => ({
                 ...state,
-                actorForm: INITIAL_CINEMA_FORM_STATE,
+                cinemaForm: INITIAL_CINEMA_FORM_STATE,
                 loading: false
             })),
             on(CinemaActions.saveCinemaFailure, (state, { errors }) => ({
@@ -112,13 +112,28 @@ export const cinemaFeature = createFeature({
                 errors,
                 loading: false
             })),
+            on(CinemaActions.setCinemaFormValue, (state,  { existingValue }) => ({
+                ...state,
+                cinemaForm: updateGroup<CinemaFormValue>({
+                    id: setValue(existingValue.id || ''),
+                    name: setValue(existingValue.name),
+                    coordinates: updateGroup<CoordinatesDto>({
+                        latitude: setValue(existingValue.latitude),
+                        longitude: setValue(existingValue.longitude)
+                    }),
+                })(state.cinemaForm),
+            })), 
+            on(CinemaActions.resetCinemaForm, (state) => ({
+                ...state,
+                cinemaForm: INITIAL_CINEMA_FORM_STATE
+            })),
             on(CinemaActions.setSubmmittedValue, (state,  { submittedValue }) => ({
                 ...state,
                 submittedValue
             })),
             on(CinemaActions.setCoordinatesValue, (state,  { controlId, coordinates }) => ({
                 ...state,
-                actorForm: updateGroup<CinemaFormValue>({
+                cinemaForm: updateGroup<CinemaFormValue>({
                     coordinates: setValue(coordinates)
                 })(state.cinemaForm)
             })),

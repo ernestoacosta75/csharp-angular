@@ -1,3 +1,4 @@
+import { maxLength } from 'ngrx-forms/validation';
 import {
   AbstractControl,
   ValidatorFn,
@@ -85,10 +86,28 @@ export const firstLetterUpperCase = (): ValidatorFn => {
   };
 };
 
+export const maxLengthViolated = (): ValidatorFn => {
+  return (control: AbstractControl) => {
+    const value = <string>control.value;
+    const maxLength = R.path(['maxLength'], control);
+    const actualLength = R.path(['actualLength'], control);
+
+    const isValid = actualLength <= maxLength;
+
+    return isValid ? null : {
+      maxLength: {
+        message: 'Max length: ' + maxLength,
+      },
+    };
+  };
+};
+
 const getCustomValidatorFn = (validatorName: string): ValidatorFn => {
   switch (validatorName) {
     case 'firstLetterUpperCase':
       return firstLetterUpperCase();
+    case 'maxLength':
+      return maxLengthViolated();  
     default:
       return null;
   }

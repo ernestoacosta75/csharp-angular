@@ -21,7 +21,7 @@
                 color="primary" 
                 [disabled]="formState.isInvalid">Save</button>
     
-            <a mat-stroked-button class="button-form" routerLink="/cinemas">Cancel</a>
+            <a mat-stroked-button class="button-form" (click)="back()">Cancel</a>
         </div>        
     </form>
 </ng-container>

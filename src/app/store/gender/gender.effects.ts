@@ -8,6 +8,8 @@ import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { genderFeature } from './gender.reducer';
 import { GenderDto } from "@models/gender/gender";
+import { HttpErrorResponse } from "@angular/common/http";
+import { extractFriendlyErrorMessage } from "@shared/utilities/common-utils";
 
 @Injectable()
 export class GenderEffects {
@@ -54,27 +56,24 @@ export class GenderEffects {
                 name: submittedValue.name
             };
 
-            if(!gender.id) {
-                return this.genderService.create(gender)
-                .pipe(
-                    map(() => {
-                        this.router.navigate(['/genders']);
-                        return GenderActions.saveGenderSuccess();     
-                    }),
-                    catchError(errors => of(GenderActions.saveGenderFailure( { errors })))
-                );
-            }
-            else {
-                return this.genderService.update(gender.id, gender)
-                .pipe(
-                    map(() => {
-                        this.router.navigate(['/genders']);
-                        return GenderActions.updateGenderSuccess();     
-                    }),
-                    catchError(errors => of(GenderActions.updateGenderFailure( { errors })))
-                );
-            }
-            
+            const actions$ = !gender.id
+                ? this.genderService.create(gender)
+                : this.genderService.update(gender.id, gender);
+
+            return actions$
+            .pipe(
+                map(() => {
+                    this.router.navigate(['/genders']);
+                    return gender.id
+                        ? GenderActions.updateGenderSuccess()
+                        : GenderActions.saveGenderSuccess();     
+                }),
+                catchError((errorResponse) => {
+                    const errorMessage = extractFriendlyErrorMessage(errorResponse);
+                    return of(GenderActions.saveGenderFailure( { errors: [errorMessage] }))
+                })
+
+            );            
         })
     ));
 

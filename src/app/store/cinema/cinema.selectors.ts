@@ -33,3 +33,8 @@ createSelector(
     selectCinemasDictionary,
     (cinemasDictionary) => cinemasDictionary[id]
 );
+
+export const selectCinemaFormErrors = createSelector(
+    cinemaFeature.selectCinemaForm,
+    (cinemaForm) => cinemaForm.errors || null
+);

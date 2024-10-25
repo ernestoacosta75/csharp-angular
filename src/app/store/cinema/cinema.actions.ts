@@ -22,5 +22,7 @@ export const deleteCinema = createAction('[Cinema] Delete Cinema', props<{ id: s
 export const deleteCinemaSuccess = createAction('[Cinema] Delete Cinema Success', props<{ id: string }>());
 export const deleteCinemaFailure = createAction('[Cinema] Delete Cinema Failure', props<{ errors: string[] }>());
 
+export const setCinemaFormValue = createAction('[Cinema] Set CinemaForm Value', props<{ existingValue: CinemaDto }>());
+export const resetCinemaForm = createAction('[Cinema] Reset Cinema Form');
 export const setSubmmittedValue = createAction('[Cinema] Set Submitted Value', props<{ submittedValue: CinemaFormValue }>());
 export const setCoordinatesValue = createAction('[Cinema] Set Coordinates Value', props<{ controlId: string, coordinates: CoordinatesDto }>());

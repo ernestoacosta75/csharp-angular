@@ -37,6 +37,7 @@ export class EditCinemaComponent implements OnInit, OnDestroy {
           map(cinema => {
             if(cinema) {
               this.model = {...cinema};
+              this.store.dispatch(CinemaActions.setCinemaFormValue({ existingValue: cinema }));
               toConsole('Cinema: ', cinema);
             }
             else {

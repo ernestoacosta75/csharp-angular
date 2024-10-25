@@ -8,6 +8,7 @@ import * as R from 'ramda';
 import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { ActorDto } from '@models/actor/actor-dto';
+import { extractFriendlyErrorMessage } from '@shared/utilities/common-utils';
 
 @Injectable()
 export class ActorEffects {
@@ -57,27 +58,21 @@ export class ActorEffects {
                 picture: submittedValue.picture
             };
 
-            if(!actor.id) {
-                return this.actorsService.create(actor, submittedValue.name.concat('_image.png'))
-                .pipe(
-                    map(() => {
-                        this.router.navigate(['/actors']);
-                        return ActorActions.saveActorSuccess();     
-                    }),
-                    catchError(errors => of(ActorActions.saveActorFailure( { errors })))
-                );
-            }
-            else {
-                return this.actorsService.update(actor.id, actor)
-                .pipe(
-                    map(() => {
-                        this.router.navigate(['/actors']);
-                        return ActorActions.updateActorSuccess();     
-                    }),
-                    catchError(errors => of(ActorActions.updateActorFailure( { errors })))
-                );
-            }
-            
+            const actions$ = !actor.id
+                ? this.actorsService.update(actor.id, actor)
+                : this.actorsService.create(actor, submittedValue.name.concat('_image.png'));
+
+            return actions$
+            .pipe(
+                map(() => {
+                    this.router.navigate(['/actors']);
+                    return ActorActions.saveActorSuccess();     
+                }),
+                catchError((errorResponse) => {
+                    const errorMessage = extractFriendlyErrorMessage(errorResponse);
+                    return of(ActorActions.saveActorFailure( { errors: [errorMessage] }))
+                })
+            );            
         })
     ));
 
