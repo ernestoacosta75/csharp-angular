@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as ActorActions from '@store/actor/actor.actions';
+import * as FilmActions from '@store/film/film.actions';
 import { FormControlState } from 'ngrx-forms';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 
@@ -30,11 +31,24 @@ export class InputMarkdownComponent implements OnInit {
         distinctUntilChanged()
       )
       .subscribe((content) => {
+        switch (this.markdownControlState.id) {
+          case 'actorForm.biography':
+            this.store.dispatch(ActorActions.setBiographyValue({
+              controlId: this.markdownControlState.id,
+              value: content
+            }));
+            break;
+            case 'filmForm.resume':
+              this.store.dispatch(FilmActions.setResumeValue({
+                controlId: this.markdownControlState.id,
+                value: content
+              }));
+              break;       
+          default:
+            break;
+        }
         // Dispatch the action to update the actor's biography in the store
-        this.store.dispatch(ActorActions.setBiographyValue({
-          controlId: this.markdownControlState.id,
-          value: content
-        }));
+        
       });
 
     // Initialize the subject with the current value of the control

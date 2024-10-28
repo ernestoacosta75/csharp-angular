@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { toBase64, toConsole } from '@shared/utilities/common-utils';
 import * as ActorActions from '@store/actor/actor.actions';
+import * as FilmActions from '@store/film/film.actions';
 import { FormControlState } from 'ngrx-forms';
 
 @Component({
@@ -17,7 +18,7 @@ export class InputImgComponent {
   @Input()
   currentImageUrl: string;
 
-  @Input() actorId: string; 
+  @Input() entityType: string; 
 
   imageBase64: string;
 
@@ -36,7 +37,19 @@ export class InputImgComponent {
       
       toBase64(file)
       .then((base64: string) => {
-        this.store.dispatch(ActorActions.setPictureValue({ controlId: this.pictureControlState.id, value: base64 }));
+        switch (this.entityType) {
+          case 'actor':
+            this.store.dispatch(ActorActions.setPictureValue({ controlId: this.pictureControlState.id, value: base64 }));
+            break;
+
+          case 'film':
+            this.store.dispatch(FilmActions.setPictureValue({ controlId: this.pictureControlState.id, value: base64 }));
+            break;            
+        
+          default:
+            break;
+        }
+        
         input.value = '';
       })
       .catch((err) => toConsole('Error: ',err));
