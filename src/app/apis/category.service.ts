@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '@environments/environment';
-import { GenderDto } from '../types/gender/gender';
+import { CategoryDto } from '../types/category/category';
 
 @Injectable({
   providedIn: 'root'
 })
-export class GenderService {
+export class CategoryService {
 
-  private apiUrl = environment.apiUrl + 'genders';
+  private apiUrl = environment.apiUrl + 'categories';
 
   constructor(private http: HttpClient) { }
 
@@ -20,11 +20,11 @@ export class GenderService {
     return this.http.get<any>(this.apiUrl, { observe: 'response', params}); 
   };
 
-  getById = (id: string): Observable<GenderDto> => this.http.get<GenderDto>(`${this.apiUrl}/${id}`);
+  getById = (id: string): Observable<CategoryDto> => this.http.get<CategoryDto>(`${this.apiUrl}/${id}`);
 
-  create = (gender: GenderDto) => this.http.post<GenderDto>(this.apiUrl, gender);
+  create = (category: CategoryDto) => this.http.post<CategoryDto>(this.apiUrl, category);
 
-  update = (id:string,  gender: GenderDto): Observable<GenderDto> => this.http.put<GenderDto>(`${this.apiUrl}/${id}`, gender);
+  update = (id:string,  category: CategoryDto): Observable<CategoryDto> => this.http.put<CategoryDto>(`${this.apiUrl}/${id}`, category);
 
   delete = (id: string) => this.http.delete(`${this.apiUrl}/${id}`);
 }

@@ -13,7 +13,7 @@ import { LandingPageComponent } from '@features/landing-page/landing-page.compon
 import { FilmsModule } from '@features/films/films.module';
 import { ActorsModule } from '@features/actors/actors-module.module';
 import { CinemaModule } from '@features/cinema/cinema-module.module';
-import { GendersModule } from '@features/genders/genders.module';
+import { CategoryModule } from '@features/category/category.module';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
@@ -37,7 +37,7 @@ import { ConfirmationModule } from '@store/confirmation/confirmation.module';
     ActorsModule,
     CinemaModule,
     FilmsModule,
-    GendersModule,
+    CategoryModule,
     ConfirmationModule,
     StoreModule.forRoot({}),
     EffectsModule.forRoot({}),

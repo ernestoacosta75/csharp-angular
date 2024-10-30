@@ -46,9 +46,7 @@ export class InputMarkdownComponent implements OnInit {
               break;       
           default:
             break;
-        }
-        // Dispatch the action to update the actor's biography in the store
-        
+        }        
       });
 
     // Initialize the subject with the current value of the control

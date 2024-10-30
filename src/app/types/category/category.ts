@@ -1,4 +1,4 @@
-export interface GenderDto {
+export interface CategoryDto {
     id?: string;
     name: string;
 }

@@ -20,7 +20,7 @@ export class FilmFilterComponent implements OnInit {
     onCinemas: false,
   };
 
-  genders = [
+  categories = [
     { id: 1, name: 'Drama' },
     { id: 2, name: 'Comedy' },
     { id: 3, name: 'Thriller' },
@@ -33,7 +33,7 @@ export class FilmFilterComponent implements OnInit {
       title: 'The Shawshank Redemption',
       onCinemas: false,
       nextReleases: true,
-      genders: [1, 3],
+      categories: [1, 3],
       poster:
         'https://m.media-amazon.com/images/M/MV5BNDE3ODcxYzMtY2YzZC00NmNlLWJiNDMtZDViZWM2MzIxZDYwXkEyXkFqcGdeQXVyNjAwNDUxODI@._V1_QL75_UX100_CR0,1,100,148_.jpg',
     },
@@ -41,7 +41,7 @@ export class FilmFilterComponent implements OnInit {
       title: 'The Godfather',
       onCinemas: false,
       nextReleases: true,
-      genders: [1],
+      categories: [1],
       poster:
         'https://m.media-amazon.com/images/M/MV5BM2MyNjYxNmUtYTAwNi00MTYxLWJmNWYtYzZlODY3ZTk3OTFlXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_QL75_UY148_CR2,0,100,148_.jpg',
     },
@@ -49,7 +49,7 @@ export class FilmFilterComponent implements OnInit {
       title: 'The Godfather: Part II',
       onCinemas: true,
       nextReleases: false,
-      genders: [1],
+      categories: [1],
       poster:
         'https://m.media-amazon.com/images/M/MV5BMWMwMGQzZTItY2JlNC00OWZiLWIyMDctNDk2ZDQ2YjRjMWQ0XkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_QL75_UY148_CR2,0,100,148_.jpg',
     },
@@ -57,7 +57,7 @@ export class FilmFilterComponent implements OnInit {
       title: 'The Dark Knight',
       onCinemas: true,
       nextReleases: false,
-      genders: [3, 4],
+      categories: [3, 4],
       poster:
         'https://m.media-amazon.com/images/M/MV5BMTMxNTMwODM0NF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_QL75_UX100_CR0,0,100,148_.jpg',
     },
@@ -65,7 +65,7 @@ export class FilmFilterComponent implements OnInit {
       title: '12 Angry Men',
       onCinemas: false,
       nextReleases: true,
-      genders: [1, 2],
+      categories: [1, 2],
       poster:
         'https://m.media-amazon.com/images/M/MV5BMWU4N2FjNzYtNTVkNC00NzQ0LTg0MjAtYTJlMjFhNGUxZDFmXkEyXkFqcGdeQXVyNjc1NTYyMjg@._V1_QL75_UX100_CR0,3,100,148_.jpg',
     },
@@ -73,7 +73,7 @@ export class FilmFilterComponent implements OnInit {
       title: "Schindler's List",
       onCinemas: false,
       nextReleases: true,
-      genders: [1, 3],
+      categories: [1, 3],
       poster:
         'https://m.media-amazon.com/images/M/MV5BNDE4OTMxMTctNmRhYy00NWE2LTg3YzItYTk3M2UwOTU5Njg4XkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_QL75_UX100_CR0,1,100,148_.jpg',
     },
@@ -81,7 +81,7 @@ export class FilmFilterComponent implements OnInit {
       title: 'Pulp Fiction',
       onCinemas: true,
       nextReleases: false,
-      genders: [3],
+      categories: [3],
       poster:
         'https://m.media-amazon.com/images/M/MV5BNGNhMDIzZTUtNTBlZi00MTRlLWFjM2ItYzViMjE3YzI5MjljXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_QL75_UY148_CR1,0,100,148_.jpg',
     },
@@ -89,7 +89,7 @@ export class FilmFilterComponent implements OnInit {
       title: 'The Lord of the Rings: The Return of the King',
       onCinemas: true,
       nextReleases: false,
-      genders: [4, 5],
+      categories: [4, 5],
       poster:
         'https://m.media-amazon.com/images/M/MV5BNzA5ZDNlZWMtM2NhNS00NDJjLTk4NDItYTRmY2EwMWZlMTY3XkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_QL75_UX100_CR0,0,100,148_.jpg',
     },

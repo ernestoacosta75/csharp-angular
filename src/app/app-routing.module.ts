@@ -20,8 +20,8 @@ const routes: Routes = [
     loadChildren: () => import('@features/films/films.module').then(m => m.FilmsModule)
   },
   {
-    path: 'genders',
-    loadChildren: () => import('@features/genders/genders.module').then(m => m.GendersModule)
+    path: 'categories',
+    loadChildren: () => import('@features/category/category.module').then(m => m.CategoryModule)
   }, 
   { 
     path: '**', 

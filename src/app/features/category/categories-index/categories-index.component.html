@@ -1,18 +1,18 @@
-<h2>Genders</h2>
+<h2>Categories</h2>
 
-<button mat-flat-button color="primary" routerLink="/genders/create">Create</button>
+<button mat-flat-button color="primary" routerLink="/categories/create">Create</button>
 
 <ng-container *ngIf="vm$ | async as vm">
     <div *ngIf="vm.loading" class="loading-container">
         <mat-spinner></mat-spinner>
     </div>
     
-    <app-generic-list [list]="vm?.genders">
+    <app-generic-list [list]="vm?.categories">
         <ng-container content>
             <table
                 #table
                 mat-table
-                [dataSource]="vm?.genders"
+                [dataSource]="vm?.categories"
                 class="mat-elevation-z8 index-table">
      
                 <ng-container matColumnDef="name">
@@ -23,7 +23,7 @@
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef>Actions</th>
                     <td mat-cell *matCellDef="let element">
-                        <a mat-flat-button color="primary" routerLink="/genders/edit/{{ element?.id }}">Edit</a>
+                        <a mat-flat-button color="primary" routerLink="/categories/edit/{{ element?.id }}">Edit</a>
                         <button mat-flat-button 
                             color="warn" 
                             type="button"                         

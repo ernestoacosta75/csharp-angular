@@ -158,7 +158,7 @@ export const extractFriendlyErrorMessage = (errorResponse: HttpErrorResponse): s
       return 'The provided name is too long. Please enter a shorter name.';
   }
   // Add more cases as necessary or return a generic error message
-  return 'An error occurred while saving the gender. Please try again later.';
+  return 'An error occurred while saving the category. Please try again later.';
 }
 
 export class EntityActions {

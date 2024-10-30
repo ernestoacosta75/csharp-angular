@@ -2,7 +2,7 @@
     <app-show-errors [errors]="errors"></app-show-errors>
 </ng-container>
 
-<ng-container *ngIf="(genderFormState$ | async) as formState">
+<ng-container *ngIf="(categoryFormState$ | async) as formState">
     <form [ngrxFormState]="formState" (submit)="onSave()">
         <mat-form-field appearance="outline" class="mb-4">
             <mat-label appAddRequired>Name</mat-label>
@@ -20,7 +20,7 @@
                 type="submit"
                 [disabled]="formState.isInvalid">Save</button>
     
-            <a mat-stroked-button class="button-form" routerLink="/genders">Cancel</a>
+            <a mat-stroked-button class="button-form" routerLink="/categories">Cancel</a>
         </div>  
     </form>
 </ng-container>

@@ -19,13 +19,13 @@ export class FilmFormComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
 
-  gendersNotSelected: MultipleSelectorDto [] = [
-    { key: 1, value: 'Drama', type: 'Gender' },
-    { key: 2, value: 'Action', type: 'Gender' },
-    { key: 3, value: 'Comedy', type: 'Gender' }
+  categoriesNotSelected: MultipleSelectorDto [] = [
+    { key: 1, value: 'Drama', type: 'Category' },
+    { key: 2, value: 'Action', type: 'Category' },
+    { key: 3, value: 'Comedy', type: 'Category' }
   ];
 
-  gendersSelected: MultipleSelectorDto [] = [];
+  categoriesSelected: MultipleSelectorDto [] = [];
 
   cinemasNotSelected: MultipleSelectorDto [] = [
     { key: 1, value: 'Sambil', type: 'Cinema' },

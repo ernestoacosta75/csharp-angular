@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import * as ConfirmationActions from '@store/confirmation/confirmation.actions';
 import * as ActorActions from '@store/actor/actor.actions';
-import * as GenderActions from '@store/gender/gender.actions';
+import * as CategoryActions from '@store/category/category.actions';
 import * as CinemaActions from '@store/cinema/cinema.actions';
 import { switchMap, map } from "rxjs";
 import Swal from "sweetalert2";
@@ -34,9 +34,9 @@ export class ConfirmationEffects {
                                     this.store.dispatch(ActorActions.loadActors({ page: 1, itemsToShowAmount: 10 }));
                                     break;
 
-                                case 'gender':
-                                    this.store.dispatch(GenderActions.deleteGender({ id: entityId }));
-                                    this.store.dispatch(GenderActions.loadGenders({ page: 1, itemsToShowAmount: 10 }));
+                                case 'category':
+                                    this.store.dispatch(CategoryActions.deleteCategory({ id: entityId }));
+                                    this.store.dispatch(CategoryActions.loadCategories({ page: 1, itemsToShowAmount: 10 }));
                                     break;  
                                     
                                 case 'cinema':
