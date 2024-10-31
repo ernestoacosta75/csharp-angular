@@ -10,6 +10,11 @@ import { NewFilmComponent } from '@features/films/new-film/new-film.component';
 import { SharedModule } from '@shared/shared.module';
 import { MaterialModule } from '@material/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { filmFeature } from '@store/film/film.reducer';
+import { FilmEffects } from '@store/film/film.effects';
+import { NgrxFormsModule } from 'ngrx-forms';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
 
 @NgModule({
@@ -25,7 +30,10 @@ import { ReactiveFormsModule } from '@angular/forms';
     FilmsRoutingModule,
     SharedModule,
     MaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    StoreModule.forFeature(filmFeature),
+    EffectsModule.forFeature([FilmEffects]),
+    NgrxFormsModule
   ],
   exports: [
     FilmsListComponent,

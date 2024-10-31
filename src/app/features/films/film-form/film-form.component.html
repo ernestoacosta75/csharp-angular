@@ -1,4 +1,77 @@
-<form 
+<ng-container *ngIf="errors$ | async as errors">
+    <app-show-errors [errors]="errors"></app-show-errors>
+</ng-container>
+
+<ng-container *ngIf="(filmFormState$ | async) as formState">
+    <form [ngrxFormState]="formState" (submit)="onSave()">
+        <mat-form-field appearance="outline">
+            <mat-label appAddRequired>Title</mat-label>
+            <input matInput [ngrxFormControlState]="formState.controls.title" required placeholder="Ex.: Pulp Fiction">
+            <mat-error app-error-message [control]="formState.controls.title"></mat-error>
+        </mat-form-field>
+
+        <div class="checkbox-container">
+            <mat-checkbox [ngrxFormControlState]="formState.controls.onCinemas">On cinemas</mat-checkbox>
+        </div>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Trailer</mat-label>
+            <input matInput [ngrxFormControlState]="formState.controls.trailer">
+            <mat-error app-error-message [control]="formState.controls.trailer"></mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Release date</mat-label>
+            <input matInput 
+                [matDatepicker]="releaseDatePicker" 
+                [ngrxFormControlState]="formState.controls.releaseDate"
+                [ngrxValueConverter]="dateValueConverter">
+            <mat-datepicker-toggle matSuffix [for]="releaseDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #releaseDatePicker></mat-datepicker>
+            <mat-error app-error-message [control]="formState.controls.releaseDate"></mat-error>
+        </mat-form-field>
+
+        <h4>Select the poster</h4>
+        <app-input-img 
+            [pictureControlState]="formState.controls.poster"
+            [currentImageUrl]="formState.value.poster" 
+            [entityType]="'film'" />
+
+        <h4>Film resume</h4>
+        <app-input-markdown 
+            [markdownControlState]="formState.controls.resume"
+            textAreaPlaceholder="Resume"></app-input-markdown> 
+    
+        <ng-container *ngIf="categoriesNotSelected$ | async as categories">
+            <h4>Select the category(s):</h4>
+            <app-multiple-selector 
+                [sourceType]="categories[0]?.type"
+                [itemsUnselected]="categories" />
+        </ng-container>    
+    
+        <ng-container *ngIf="cinemasNotSelected$ | async as cinemas">
+            <h4>Select the cinema(s):</h4>
+            <app-multiple-selector 
+                [sourceType]="cinemas[0]?.type"
+                [itemsUnselected]="cinemas" />
+        </ng-container>
+            
+        <h4>Select the actor(s):</h4>
+        <app-autocomplete-actors></app-autocomplete-actors>
+    
+        <div>
+            <button 
+                mat-flat-button 
+                color="primary" 
+                type="submit"
+                [disabled]="formState.isInvalid">Save</button>
+
+            <a mat-stroked-button class="button-form" (click)="back()">Cancel</a>
+        </div>    
+    </form>
+</ng-container>
+
+<!-- <form 
     [formGroup]="form"
     (submit)="onSave()">
     <mat-form-field appearance="outline">
@@ -21,11 +94,11 @@
         <mat-datepicker #releaseDatePicker></mat-datepicker>
     </mat-form-field>
     <h4>Select the poster</h4>
-    <!-- <app-input-img [currentImageUrl]="model?.poster"></app-input-img> -->
+    <app-input-img [currentImageUrl]="model?.poster"></app-input-img> 
     <h4>Film resume</h4>
-    <!-- <app-input-markdown 
+     <app-input-markdown 
         [textAreaPlaceholder]="'Resume'"
-        [markdownContent]="model?.resume"></app-input-markdown> -->
+        [markdownContent]="model?.resume"></app-input-markdown> 
 
     <h4>Select the gender(s):</h4>
     <app-multiple-selector 
@@ -47,4 +120,4 @@
             [disabled]="form.invalid">Save</button>
         <a mat-stroked-button routerLink="/">Cancel</a>
     </div>
-</form>
+</form> -->

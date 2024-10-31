@@ -1,6 +1,7 @@
 import { createAction, props } from "@ngrx/store";
 import { ActorDto } from "../../types/actor/actor-dto";
 import { ActorFormValue } from "./actor.reducer";
+import { Boxed } from "ngrx-forms";
 
 export const loadActors = createAction('[Actor] Load Actors', props<{ page: number, itemsToShowAmount: number }>());
 export const loadActorsSucess = createAction('[Actor] Load Actors Success', props<{ actors: ActorDto[], recordsTotalCount: number }>());
@@ -26,3 +27,4 @@ export const setActorFormValue = createAction('[Actor] Set ActorForm Value', pro
 export const setSubmmittedValue = createAction('[Actor] Set Submitted Value', props<{ submittedValue: ActorFormValue }>());
 export const setPictureValue = createAction('[Actor] Set Picture Value', props<{ controlId?: string, value: string }>());
 export const setBiographyValue = createAction('[Actor] Set Biography Value', props<{ controlId: string, value: string }>());
+export const setSelectedActors = createAction('[Actor] Set Selected Actors', props<{ selectedActors: ActorDto[] }>());

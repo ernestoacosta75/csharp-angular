@@ -1,5 +1,7 @@
 import { createSelector } from "@ngrx/store";
 import { categoryFeature } from "./category.reducer";
+import { categoryDefaultValues } from "@models/default-values/default-values";
+import { MultipleSelectorDto } from "@models/multiple-selector/multipleselectordto";
 
 export const selectCategoriesListViewModel = createSelector(
     categoryFeature.selectCategories,
@@ -25,6 +27,41 @@ export const selectCategoriesDictionary = createSelector(
             }
             return acc;
         }, {} as { [id: string]: typeof categories[0]});
+    }
+);
+
+export const selectCategoriesAsMultipleSelectorDto = createSelector(
+    categoryFeature.selectCategories,
+    (categories) => {
+        if (!categories || !Array.isArray(categories)) {
+            return categoryDefaultValues; 
+        }
+        
+        const categoryEntries = categories.map((category, index) => {
+            return {
+                key: index + 1, // Incremental key starting from 1
+                value: category.name, // Assuming 'name' is the property for value
+                type: 'Category'
+            } as MultipleSelectorDto;
+        });
+
+        const combinedEntries: MultipleSelectorDto[] = [...categoryDefaultValues, ...categoryEntries];
+
+        // Filtering out duplicates based on 'value'
+        const uniqueEntries = combinedEntries.reduce<MultipleSelectorDto[]>((acc, entry) => {
+            const isDuplicate = acc.some(existing => existing.value.toLowerCase() === entry.value.toLowerCase());
+
+            if (!isDuplicate) {
+                acc.push(entry);
+            }
+
+            return acc;
+        }, []);
+
+        return uniqueEntries.map((entry, index) => ({
+            ...entry,
+            key: index + 1
+        }));
     }
 );
 

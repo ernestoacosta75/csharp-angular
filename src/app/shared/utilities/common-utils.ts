@@ -1,7 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { ActorDto } from '@models/actor/actor-dto';
 import { ActorFormValue } from '@store/actor/actor.reducer';
 import { NgrxValueConverter, NgrxValueConverters } from 'ngrx-forms';
 import * as R from 'ramda';

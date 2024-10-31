@@ -1,7 +1,9 @@
-import { setActorFormValue } from './actor.actions';
+import { setActorFormValue, setSelectedActors } from './actor.actions';
 import { ActorDto } from "@models/actor/actor-dto";
 import { createFeature, createReducer, on } from "@ngrx/store";
 import {
+    box,
+    Boxed,
     createFormGroupState,
     createFormStateReducerWithUpdate,
     FormGroupState,
@@ -19,6 +21,7 @@ export interface ActorFormValue {
     picture: string;
     dateOfBirth: string | Date;
     biography: string;
+    selectedActorsArr: Boxed<ActorDto[]>;
 }
 
 export interface ActorState {
@@ -38,6 +41,7 @@ export const INITIAL_ACTOR_FORM_STATE = createFormGroupState<ActorFormValue>(ACT
     picture: '',
     dateOfBirth: new Date(Date.UTC(1970, 0, 1)).toISOString(),
     biography: '',
+    selectedActorsArr: box([])
 });
 
 const validationActorFormGroupReducer = createFormStateReducerWithUpdate<ActorFormValue>(
@@ -131,7 +135,8 @@ export const actorFeature = createFeature({
                     name: setValue(existingValue.name),
                     picture: setValue(existingValue.picture),
                     dateOfBirth: setValue(existingValue.dateOfBirth),
-                    biography: setValue(existingValue.biography)
+                    biography: setValue(existingValue.biography),
+                    selectedActorsArr: setValue(box(existingValue.selectedActorsArr) || box([]))
                 })(state.actorForm),
             })),            
             on(ActorActions.setSubmmittedValue, (state,  { submittedValue }) => ({
@@ -149,7 +154,13 @@ export const actorFeature = createFeature({
                 actorForm: updateGroup<ActorFormValue>({
                     biography: setValue(value)
                 })(state.actorForm)
-            }))
+            })),
+            on(ActorActions.setSelectedActors, (state,  { selectedActors }) => ({
+                ...state,
+                actorForm: updateGroup<ActorFormValue>({
+                    selectedActorsArr: setValue(box(selectedActors))
+                })(state.actorForm)
+            }))            
         )({
             ...state, 
             actorForm: actorFormStateUpdated

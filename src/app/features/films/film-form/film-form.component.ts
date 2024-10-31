@@ -1,11 +1,16 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FilmEditDto } from '../../../types/film/film-dto';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EventService } from 'src/app/event-service';
-import { Events } from '@shared/utilities/events';
-import { Subscription } from 'rxjs';
-import * as R from 'ramda';
-import { MultipleSelectorDto } from '@shared/components/multiple-selector/models/multipleselectordto';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { filter, map, Observable, take } from 'rxjs';
+import { MultipleSelectorDto } from '@models/multiple-selector/multipleselectordto';
+import { filmFeature, FilmFormValue, FilmState } from '@store/film/film.reducer';
+import { FormGroupState, NgrxValueConverter } from 'ngrx-forms';
+import * as FilmSelectors from '@store/film/film.selectors';
+import * as FilmActions from '@store/film/film.actions';
+import { Store } from '@ngrx/store';
+import { getDateValueConverter, toConsole } from '@shared/utilities/common-utils';
+import { Router } from '@angular/router';
+import { selectCinemasAsMultipleSelectorDto } from '@store/cinema/cinema.selectors';
+import { selectCategoriesAsMultipleSelectorDto } from '@store/category/category.selectors';
 
 @Component({
   selector: 'app-film-form',
@@ -13,52 +18,30 @@ import { MultipleSelectorDto } from '@shared/components/multiple-selector/models
   styleUrl: './film-form.component.css'
 })
 export class FilmFormComponent implements OnInit, OnDestroy {
+
+  categoriesNotSelected$: Observable<MultipleSelectorDto[]>;
+  gendersSelected: MultipleSelectorDto [] = [];
+  cinemasNotSelected$: Observable<MultipleSelectorDto[]>;
+  filmFormState$: Observable<FormGroupState<FilmFormValue>>;
+  submittedValue$: Observable<FilmFormValue | undefined>;
+  errors$: Observable<string[]>;
+  loading$!: Observable<boolean>;
+  vm$ = this.store.select(FilmSelectors.selectFilmsListViewModel);
   
-  @Input()
-  model: FilmEditDto;
-
-  form: FormGroup;
-
-  categoriesNotSelected: MultipleSelectorDto [] = [
-    { key: 1, value: 'Drama', type: 'Category' },
-    { key: 2, value: 'Action', type: 'Category' },
-    { key: 3, value: 'Comedy', type: 'Category' }
-  ];
-
-  categoriesSelected: MultipleSelectorDto [] = [];
-
-  cinemasNotSelected: MultipleSelectorDto [] = [
-    { key: 1, value: 'Sambil', type: 'Cinema' },
-    { key: 2, value: 'Agora', type: 'Cinema' },
-    { key: 3, value: 'Acropolis', type: 'Cinema' }
-  ];
-
-  cinemasSelected: MultipleSelectorDto [] = [];
-  
-  filmSubscription: Subscription = new Subscription();
-  
-  constructor(private formBuilder: FormBuilder, private eventService: EventService) {
-    
+  dateValueConverter:  NgrxValueConverter<Date | null, string | null>;
+   
+  constructor(private formBuilder: FormBuilder, private store: Store<FilmState>, private router: Router) {
+    this.dateValueConverter = getDateValueConverter();
+    this.filmFormState$ = this.store.select(filmFeature.selectFilmForm);
+    this.submittedValue$ = this.store.select(filmFeature.selectSubmittedValue);
+    this.cinemasNotSelected$ = this.store.select(selectCinemasAsMultipleSelectorDto);
+    this.categoriesNotSelected$ = this.store.select(selectCategoriesAsMultipleSelectorDto);
   }
   
   ngOnInit(): void {
-    this.form = this.formBuilder.group({
-      title: ['', {
-        validators: [Validators.required]
-      }],
-      resume: '',
-      onCinemas: false,
-      trailer: '',
-      releaseDate: new Date(),
-      poster: '',
-      gendersId: '',
-      cinemasId: ''
-    });
-
-    if (this.model !== undefined) {
-      this.form.patchValue(this.model);
-    }
-
+    this.loading$ = this.store.select(filmFeature.selectLoading);
+    this.errors$ = this.store.select(filmFeature.selectErrors);
+/*
     const onMarkdownChanged = this.eventService.onEvent(Events.MARKDOWN_CHANGE)
     .subscribe((markdownEvent: any) => {
       const biographyLens = R.lensPath(['resume']);
@@ -96,13 +79,31 @@ export class FilmFormComponent implements OnInit, OnDestroy {
     this.filmSubscription.add(onMarkdownChanged);
     this.filmSubscription.add(onImageSelected);
     this.filmSubscription.add(onGenderSelected);
-  }
-
-  ngOnDestroy(): void {
-    this.filmSubscription.unsubscribe();
+    */
   }
 
   onSave = () => {
-    this.eventService.emitEvent(Events.FILM, this.form.value)
-  };
+    this.filmFormState$
+    .pipe(
+      take(1),
+      filter(f => {
+        return f.isValid;
+      }),
+      map((formState: any) => {
+        toConsole('Form: ', formState.value);
+        this.store.dispatch(FilmActions.setSubmmittedValue({ submittedValue: formState.value }));
+        // this.store.dispatch(FilmActions.saveFilm());
+      })
+    )
+    .subscribe();
+  }
+
+  back = () => {
+    this.store.dispatch(FilmActions.resetFilmForm());
+    this.router.navigate(['/films']);
+  }
+
+  ngOnDestroy(): void {
+
+  }
 }

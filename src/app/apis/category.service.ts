@@ -28,3 +28,4 @@ export class CategoryService {
 
   delete = (id: string) => this.http.delete(`${this.apiUrl}/${id}`);
 }
+

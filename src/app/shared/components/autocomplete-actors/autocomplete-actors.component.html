@@ -1,26 +1,31 @@
-<form>
-    <mat-form-field appearance="outline">
-        <input
-            type="text"
-            placeholder="Select the actor(s)"
-            matInput
-            [formControl]="control"
-            [matAutocomplete]="auto"/>
-    </mat-form-field>
-    <mat-autocomplete #auto
-        (optionSelected)="optionSelected($event)">
-        <mat-option *ngFor="let actor of actors" [value]="actor">
-            <img [src]="actor.picture" />{{ actor.name}}
-        </mat-option>
-    </mat-autocomplete>
-</form>
+<ng-container *ngIf="(actorForm$ | async) as formState">
+    <form>
+        <mat-form-field appearance="outline">
+            <input
+                type="text"
+                placeholder="Select the actor(s)"
+                matInput
+                [ngrxFormControlState]="formState.controls.name"
+                [matAutocomplete]="auto"/>
+        </mat-form-field>
 
-<table class="mat-elevation-z8 ac-table" *ngIf="selectedActorsArr.length > 0"
-    mat-table
-    [dataSource]="selectedActorsArr"
-    cdkDropList
-    [cdkDropListData]="selectedActorsArr"
-    (cdkDropListDropped)="dropTable($event)">
+        <mat-autocomplete #auto (optionSelected)="optionSelected($event)">
+            <mat-option *ngFor="let actor of actors$ | async" [value]="actor">
+                <img [src]="actor.picture" />{{ actor.name }}
+            </mat-option>
+        </mat-autocomplete>
+    </form>
+</ng-container>
+
+<!-- Selected actors table -->
+<table class="mat-elevation-z8 ac-table" *ngIf="(selectedActorsArr$ | async)?.length > 0"
+       mat-table
+       [dataSource]="selectedActorsArr$ | async"
+       cdkDropList
+       [cdkDropListData]="selectedActorsArr$ | async"
+       (cdkDropListDropped)="dropTable($event)">
+
+    <!-- Image Column -->
     <ng-container matColumnDef="image">
         <th mat-header-cell *matHeaderCellDef>No.</th>
         <td mat-cell *matCellDef="let element">
@@ -28,6 +33,7 @@
         </td>
     </ng-container>
      
+    <!-- Name Column -->
     <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef>Name</th>
         <td mat-cell *matCellDef="let element">
@@ -35,16 +41,18 @@
         </td>
     </ng-container> 
  
+    <!-- Character Column -->
     <ng-container matColumnDef="character">
         <th mat-header-cell *matHeaderCellDef>Character</th>
         <td mat-cell *matCellDef="let element">
-            <mat-form-field appereance="outline" style="margin-top: 10px;">
+            <mat-form-field appearance="outline" style="margin-top: 10px;">
                 <mat-label>Character</mat-label>
                 <input matInput [(ngModel)]="element.character"/>
             </mat-form-field>
         </td>
     </ng-container> 
           
+    <!-- Actions Column -->
     <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>Actions</th>
         <td mat-cell *matCellDef="let element">
@@ -53,7 +61,8 @@
             </mat-icon>
         </td>
     </ng-container>   
-    
+ 
+    <!-- Header and Row Definitions -->
     <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
     <tr mat-row *matRowDef="let rowData; columns: columnsToDisplay" cdkDrag [cdkDragData]="rowData"></tr>
 </table>
